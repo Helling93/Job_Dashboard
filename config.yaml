@@ -77,6 +77,10 @@ companies:
     date_attr: "data-posting-date"
     category_selector: ".grp-jobfinder-cell-refno"
     category_attr: "data-job-field"
+    filters:
+      # Doktorand/PhD-Stellen kommen bei BMW über jobType_SUMMER_JOB
+      # ("Nachwuchsprogramme") mit rein - werden hier rausgefiltert.
+      exclude_title_contains: ["Doktorand", "PhD"]
 
   # Helsing (Verteidigungs-KI/autonome Systeme): Jobs-Seite ist serverseitig
   # gerendert (Next.js), inhaltlich reicht also method: requests - ABER der

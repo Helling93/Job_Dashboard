@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html as html_lib
 import logging
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from urllib.parse import urljoin
@@ -18,6 +19,18 @@ USER_AGENT = (
     "Mozilla/5.0 (compatible; JobWatcher/1.0; "
     "+https://github.com/) job-alert-bot"
 )
+
+# Manche Seiten (z.B. Vercel-gehostete) zeigen bei zu vielen/verdächtigen
+# Anfragen kurzzeitig eine Bot-Challenge statt der echten Seite. Das ist
+# meistens transient - ein erneuter Versuch nach kurzer Pause reicht i.d.R.
+BOT_CHALLENGE_MARKERS = (
+    "Vercel Security Checkpoint",
+    "Checking your browser",
+    "Just a moment...",
+    "Attention Required",
+)
+FETCH_RETRY_ATTEMPTS = 3
+FETCH_RETRY_DELAY_SECONDS = 8
 
 
 class ScrapeError(Exception):
@@ -89,6 +102,30 @@ def fetch_html(company: dict) -> str:
             return html
 
     raise ScrapeError(f"Unbekannte method '{method}' für Firma {company.get('name')}")
+
+
+def _looks_like_bot_challenge(html: str) -> bool:
+    head = html[:2000]
+    return any(marker in head for marker in BOT_CHALLENGE_MARKERS)
+
+
+def fetch_html_with_retry(company: dict) -> str:
+    """Wie fetch_html(), aber mit Retry bei erkannter Bot-Challenge-Seite
+    (z.B. Vercel Security Checkpoint) - das ist meist transient und tritt bei
+    zu vielen/verdächtigen Anfragen kurzfristig auf, nicht bei einer
+    tatsächlichen Strukturänderung der Seite."""
+    html = ""
+    for attempt in range(1, FETCH_RETRY_ATTEMPTS + 1):
+        html = fetch_html(company)
+        if not _looks_like_bot_challenge(html):
+            return html
+        logger.warning(
+            "Möglicher Bot-Schutz bei %s erkannt (Versuch %d/%d) - warte %ds und versuche erneut.",
+            company.get("name"), attempt, FETCH_RETRY_ATTEMPTS, FETCH_RETRY_DELAY_SECONDS,
+        )
+        if attempt < FETCH_RETRY_ATTEMPTS:
+            time.sleep(FETCH_RETRY_DELAY_SECONDS)
+    return html
 
 
 def _text_or_none(el) -> str | None:
@@ -213,7 +250,7 @@ def _scrape_paginated(company: dict) -> list[Job]:
     for page in range(1, max_pages + 1):
         page_company = dict(company)
         page_company["url"] = url_template.format(page=page)
-        html = fetch_html(page_company)
+        html = fetch_html_with_retry(page_company)
         try:
             jobs = extract_jobs(html, page_company)
         except ScrapeError:
@@ -233,7 +270,7 @@ def scrape_company(company: dict) -> tuple[list[Job], str | None]:
         if company.get("paginate"):
             jobs = _scrape_paginated(company)
         else:
-            html = fetch_html(company)
+            html = fetch_html_with_retry(company)
             jobs = extract_jobs(html, company)
         filters = company.get("filters")
         if filters:
