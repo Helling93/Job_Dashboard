@@ -92,7 +92,7 @@ geschaltet wird. `tests/test_scraper.py` zeigt anhand einer Fixture
 (`tests/fixtures/sample_company.html`), wie die Selektor-Logik geprüft
 werden kann, ohne echte Websites anzufragen.
 
-Aktuell sind fünf Firmen als Beispiele eingerichtet und gegen die echten
+Aktuell sind acht Firmen als Beispiele eingerichtet und gegen die echten
 Seiten getestet:
 
 - **BMW Group** (`method: playwright`): Die Karriereseite ist eine SPA, aber
@@ -114,6 +114,17 @@ Seiten getestet:
   Next.js-Seite, zeigt initial nur 10 von z.B. 17 Treffern - ein
   "Load more"-Button wird automatisch so oft geklickt, bis alle geladen
   sind.
+- **Quantum Systems** (`method: playwright`, `load_more_selector`):
+  serverseitig gerendert, aber ebenfalls mit "Show more jobs"-Button statt
+  echter Pagination.
+- **KNDS** (`method: playwright`, `flatten_shadow_dom: true`): SAP
+  SuccessFactors Career Site Builder, gebaut mit Stencil.js Web Components -
+  die Job-Liste steckt im Shadow DOM, das normales `page.content()` nicht
+  sieht. `flatten_shadow_dom` kopiert Shadow-Root-Inhalte vor dem
+  Serialisieren ins Light-DOM. `pageSize=100` in der URL holt alles auf
+  einmal (keine Pagination nötig).
+- **MBDA** (`method: playwright`, `paginate: true`): serverseitig gerendert
+  (Playwright wegen JS-Hydration nötig), 10 Treffer pro Seite.
 
 ### Filter
 
