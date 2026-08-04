@@ -1,0 +1,77 @@
+name: Job Scraper
+
+on:
+  schedule:
+    # 08:00 in Zürich/München. GitHub Actions cron läuft in UTC, daher
+    # entspricht das je nach Sommer-/Winterzeit 06:00 oder 07:00 UTC.
+    # Aktuell auf Sommerzeit (UTC+2) eingestellt -> ggf. 2x jährlich anpassen,
+    # siehe README "Cron & Zeitzone".
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browser (nur falls benötigt)
+        run: |
+          if grep -q "method: *playwright" config.yaml; then
+            playwright install --with-deps chromium
+          else
+            echo "Keine Firma nutzt method: playwright - Browser-Install übersprungen."
+          fi
+
+      - name: Scraper ausführen
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python main.py
+
+      - name: State committen & pushen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/state.json
+          if git diff --cached --quiet; then
+            echo "Keine Änderungen am State - kein Commit nötig."
+          else
+            git commit -m "chore: update job state [skip ci]"
+            git push
+          fi
+
+      - name: Dashboard als Pages-Artifact hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: scrape
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Auf GitHub Pages deployen
+        id: deployment
+        uses: actions/deploy-pages@v4

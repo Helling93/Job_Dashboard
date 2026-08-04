@@ -1,0 +1,22 @@
+companies:
+  - name: "Sample Company"
+    url: "file:///C:/Users/Bene_Admin/Meine%20Ablage/10_Claude/tests/fixtures/sample_company.html"
+    method: requests
+    list_selector: "li.job-listing"
+    title_selector: "h2.job-title"
+    link_selector: "a"
+    link_attr: "href"
+    base_url: "https://sample.example"
+    location_selector: ".job-location"
+    date_selector: ".job-date"
+  - name: "Broken Company"
+    url: "file:///C:/Users/Bene_Admin/Meine%20Ablage/10_Claude/tests/fixtures/sample_company.html"
+    method: requests
+    list_selector: "li.this-selector-does-not-exist"
+    title_selector: "h2.job-title"
+    link_selector: "a"
+
+settings:
+  track_disappeared: true
+  notify_on_error: true
+  notify_on_new_jobs: true

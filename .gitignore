@@ -1,0 +1,20 @@
+# Secrets - niemals committen
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Playwright
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Lokale Claude-Code-Einstellungen (session-/geräte-spezifisch)
+.claude/settings.local.json

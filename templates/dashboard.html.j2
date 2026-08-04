@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Job-Watcher Dashboard</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #0f1115;
+    --card: #1a1d24;
+    --border: #2a2e37;
+    --text: #e6e8eb;
+    --muted: #9aa1ac;
+    --accent: #4f8cff;
+    --new: #3ecf8e;
+    --interesting: #a78bfa;
+    --applied: #f5b942;
+    --rejected: #6b7280;
+    --gone: #e2555c;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f7f9; --card: #ffffff; --border: #e3e5e9;
+      --text: #1b1f27; --muted: #5c6270;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2rem 1rem 4rem;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .stats { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .stat {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.75rem 1.1rem; min-width: 120px;
+  }
+  .stat .n { font-size: 1.4rem; font-weight: 600; }
+  .stat .l { font-size: 0.78rem; color: var(--muted); }
+  .warning {
+    background: #3a2a12; border: 1px solid #6b4a1a; color: #f3c98b;
+    border-radius: 10px; padding: 0.9rem 1.1rem; margin-bottom: 1.5rem; font-size: 0.88rem;
+  }
+  section { margin-bottom: 2.5rem; }
+  h2 {
+    font-size: 1.1rem; border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem; margin-bottom: 1rem;
+  }
+
+  /* Sync-Leiste */
+  .sync-bar {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.7rem 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--muted);
+    display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  }
+  .sync-bar input[type="password"] {
+    flex: 1; min-width: 180px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.35rem 0.6rem; color: var(--text); font-size: 0.82rem;
+  }
+  .sync-bar button {
+    background: var(--accent); color: #fff; border: none; border-radius: 6px;
+    padding: 0.35rem 0.8rem; font-size: 0.8rem; cursor: pointer;
+  }
+  .sync-bar button.secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .sync-status { font-size: 0.78rem; }
+  .sync-status.ok { color: var(--new); }
+  .sync-status.err { color: var(--gone); }
+
+  /* Firmen-Sektionen (einklappbar) */
+  details.company {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 0.9rem; overflow: hidden;
+  }
+  details.company summary {
+    cursor: pointer; list-style: none; padding: 0.85rem 1.1rem;
+    font-size: 0.98rem; font-weight: 600; color: var(--accent);
+    display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
+  }
+  details.company summary::-webkit-details-marker { display: none; }
+  details.company summary::before {
+    content: "▸"; display: inline-block; margin-right: 0.5rem; color: var(--muted);
+    transition: transform 0.15s ease;
+  }
+  details.company[open] summary::before { transform: rotate(90deg); }
+  details.company summary .count { color: var(--muted); font-weight: 400; font-size: 0.8rem; }
+  .company-jobs { padding: 0 1rem 1rem; }
+
+  .hidden-toggle { display: none; margin-bottom: 0.6rem; }
+  .hidden-toggle button {
+    background: transparent; border: 1px dashed var(--border); color: var(--muted);
+    border-radius: 6px; padding: 0.4rem 0.7rem; font-size: 0.78rem; cursor: pointer; width: 100%;
+  }
+  .hidden-toggle button:hover { border-color: var(--muted); }
+
+  .job {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 0.5rem;
+  }
+  .job-main {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+  }
+  .job .info { min-width: 0; flex: 1; }
+  .job .info a, .job .info a:visited {
+    color: var(--text); text-decoration: none; font-weight: 500;
+  }
+  .job .info a:hover { color: var(--accent); }
+  .job .sub { color: var(--muted); font-size: 0.8rem; margin-top: 0.2rem; }
+  .badge {
+    font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 999px;
+    white-space: nowrap; font-weight: 600; flex-shrink: 0;
+  }
+  .badge.neu { background: color-mix(in srgb, var(--new) 20%, transparent); color: var(--new); }
+  .badge.interessant { background: color-mix(in srgb, var(--interesting) 22%, transparent); color: var(--interesting); }
+  .badge.beworben { background: color-mix(in srgb, var(--applied) 20%, transparent); color: var(--applied); }
+  .badge.kein_interesse { background: color-mix(in srgb, var(--rejected) 25%, transparent); color: var(--rejected); }
+  .job.gone { opacity: 0.75; }
+  .empty { color: var(--muted); font-size: 0.9rem; font-style: italic; }
+
+  .status-buttons { display: flex; gap: 0.35rem; margin-top: 0.6rem; flex-wrap: wrap; align-items: center; }
+  .status-buttons button {
+    background: var(--card); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 999px; padding: 0.25rem 0.65rem; font-size: 0.72rem; cursor: pointer;
+    transition: all 0.1s ease;
+  }
+  .status-buttons button:hover { border-color: var(--accent); color: var(--text); }
+  .status-buttons button.active[data-status-value="neu"] { background: var(--new); border-color: var(--new); color: #0b1f16; }
+  .status-buttons button.active[data-status-value="interessant"] { background: var(--interesting); border-color: var(--interesting); color: #1c1533; }
+  .status-buttons button.active[data-status-value="beworben"] { background: var(--applied); border-color: var(--applied); color: #2e2205; }
+  .status-buttons button.active[data-status-value="kein interesse"] { background: var(--rejected); border-color: var(--rejected); color: #fff; }
+  .save-indicator { font-size: 0.72rem; color: var(--muted); min-width: 1.2em; }
+  .save-indicator.ok { color: var(--new); }
+  .save-indicator.err { color: var(--gone); }
+
+  .howto {
+    font-size: 0.8rem; color: var(--muted); background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem;
+  }
+  .howto code {
+    background: var(--bg); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.78rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔍 Job-Watcher Dashboard</h1>
+  <div class="meta">Letzter Lauf: {{ last_run }}</div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">{{ total_open }}</div><div class="l">offene Stellen</div></div>
+    <div class="stat"><div class="n">{{ company_count }}</div><div class="l">Firmen überwacht</div></div>
+    <div class="stat"><div class="n">{{ new_since_last_run }}</div><div class="l">neu seit letztem Lauf</div></div>
+  </div>
+
+  {% if errors %}
+  <div class="warning">
+    ⚠️ <strong>{{ errors|length }} Firma/Firmen konnten in diesem Lauf nicht gescraped werden:</strong>
+    {{ errors.keys()|join(', ') }}
+  </div>
+  {% endif %}
+
+  <div class="sync-bar" id="sync-bar" data-repo="{{ sync_repo or '' }}" data-branch="{{ sync_branch }}">
+    {% if sync_repo %}
+      <span>🔄 Geräteübergreifende Synchronisation:</span>
+      <input type="password" id="sync-token-input" placeholder="GitHub-Token (Contents: read/write)" autocomplete="off">
+      <button id="sync-token-save">Speichern</button>
+      <button id="sync-token-clear" class="secondary" style="display:none">Token entfernen</button>
+      <span class="sync-status" id="sync-status"></span>
+    {% else %}
+      <span>Sync nicht aktiv (kein Repo bekannt - läuft dieser Build außerhalb von GitHub Actions?). Statusänderungen bleiben nur lokal im Browser gespeichert.</span>
+    {% endif %}
+  </div>
+
+  <section>
+    <h2>Offene Stellen</h2>
+    {% if companies_open %}
+      {% for company, jobs in companies_open.items() %}
+      <details class="company" open>
+        <summary>
+          <span>{{ company }}</span>
+          <span class="count" data-total="{{ jobs|length }}">({{ jobs|length }})</span>
+        </summary>
+        <div class="company-jobs">
+          <div class="hidden-toggle">
+            <button class="show-hidden-btn" data-expanded="false">🙈 <span class="hidden-count">0</span> ausgeblendet (kein Interesse) - anzeigen</button>
+          </div>
+          {% for job in jobs %}
+          <div class="job" data-job-id="{{ job.id }}" data-company="{{ job.company }}" data-status="{{ job.status or 'neu' }}">
+            <div class="job-main">
+              <div class="info">
+                <a href="{{ job.link }}" target="_blank" rel="noopener">{{ job.title }}</a>
+                <div class="sub">
+                  {% if job.category %}{{ job.category }} · {% endif %}
+                  {% if job.location %}{{ job.location }} · {% endif %}
+                  seit {{ job.first_seen }}
+                  {% if job.date_posted %} · {{ job.date_posted }}{% endif %}
+                </div>
+              </div>
+              <span class="badge {{ job.status_class }}">{{ job.status }}</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+      {% endfor %}
+    {% else %}
+      <p class="empty">Aktuell keine offenen Stellen erfasst.</p>
+    {% endif %}
+  </section>
+
+  <section>
+    <h2>Historie (Bewerbungen bei verschwundenen Stellen)</h2>
+    {% if companies_gone %}
+      {% for company, jobs in companies_gone.items() %}
+      <details class="company">
+        <summary>
+          <span>{{ company }}</span>
+          <span class="count">({{ jobs|length }})</span>
+        </summary>
+        <div class="company-jobs">
+          {% for job in jobs %}
+          <div class="job gone" data-job-id="{{ job.id }}" data-company="{{ job.company }}" data-status="{{ job.status or 'neu' }}">
+            <div class="job-main">
+              <div class="info">
+                <a href="{{ job.link }}" target="_blank" rel="noopener">{{ job.title }}</a>
+                <div class="sub">
+                  {{ job.first_seen }} → {{ job.disappeared_at }}
+                  {% if job.category %} · {{ job.category }}{% endif %}
+                  {% if job.location %} · {{ job.location }}{% endif %}
+                </div>
+              </div>
+              <span class="badge {{ job.status_class }}">{{ job.status }}</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+      {% endfor %}
+    {% else %}
+      <p class="empty">Keine Bewerbungen bei mittlerweile verschwundenen Stellen.</p>
+    {% endif %}
+  </section>
+
+  <div class="howto">
+    <strong>Status ändern:</strong> Klick auf einen der Buttons unter einem Job speichert sofort im
+    Browser (localStorage). Ist oben ein GitHub-Token hinterlegt, wird der Status zusätzlich direkt
+    in <code>data/state.json</code> im Repo geschrieben - so ist er auf allen Geräten sichtbar, die
+    dort ebenfalls einen Token hinterlegt haben. Als "Kein Interesse" markierte Jobs werden
+    ausgeblendet (über "anzeigen" pro Firma wieder einblendbar). Ohne Token: Status bleibt nur in
+    diesem Browser gespeichert - alternativ <code>data/state.json</code> direkt im Repo bearbeiten
+    oder <code>python scripts/set_status.py &lt;job_id&gt; &lt;status&gt;</code> lokal ausführen.
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "jobwatcher_status_overrides";
+  var TOKEN_KEY = "jobwatcher_github_token";
+  var STATUSES = ["neu", "interessant", "beworben", "kein interesse"];
+
+  var syncBar = document.getElementById("sync-bar");
+  var repo = syncBar ? syncBar.dataset.repo : "";
+  var branch = syncBar ? syncBar.dataset.branch : "main";
+  var syncEnabled = !!repo;
+
+  function loadOverrides() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function saveOverrides(o) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(o));
+  }
+  var overrides = loadOverrides();
+
+  function getToken() {
+    try { return localStorage.getItem(TOKEN_KEY) || ""; } catch (e) { return ""; }
+  }
+  function setToken(t) {
+    localStorage.setItem(TOKEN_KEY, t);
+  }
+  function clearToken() {
+    localStorage.removeItem(TOKEN_KEY);
+  }
+
+  function slug(status) {
+    return (status || "neu").trim().toLowerCase().replace(/ /g, "_");
+  }
+  function label(status) {
+    var s = status || "neu";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function utf8ToB64(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (_, p1) {
+      return String.fromCharCode("0x" + p1);
+    }));
+  }
+  function b64ToUtf8(str) {
+    // Die GitHub Contents API liefert Base64 mit Zeilenumbrüchen alle 60
+    // Zeichen - die muss atob() erst losgeworden sein.
+    var clean = str.replace(/\s/g, "");
+    return decodeURIComponent(atob(clean).split("").map(function (c) {
+      return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(""));
+  }
+
+  function applyStatus(jobEl, status) {
+    jobEl.dataset.effectiveStatus = status;
+    var badge = jobEl.querySelector(".badge");
+    if (badge) {
+      badge.className = "badge " + slug(status);
+      badge.textContent = label(status);
+    }
+    var buttons = jobEl.querySelectorAll(".status-buttons button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.toggle("active", buttons[i].dataset.statusValue === status);
+    }
+    var forceShow = jobEl.dataset.forceShow === "true";
+    jobEl.style.display = (status === "kein interesse" && !forceShow) ? "none" : "";
+  }
+
+  function updateCompanyCounts() {
+    var companies = document.querySelectorAll("details.company");
+    for (var i = 0; i < companies.length; i++) {
+      var companyEl = companies[i];
+      var jobs = companyEl.querySelectorAll(".job[data-job-id]");
+      var visible = 0, hidden = 0;
+      for (var j = 0; j < jobs.length; j++) {
+        if (jobs[j].style.display === "none") hidden++; else visible++;
+      }
+      var countEl = companyEl.querySelector(".count");
+      if (countEl) countEl.textContent = "(" + visible + (hidden ? ", " + hidden + " ausgeblendet" : "") + ")";
+      var toggleWrap = companyEl.querySelector(".hidden-toggle");
+      var hiddenCountEl = companyEl.querySelector(".hidden-count");
+      if (toggleWrap) {
+        toggleWrap.style.display = hidden > 0 ? "block" : "none";
+        if (hiddenCountEl) hiddenCountEl.textContent = hidden;
+      }
+    }
+  }
+
+  function setIndicator(jobEl, state) {
+    var ind = jobEl.querySelector(".save-indicator");
+    if (!ind) return;
+    ind.className = "save-indicator" + (state === "ok" ? " ok" : state === "err" ? " err" : "");
+    ind.textContent = state === "saving" ? "…" : state === "ok" ? "✓" : state === "err" ? "✗ Sync fehlgeschlagen" : "";
+    if (state === "ok") {
+      setTimeout(function () { if (ind.textContent === "✓") ind.textContent = ""; }, 2000);
+    }
+  }
+
+  function apiHeaders() {
+    return {
+      "Authorization": "Bearer " + getToken(),
+      "Accept": "application/vnd.github+json",
+    };
+  }
+
+  function syncStatusToGitHub(jobEl, company, jobId, status) {
+    if (!syncEnabled || !getToken()) return;
+    setIndicator(jobEl, "saving");
+    var url = "https://api.github.com/repos/" + repo + "/contents/data/state.json";
+    fetch(url + "?ref=" + encodeURIComponent(branch), { headers: apiHeaders() })
+      .then(function (r) {
+        if (!r.ok) throw new Error("GET " + r.status);
+        return r.json();
+      })
+      .then(function (fileData) {
+        var stateObj = JSON.parse(b64ToUtf8(fileData.content));
+        var jobs = stateObj.companies && stateObj.companies[company] && stateObj.companies[company].jobs;
+        if (!jobs || !jobs[jobId]) throw new Error("Job nicht in state.json gefunden");
+        jobs[jobId].status = status;
+        var newContent = utf8ToB64(JSON.stringify(stateObj, null, 2) + "\n");
+        return fetch(url, {
+          method: "PUT",
+          headers: apiHeaders(),
+          body: JSON.stringify({
+            message: "chore: update status via dashboard (" + company + " / " + jobId + ")",
+            content: newContent,
+            sha: fileData.sha,
+            branch: branch,
+          }),
+        });
+      })
+      .then(function (r) {
+        if (!r.ok) throw new Error("PUT " + r.status);
+        setIndicator(jobEl, "ok");
+      })
+      .catch(function (e) {
+        console.error("GitHub sync failed:", e);
+        setIndicator(jobEl, "err");
+      });
+  }
+
+  function wireJob(jobEl) {
+    var id = jobEl.dataset.jobId;
+    var company = jobEl.dataset.company;
+    var baseline = jobEl.dataset.status || "neu";
+    var status = overrides[id] || baseline;
+    applyStatus(jobEl, status);
+
+    var buttons = jobEl.querySelectorAll(".status-buttons button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener("click", function (ev) {
+        var newStatus = ev.currentTarget.dataset.statusValue;
+        overrides[id] = newStatus;
+        saveOverrides(overrides);
+        jobEl.dataset.forceShow = "false";
+        applyStatus(jobEl, newStatus);
+        updateCompanyCounts();
+        syncStatusToGitHub(jobEl, company, id, newStatus);
+      });
+    }
+  }
+
+  var allJobs = document.querySelectorAll(".job[data-job-id]");
+  for (var i = 0; i < allJobs.length; i++) wireJob(allJobs[i]);
+  updateCompanyCounts();
+
+  var showButtons = document.querySelectorAll(".show-hidden-btn");
+  for (var i = 0; i < showButtons.length; i++) {
+    showButtons[i].addEventListener("click", function (ev) {
+      var btn = ev.currentTarget;
+      var companyEl = btn.closest("details.company");
+      var expand = btn.dataset.expanded !== "true";
+      var jobs = companyEl.querySelectorAll(".job[data-job-id]");
+      for (var j = 0; j < jobs.length; j++) {
+        var jobEl = jobs[j];
+        if (jobEl.dataset.effectiveStatus === "kein interesse") {
+          jobEl.dataset.forceShow = expand ? "true" : "false";
+          jobEl.style.display = expand ? "" : "none";
+        }
+      }
+      btn.dataset.expanded = expand ? "true" : "false";
+      btn.innerHTML = expand
+        ? "🙈 ausgeblendete Jobs wieder verbergen"
+        : "🙈 <span class=\"hidden-count\">0</span> ausgeblendet (kein Interesse) - anzeigen";
+      updateCompanyCounts();
+    });
+  }
+
+  // Sync-Token-UI
+  var tokenInput = document.getElementById("sync-token-input");
+  var saveBtn = document.getElementById("sync-token-save");
+  var clearBtn = document.getElementById("sync-token-clear");
+  var statusEl = document.getElementById("sync-status");
+
+  function refreshTokenUI() {
+    var t = getToken();
+    if (tokenInput) tokenInput.value = t ? "" : "";
+    if (statusEl) statusEl.textContent = t ? "✓ Token hinterlegt" : "";
+    if (statusEl) statusEl.className = "sync-status" + (t ? " ok" : "");
+    if (clearBtn) clearBtn.style.display = t ? "inline-block" : "none";
+    if (tokenInput) tokenInput.placeholder = t ? "Token gesetzt - neuen Wert eingeben zum Ändern" : "GitHub-Token (Contents: read/write)";
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener("click", function () {
+      var v = tokenInput.value.trim();
+      if (v) { setToken(v); tokenInput.value = ""; refreshTokenUI(); }
+    });
+  }
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function () {
+      clearToken();
+      refreshTokenUI();
+    });
+  }
+  refreshTokenUI();
+})();
+</script>
+</body>
+</html>

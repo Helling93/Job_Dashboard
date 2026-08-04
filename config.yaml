@@ -1,0 +1,164 @@
+# Konfiguration der überwachten Firmen-Karriereseiten.
+#
+# Pro Firma werden CSS-Selektoren angegeben, mit denen die Job-Liste aus dem
+# HTML extrahiert wird. Diese Selektoren sind pro Firma unterschiedlich und
+# müssen gegen die echte Seite getestet werden (dafür gibt es tests/test_scraper.py
+# und tests/fixtures/sample_company.html als Vorlage).
+#
+# Felder:
+#   name              Anzeigename der Firma
+#   url               URL der Karriereseite (oder eines von der Seite selbst
+#                      genutzten Daten-Endpoints, siehe BMW-Beispiel unten)
+#   method             "requests" (Standard, schnell, kein JS-Rendering)
+#                      oder "playwright" (falls die Seite Inhalte per JS
+#                      nachlädt / Bot-Schutz requests-Anfragen blockiert)
+#   list_selector      CSS-Selektor, der JEDES einzelne Job-Element matcht
+#   title_selector     CSS-Selektor für den Jobtitel, relativ zum Job-Element
+#   title_attr         optional: Attribut statt Text für den Titel auslesen
+#   link_selector      CSS-Selektor für den <a>-Tag mit dem Link, relativ zum
+#                      Job-Element. Spezialwert "self": das Job-Element ist
+#                      selbst der <a>-Tag (kein verschachtelter Link vorhanden)
+#   link_attr          Attribut, das den Link enthält (Standard: href)
+#   base_url           Wird vor relative Links gehängt
+#   location_selector  optional, CSS-Selektor für den Standort
+#   location_attr      optional: Attribut statt Text für den Standort
+#   date_selector       optional, CSS-Selektor für das Veröffentlichungsdatum
+#   date_attr           optional: Attribut statt Text für das Datum
+#   category_selector   optional, CSS-Selektor für den Tätigkeitsbereich
+#   category_attr       optional: Attribut statt Text für die Kategorie
+#   filters             optional, zusätzlicher Filter NACH dem Scrapen:
+#     location_contains:         nur Jobs, deren Standort einen dieser
+#                                 Begriffe enthält (case-insensitive)
+#     title_contains:            nur Jobs, deren Titel einen dieser Begriffe
+#                                 enthält
+#     exclude_title_contains:    Jobs mit einem dieser Begriffe im Titel
+#                                 aussortieren
+#     category_contains:         nur Jobs, deren Kategorie einen dieser
+#                                 Begriffe enthält
+#     exclude_category_contains: Jobs mit einem dieser Begriffe in der
+#                                 Kategorie aussortieren
+#   paginate            optional, true = url enthält "{page}" als Platzhalter
+#                        (1-basiert), scraper.py holt Seiten nacheinander bis
+#                        eine Seite keine Treffer mehr liefert
+#   max_pages            optional, Sicherheitslimit für paginate (Standard: 15)
+#   load_more_selector    optional, CSS-Selektor eines "Mehr laden"-Buttons
+#                         (method: playwright) - wird automatisch geklickt,
+#                         bis er verschwindet/nicht mehr sichtbar ist
+#   max_load_more_clicks   optional, Sicherheitslimit für load_more_selector
+#                          (Standard: 20)
+
+companies:
+  # BMW Group: Die Karriereseite ist eine SPA, aber die Filter (Standort,
+  # Tätigkeitsbereich) werden serverseitig über einen HTML-Fragment-Endpoint
+  # aufgelöst, den die Seite selbst per JS aufruft. Plain requests wird von
+  # Akamai-Botschutz geblockt (Timeout) - daher method: playwright, das lädt
+  # den Endpoint über einen echten Browser-Kontext, was funktioniert.
+  # filterSearch-Bausteine (über die Filter-UI der Seite ermittelt):
+  #   location_DE/Munich          -> Standort München
+  #   jobType_STANDARD            -> "Berufserfahrene"
+  #   jobType_SUMMER_JOB          -> "Nachwuchsprogramme" (interner Code,
+  #                                  trotz Namens keine Sommerjobs)
+  #   jobField_ResearchDevelopment -> "Forschung / Entwicklung" (deckt u.a.
+  #                                  Autonomes Fahren, Elektromobilität,
+  #                                  Fahrwerk/Konstruktion ab)
+  # blockCount=300 holt alle Treffer in einem Request (aktuell ~15).
+  - name: "BMW Group"
+    url: "https://www.bmwgroup.jobs/de/de/jobs/_jcr_content/main/layoutcontainer_copy_565949652/jobfinder30_copy.jobfinder_table.content.html?filterSearch=location_DE%2FMunich%2CjobType_STANDARD%2CjobType_SUMMER_JOB%2CjobField_ResearchDevelopment&rowIndex=0&blockCount=300"
+    method: playwright
+    base_url: "https://www.bmwgroup.jobs"
+    list_selector: "a.grp-jobfinder__link-jobdescription"
+    title_selector: ".grp-jobfinder-cell-refno"
+    title_attr: "data-job-title"
+    link_selector: "self"
+    link_attr: "href"
+    location_selector: ".grp-jobfinder-cell-refno"
+    location_attr: "data-job-location"
+    date_selector: ".grp-jobfinder-cell-refno"
+    date_attr: "data-posting-date"
+    category_selector: ".grp-jobfinder-cell-refno"
+    category_attr: "data-job-field"
+
+  # Helsing (Verteidigungs-KI/autonome Systeme): Jobs-Seite ist serverseitig
+  # gerendert (Next.js), inhaltlich reicht also method: requests - ABER der
+  # Bot-Schutz (Cloudflare o.ä.) beantwortet plain requests nach wenigen
+  # Anfragen kurzfristig mit 429, während ein echter Browser-Kontext
+  # zuverlässig durchkommt. Daher method: playwright, obwohl kein JS-Rendering
+  # nötig wäre - robuster für den täglichen automatisierten Lauf.
+  # Kein eigener Standort-Filter-Endpoint vorhanden, daher Filterung über
+  # `filters` unten. category_contains grenzt auf Engineering-nahe Bereiche
+  # ein (schließt Finance/Legal/People/Marketing/Operations etc. aus).
+  # Anpassen, falls zu eng/weit - verfügbare Kategorien siehe README-Hinweis.
+  - name: "Helsing"
+    url: "https://helsing.ai/de/jobs"
+    method: playwright
+    base_url: "https://helsing.ai"
+    list_selector: 'a:has(div[data-label="Position"])'
+    title_selector: 'div[data-label="Position"] span'
+    link_selector: "self"
+    link_attr: "href"
+    location_selector: 'div[data-label="Location"] span'
+    category_selector: 'div[data-label="Type"] span'
+    filters:
+      location_contains: ["Munich"]
+      exclude_title_contains: ["Closed Opportunity"]
+      category_contains:
+        - "Hardware Engineering"
+        - "Deployed Engineering"
+        - "Systems Architecture"
+        - "Physical Products"
+        - "Product Design"
+
+  # Rheinmetall: Nuxt-SPA, Filter/Pagination laufen komplett client-seitig
+  # über einen JSON-Query-Param ("filter={"countries":[...]}" bzw.
+  # "{"cities":[...]}", über die Filter-UI der Seite ermittelt) - daher
+  # method: playwright. "{page}" im Query-String wird von scraper.py pro
+  # Seite ersetzt (paginate: true), da pro Seite nur 10 Treffer kommen.
+  - name: "Rheinmetall (Schweiz)"
+    url: "https://www.rheinmetall.com/de/karriere/aktuelle-stellenangebote?filter=%7B%22countries%22%3A%5B%22Switzerland%22%5D%7D&page={page}"
+    method: playwright
+    base_url: "https://www.rheinmetall.com"
+    paginate: true
+    max_pages: 15
+    list_selector: 'div.flex.gap-0\.5.group'
+    title_selector: 'a.flex-grow.pr-8 div.text-sm.font-bold.md\:text-xl'
+    link_selector: "a.flex-grow.pr-8"
+    link_attr: "href"
+    location_selector: 'div.flex.justify-between div.flex.flex-wrap.mr-6'
+
+  - name: "Rheinmetall (München)"
+    url: "https://www.rheinmetall.com/de/karriere/aktuelle-stellenangebote?filter=%7B%22cities%22%3A%5B%22M%C3%BCnchen%22%5D%7D&page={page}"
+    method: playwright
+    base_url: "https://www.rheinmetall.com"
+    paginate: true
+    max_pages: 15
+    list_selector: 'div.flex.gap-0\.5.group'
+    title_selector: 'a.flex-grow.pr-8 div.text-sm.font-bold.md\:text-xl'
+    link_selector: "a.flex-grow.pr-8"
+    link_attr: "href"
+    location_selector: 'div.flex.justify-between div.flex.flex-wrap.mr-6'
+
+  # Audi F1 Team (Hinwil): Next.js, Jobdaten sind zwar serverseitig im
+  # Response enthalten, aber erst nach JS-Hydration im DOM als <li> gerendert
+  # (network-idle hängt sich wegen Hintergrund-Requests auf -> deshalb
+  # domcontentloaded + Warten auf list_selector in scraper.py). Zusätzlich
+  # zeigt die Seite initial nur 10 von 17 Treffern - load_more_selector lässt
+  # scraper.py automatisch so oft klicken, bis alle geladen sind.
+  - name: "Audi F1 Team (Hinwil)"
+    url: "https://www.audif1.com/de/careers?office=Hinwil+Switzerland"
+    method: playwright
+    base_url: "https://www.audif1.com"
+    load_more_selector: 'button:has-text("Load more")'
+    list_selector: "li.col-span-1"
+    title_selector: "p.text-copy-1"
+    location_selector: "p.text-copy-3"
+    link_selector: "a.link-base"
+    link_attr: "href"
+
+settings:
+  # Auch verschwundene Jobs im Dashboard/History anzeigen
+  track_disappeared: true
+  # Bei Scraper-Fehlern (Seite nicht erreichbar / Selektor findet nichts) eine
+  # Telegram-Warnung senden
+  notify_on_error: true
+  # Bei neuen Jobs eine Telegram-Nachricht senden
+  notify_on_new_jobs: true
