@@ -97,6 +97,22 @@ def fetch_html(company: dict) -> str:
                     except Exception:
                         break  # kein Button (mehr) da - alles geladen
 
+            if company.get("flatten_shadow_dom"):
+                # Manche Seiten (z.B. KNDS, gebaut mit Stencil.js Web
+                # Components) rendern Jobs in Shadow DOM - page.content()
+                # sieht davon nichts. Shadow-Root-Inhalte werden hier vor dem
+                # Serialisieren in normales Light-DOM "hineinkopiert".
+                page.evaluate("""
+                    (function flatten(root) {
+                        root.querySelectorAll('*').forEach(function(el) {
+                            if (el.shadowRoot) {
+                                flatten(el.shadowRoot);
+                                el.innerHTML = el.shadowRoot.innerHTML + el.innerHTML;
+                            }
+                        });
+                    })(document);
+                """)
+
             html = page.content()
             browser.close()
             return html

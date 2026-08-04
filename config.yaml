@@ -46,6 +46,11 @@
 #                         bis er verschwindet/nicht mehr sichtbar ist
 #   max_load_more_clicks   optional, Sicherheitslimit für load_more_selector
 #                          (Standard: 20)
+#   flatten_shadow_dom     optional, true (method: playwright) - manche
+#                          Seiten (Web Components/Stencil.js, z.B. KNDS)
+#                          rendern Inhalte in Shadow DOM, das normales
+#                          page.content() nicht sieht. Kopiert Shadow-Root-
+#                          Inhalte vor dem Serialisieren ins Light-DOM.
 
 companies:
   # BMW Group: Die Karriereseite ist eine SPA, aber die Filter (Standort,
@@ -157,6 +162,57 @@ companies:
     location_selector: "p.text-copy-3"
     link_selector: "a.link-base"
     link_attr: "href"
+
+  # Quantum Systems (Drohnen/autonome Systeme): serverseitig gerendert
+  # (requests reicht inhaltlich), zeigt aber initial nur 10 von z.B. 21
+  # Treffern - load_more_selector klickt "Show more jobs" automatisch nach.
+  # Filter (Standort, Department) direkt über die URL-Query-Parameter der
+  # Filter-UI (jobs-f190661c[...]) eingebaut.
+  - name: "Quantum Systems"
+    url: "https://career.quantum-systems.com/?jobs-f190661c%5Btab%5D=DE&jobs-f190661c%5Bcity%5D%5B%5D=Gilching&jobs-f190661c%5Bcity%5D%5B%5D=Munich&jobs-f190661c%5Bcity%5D%5B%5D=M%C3%BCnchen&jobs-f190661c%5Bdepartment%5D%5B%5D=Hardware"
+    method: playwright
+    base_url: "https://career.quantum-systems.com"
+    load_more_selector: 'button:has-text("Show more jobs")'
+    list_selector: "table tbody tr"
+    title_selector: "td a"
+    link_selector: "td a"
+    link_attr: "href"
+    location_selector: 'li[data-testid="styled-location-list-item"]'
+
+  # KNDS (Rüstung/Landsysteme, u.a. Boxer/Leopard): gebaut mit Stencil.js Web
+  # Components - Jobs stecken im Shadow DOM, normales page.content() sieht
+  # das nicht -> flatten_shadow_dom kopiert Shadow-Root-Inhalte vor dem
+  # Serialisieren ins Light-DOM. pageSize=100 holt alle Treffer auf einmal
+  # (keine Pagination nötig). Filter (Standort/Kategorie/Anstellungsart)
+  # direkt über die URL-Query-Parameter der Filter-UI.
+  - name: "KNDS"
+    url: "https://jobs.knds.de/content/search/?locale=de_DE&currentPage=1&pageSize=100&addresses%2Fname=M%C3%BCnchen&category=Entwicklung&category=Projektmanagement&employmentType=Festanstellung"
+    method: playwright
+    base_url: "https://jobs.knds.de"
+    flatten_shadow_dom: true
+    list_selector: "a.search-item-wrapper"
+    title_selector: ".title"
+    link_selector: "self"
+    link_attr: "href"
+    location_selector: ".locations"
+
+  # MBDA (Flugkörper/Raketensysteme, Schrobenhausen): serverseitig gerendert
+  # per Playwright (plain requests liefert nur die leere Shell). Paginiert
+  # (10 pro Seite) - "{page}" wird von scraper.py durchgezählt. Filter
+  # (Fachgebiet/Arbeitsbereich/Standort/Zielgruppe) direkt über die
+  # URL-Query-Parameter der Filter-UI.
+  - name: "MBDA"
+    url: "https://www.mbda-careers.de/ema/?_expertiseAreas[]=3&_expertiseAreas[]=4&_expertiseAreas[]=5&_expertiseAreas[]=7&_fieldOfWork[]=1&_fieldOfWork[]=5&_locations[]=Schrobenhausen&_order=ASC&_orderBy=date&_page={page}&_targetGroups[]=7&_targetGroups[]=6"
+    method: playwright
+    base_url: "https://www.mbda-careers.de"
+    paginate: true
+    max_pages: 15
+    list_selector: "div.single-result"
+    title_selector: "div.result-primary-text h3"
+    link_selector: "div.result-primary-text a"
+    link_attr: "href"
+    location_selector: "div.col-location .result-text"
+    category_selector: "div.result-secondary-text"
 
 settings:
   # Auch verschwundene Jobs im Dashboard/History anzeigen
