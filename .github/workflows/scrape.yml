@@ -2,11 +2,13 @@ name: Job Scraper
 
 on:
   schedule:
-    # 08:00 in Zürich/München. GitHub Actions cron läuft in UTC, daher
-    # entspricht das je nach Sommer-/Winterzeit 06:00 oder 07:00 UTC.
+    # 08:12 in Zürich/München. GitHub Actions cron läuft in UTC, daher
+    # entspricht das je nach Sommer-/Winterzeit 06:12 oder 07:12 UTC.
     # Aktuell auf Sommerzeit (UTC+2) eingestellt -> ggf. 2x jährlich anpassen,
-    # siehe README "Cron & Zeitzone".
-    - cron: "0 6 * * *"
+    # siehe README "Cron & Zeitzone". Bewusst NICHT auf die volle Stunde
+    # gelegt - GitHub warnt, dass Scheduled Workflows genau "on the hour"
+    # (v.a. bei hoher Last) verzögert oder übersprungen werden können.
+    - cron: "12 6 * * *"
   workflow_dispatch: {}
 
 permissions:

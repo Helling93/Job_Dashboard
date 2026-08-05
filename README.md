@@ -226,11 +226,19 @@ möchtest - das ist bewusst nicht vorimplementiert, da es von deinem Setup
 
 ## Cron & Zeitzone
 
-GitHub-Actions-Cron läuft in UTC. `0 6 * * *` entspricht 8:00 Uhr in
+GitHub-Actions-Cron läuft in UTC. `12 6 * * *` entspricht ca. 8:12 Uhr in
 Zürich/München **während der Sommerzeit (UTC+2)**. Im Winter (UTC+1) läuft
-der Scan dann um 7:00 Uhr. Falls exakt 8:00 Uhr ganzjährig wichtig ist,
-zwei Cron-Einträge nutzen (`0 6 * 3-10 *` und `0 7 * 11,12,1,2 *`) oder die
-kleine Abweichung zweimal im Jahr in Kauf nehmen.
+der Scan dann um 7:12 Uhr. Falls exakt zur vollen Stunde wichtig ist, davon
+abraten: GitHub verzögert oder überspringt Scheduled Workflows bevorzugt
+genau "on the hour" (höchste Serverlast) - deshalb bewusst 12 Minuten
+versetzt. Falls exakt 8:00 Uhr ganzjährig wichtig ist, zwei Cron-Einträge
+nutzen (`12 6 * 3-10 *` und `12 7 * 11,12,1,2 *`) oder die kleine Abweichung
+zweimal im Jahr in Kauf nehmen.
+
+Falls ein geplanter Lauf trotzdem mal komplett ausbleibt: Das ist ein
+bekanntes, gelegentliches GitHub-Verhalten bei Scheduled Workflows (keine
+Garantie auf pünktliches/zuverlässiges Feuern), kein Bug in diesem Projekt.
+Bei Bedarf einfach manuell über den Actions-Tab → "Run workflow" nachholen.
 
 ## Fehlerbehandlung
 
