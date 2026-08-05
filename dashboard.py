@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from datetime import datetime
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -14,6 +15,18 @@ _YYYYMMDD_RE = re.compile(r"^(\d{4})(\d{2})(\d{2})$")
 
 def _status_class(status: str) -> str:
     return (status or "neu").strip().lower().replace(" ", "_")
+
+
+def _format_last_run(value: str | None) -> str:
+    """ISO-Zeitstempel (z.B. 2026-08-05T06:46:25.554984+00:00) lesbar
+    formatieren statt roh mit 'T' und Offset ohne Leerzeichen anzuzeigen."""
+    if not value:
+        return "noch nie"
+    try:
+        dt = datetime.fromisoformat(value)
+    except ValueError:
+        return value
+    return dt.strftime("%d.%m.%Y %H:%M:%S UTC")
 
 
 def _format_date_posted(value: str | None) -> str | None:
@@ -69,7 +82,7 @@ def build_dashboard_context(
             companies_gone[company_name] = _sorted_jobs(gone_jobs, "disappeared_at")
 
     return {
-        "last_run": state.get("last_run") or "noch nie",
+        "last_run": _format_last_run(state.get("last_run")),
         "total_open": total_open,
         "company_count": len(state.get("companies", {})),
         "new_since_last_run": new_jobs_count,

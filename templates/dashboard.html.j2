@@ -87,7 +87,12 @@
     transition: transform 0.15s ease;
   }
   details.company[open] summary::before { transform: rotate(90deg); }
-  details.company summary .count { color: var(--muted); font-weight: 400; font-size: 0.8rem; }
+  details.company summary .company-name {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1 1 auto;
+  }
+  details.company summary .count {
+    color: var(--muted); font-weight: 400; font-size: 0.8rem; flex-shrink: 0; white-space: nowrap;
+  }
   .company-jobs { padding: 0 1rem 1rem; }
 
   .hidden-toggle { display: none; margin-bottom: 0.6rem; }
@@ -179,9 +184,9 @@
     <h2>Offene Stellen</h2>
     {% if companies_open %}
       {% for company, jobs in companies_open.items() %}
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>{{ company }}</span>
+          <span class="company-name">{{ company }}</span>
           <span class="count" data-total="{{ jobs|length }}">({{ jobs|length }})</span>
         </summary>
         <div class="company-jobs">
@@ -225,7 +230,7 @@
       {% for company, jobs in companies_gone.items() %}
       <details class="company">
         <summary>
-          <span>{{ company }}</span>
+          <span class="company-name">{{ company }}</span>
           <span class="count">({{ jobs|length }})</span>
         </summary>
         <div class="company-jobs">

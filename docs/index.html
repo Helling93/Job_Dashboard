@@ -87,7 +87,12 @@
     transition: transform 0.15s ease;
   }
   details.company[open] summary::before { transform: rotate(90deg); }
-  details.company summary .count { color: var(--muted); font-weight: 400; font-size: 0.8rem; }
+  details.company summary .company-name {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1 1 auto;
+  }
+  details.company summary .count {
+    color: var(--muted); font-weight: 400; font-size: 0.8rem; flex-shrink: 0; white-space: nowrap;
+  }
   .company-jobs { padding: 0 1rem 1rem; }
 
   .hidden-toggle { display: none; margin-bottom: 0.6rem; }
@@ -148,10 +153,10 @@
 <body>
 <div class="wrap">
   <h1>🔍 Job-Watcher Dashboard</h1>
-  <div class="meta">Letzter Lauf: 2026-08-04T21:56:56.114600+00:00</div>
+  <div class="meta">Letzter Lauf: 05.08.2026 06:46:25 UTC</div>
 
   <div class="stats">
-    <div class="stat"><div class="n">270</div><div class="l">offene Stellen</div></div>
+    <div class="stat"><div class="n">245</div><div class="l">offene Stellen</div></div>
     <div class="stat"><div class="n">8</div><div class="l">Firmen überwacht</div></div>
     <div class="stat"><div class="n">0</div><div class="l">neu seit letztem Lauf</div></div>
   </div>
@@ -168,9 +173,9 @@
     <h2>Offene Stellen</h2>
     
       
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>Audi F1 Team (Hinwil)</span>
+          <span class="company-name">Audi F1 Team (Hinwil)</span>
           <span class="count" data-total="17">(17)</span>
         </summary>
         <div class="company-jobs">
@@ -332,7 +337,7 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="65e243942167f9a1" data-company="Audi F1 Team (Hinwil)" data-status="neu">
+          <div class="job" data-job-id="65e243942167f9a1" data-company="Audi F1 Team (Hinwil)" data-status="kein interesse">
             <div class="job-main">
               <div class="info">
                 <a href="https://www.audif1.com/career/details/2647645" target="_blank" rel="noopener">Senior Aerodynamicist</a>
@@ -343,7 +348,7 @@
                   
                 </div>
               </div>
-              <span class="badge neu">neu</span>
+              <span class="badge kein_interesse">kein interesse</span>
             </div>
             <div class="status-buttons">
               <button data-status-value="neu">Neu</button>
@@ -555,9 +560,9 @@
         </div>
       </details>
       
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>BMW Group</span>
+          <span class="company-name">BMW Group</span>
           <span class="count" data-total="7">(7)</span>
         </summary>
         <div class="company-jobs">
@@ -722,9 +727,9 @@
         </div>
       </details>
       
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>Helsing</span>
+          <span class="company-name">Helsing</span>
           <span class="count" data-total="39">(39)</span>
         </summary>
         <div class="company-jobs">
@@ -1593,416 +1598,20 @@
         </div>
       </details>
       
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>KNDS</span>
-          <span class="count" data-total="30">(30)</span>
+          <span class="company-name">KNDS</span>
+          <span class="count" data-total="24">(24)</span>
         </summary>
         <div class="company-jobs">
           <div class="hidden-toggle">
             <button class="show-hidden-btn" data-expanded="false">🙈 <span class="hidden-count">0</span> ausgeblendet (kein Interesse) - anzeigen</button>
           </div>
           
-          <div class="job" data-job-id="8b5cc94d7bfd9113" data-company="KNDS" data-status="neu">
+          <div class="job" data-job-id="0090f417c60ba323" data-company="KNDS" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3966/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (m/w/d) Studien</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="c1fcbb1e64342671" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3851/?locale=de_DE" target="_blank" rel="noopener">Sachbearbeiter (m/w/d) Business Intelligence & Datenqualität</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="8fff84d3c70d7454" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/4027/?locale=de_DE" target="_blank" rel="noopener">Group ICS Officer</a>
-                <div class="sub">
-                  
-                  München | Amsterdam · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="2e4c4eef195a7fdc" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/4006/?locale=de_DE" target="_blank" rel="noopener">Auftragskoordinator (m/w/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="1c7528d5e163d351" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3322/?locale=de_DE" target="_blank" rel="noopener">Softwaretester (m/w/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="127c8d102136d0c4" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/4016/?locale=de_DE" target="_blank" rel="noopener">Interner Revisor (m/w/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="84effa6aab0cdc49" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3490/?locale=de_DE" target="_blank" rel="noopener">ILS-Manager (m/w/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="c2428d280989f125" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3968/?locale=de_DE" target="_blank" rel="noopener">Abteilungsleiter (m/w/d) Projekte</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="364606c16a2287cb" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/2511/?locale=de_DE" target="_blank" rel="noopener">Technischer Projektleiter (m/w/d) After Sales</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="f55bd824dddbd4f7" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3980/?locale=de_DE" target="_blank" rel="noopener">Projektsachbearbeiter (m/w/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="644f8f802867cce9" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3982/?locale=de_DE" target="_blank" rel="noopener">Projektkaufmann (w/m/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="1f0b68c8e31f5b86" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/4013/?locale=de_DE" target="_blank" rel="noopener">Abteilungsleiter (m/w/d) Projektmanagement - BOXER Programm</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="e351e09d1f89f85c" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/4008/?locale=de_DE" target="_blank" rel="noopener">Interner Revisor (m/w/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="2a7cdccd365eff87" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3997/?locale=de_DE" target="_blank" rel="noopener">ILS Manager (m/w/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="87495bc81c964a9c" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3964/?locale=de_DE" target="_blank" rel="noopener">Projektingenieur (m/w/d) mit Schwerpunkt PMO</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="a255539f2a40eb55" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3609/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (w/m/d) Operational Excellence</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="e0d223941b9a2fcb" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3969/?locale=de_DE" target="_blank" rel="noopener">Referent (m/w/d) Projektmanagement Transformation</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="1735ed57a822506a" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3949/?locale=de_DE" target="_blank" rel="noopener">Projektcontroller (m/w/d)</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="a3ee7f31123cf63a" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3958/?locale=de_DE" target="_blank" rel="noopener">Technischer Redakteur (m/w/d) Ersatzteildokumentation</a>
+                <a href="https://jobs.knds.de/job-invite/3844/?locale=de_DE" target="_blank" rel="noopener">Projektkaufmann  (m/w/d) Defence</a>
                 <div class="sub">
                   
                   München · 
@@ -2043,10 +1652,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="2c85b7683891298e" data-company="KNDS" data-status="neu">
+          <div class="job" data-job-id="127c8d102136d0c4" data-company="KNDS" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3945/?locale=de_DE" target="_blank" rel="noopener">Projektingenieur (m/w/d) mit Schwerpunkt Projektcontrolling</a>
+                <a href="https://jobs.knds.de/job-invite/4016/?locale=de_DE" target="_blank" rel="noopener">Interner Revisor (m/w/d)</a>
                 <div class="sub">
                   
                   München · 
@@ -2065,51 +1674,7 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="f567e4cae5282ae2" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3947/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (m/w/d) militärischer Landsysteme</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="ad551d3c0095b496" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3597/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (m/w/d) System Safety</a>
-                <div class="sub">
-                  
-                  München · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="130425b7bd3e58d0" data-company="KNDS" data-status="neu">
+          <div class="job" data-job-id="130425b7bd3e58d0" data-company="KNDS" data-status="kein interesse">
             <div class="job-main">
               <div class="info">
                 <a href="https://jobs.knds.de/job-invite/3555/?locale=de_DE" target="_blank" rel="noopener">Angebotsprojektleiter im EU- und internationalen Umfeld (m/w/d)</a>
@@ -2120,7 +1685,7 @@
                   
                 </div>
               </div>
-              <span class="badge neu">neu</span>
+              <span class="badge kein_interesse">kein interesse</span>
             </div>
             <div class="status-buttons">
               <button data-status-value="neu">Neu</button>
@@ -2131,32 +1696,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="e1f13e8023e804ad" data-company="KNDS" data-status="neu">
+          <div class="job" data-job-id="1735ed57a822506a" data-company="KNDS" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://jobs.knds.de/job-invite/2680/?locale=de_DE" target="_blank" rel="noopener">Manager (m/w/d) Industrial Participation</a>
-                <div class="sub">
-                  
-                  München | Kassel · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="b973a21a6e298df4" data-company="KNDS" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3278/?locale=de_DE" target="_blank" rel="noopener">Projektingenieur (m/w/d) Boxer</a>
+                <a href="https://jobs.knds.de/job-invite/3949/?locale=de_DE" target="_blank" rel="noopener">Projektcontroller (m/w/d)</a>
                 <div class="sub">
                   
                   München · 
@@ -2175,10 +1718,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="814519a7dfea41f3" data-company="KNDS" data-status="neu">
+          <div class="job" data-job-id="1f0b68c8e31f5b86" data-company="KNDS" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3873/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (m/w/d) Vehicle Expansion Project Schwerpunkt Fahrzeugmontage</a>
+                <a href="https://jobs.knds.de/job-invite/4013/?locale=de_DE" target="_blank" rel="noopener">Abteilungsleiter (m/w/d) Projektmanagement - BOXER Programm</a>
                 <div class="sub">
                   
                   München · 
@@ -2197,10 +1740,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="0090f417c60ba323" data-company="KNDS" data-status="neu">
+          <div class="job" data-job-id="2e4c4eef195a7fdc" data-company="KNDS" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3844/?locale=de_DE" target="_blank" rel="noopener">Projektkaufmann  (m/w/d) Defence</a>
+                <a href="https://jobs.knds.de/job-invite/4006/?locale=de_DE" target="_blank" rel="noopener">Auftragskoordinator (m/w/d)</a>
                 <div class="sub">
                   
                   München · 
@@ -2219,10 +1762,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="6b8aed3fbabc9843" data-company="KNDS" data-status="neu">
+          <div class="job" data-job-id="364606c16a2287cb" data-company="KNDS" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://jobs.knds.de/job-invite/3600/?locale=de_DE" target="_blank" rel="noopener">Versuchsmonteur (m/w/d)</a>
+                <a href="https://jobs.knds.de/job-invite/2511/?locale=de_DE" target="_blank" rel="noopener">Technischer Projektleiter (m/w/d) After Sales</a>
                 <div class="sub">
                   
                   München · 
@@ -2263,12 +1806,342 @@
             </div>
           </div>
           
+          <div class="job" data-job-id="644f8f802867cce9" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3982/?locale=de_DE" target="_blank" rel="noopener">Projektkaufmann (w/m/d)</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="6b8aed3fbabc9843" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3600/?locale=de_DE" target="_blank" rel="noopener">Versuchsmonteur (m/w/d)</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="814519a7dfea41f3" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3873/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (m/w/d) Vehicle Expansion Project Schwerpunkt Fahrzeugmontage</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="84effa6aab0cdc49" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3490/?locale=de_DE" target="_blank" rel="noopener">ILS-Manager (m/w/d)</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="87495bc81c964a9c" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3964/?locale=de_DE" target="_blank" rel="noopener">Projektingenieur (m/w/d) mit Schwerpunkt PMO</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="8b5cc94d7bfd9113" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3966/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (m/w/d) Studien</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="8fff84d3c70d7454" data-company="KNDS" data-status="kein interesse">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/4027/?locale=de_DE" target="_blank" rel="noopener">Group ICS Officer</a>
+                <div class="sub">
+                  
+                  München | Amsterdam · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge kein_interesse">kein interesse</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="a3ee7f31123cf63a" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3958/?locale=de_DE" target="_blank" rel="noopener">Technischer Redakteur (m/w/d) Ersatzteildokumentation</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="ad551d3c0095b496" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3597/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (m/w/d) System Safety</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="b973a21a6e298df4" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3278/?locale=de_DE" target="_blank" rel="noopener">Projektingenieur (m/w/d) Boxer</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="c2428d280989f125" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3968/?locale=de_DE" target="_blank" rel="noopener">Abteilungsleiter (m/w/d) Projekte</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="e1f13e8023e804ad" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/2680/?locale=de_DE" target="_blank" rel="noopener">Manager (m/w/d) Industrial Participation</a>
+                <div class="sub">
+                  
+                  München | Kassel · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="e351e09d1f89f85c" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/4008/?locale=de_DE" target="_blank" rel="noopener">Interner Revisor (m/w/d)</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="f55bd824dddbd4f7" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3980/?locale=de_DE" target="_blank" rel="noopener">Projektsachbearbeiter (m/w/d)</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="f567e4cae5282ae2" data-company="KNDS" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://jobs.knds.de/job-invite/3947/?locale=de_DE" target="_blank" rel="noopener">Projektleiter (m/w/d) militärischer Landsysteme</a>
+                <div class="sub">
+                  
+                  München · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
         </div>
       </details>
       
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>MBDA</span>
+          <span class="company-name">MBDA</span>
           <span class="count" data-total="48">(48)</span>
         </summary>
         <div class="company-jobs">
@@ -2276,12 +2149,12 @@
             <button class="show-hidden-btn" data-expanded="false">🙈 <span class="hidden-count">0</span> ausgeblendet (kein Interesse) - anzeigen</button>
           </div>
           
-          <div class="job" data-job-id="636db1c14fcf4acd" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="10a54fce1e99e9ee" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/R38339" target="_blank" rel="noopener">Development Engineer (w/m/d))</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE1_26_098" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
                 <div class="sub">
-                  Flugalgorithmik · 
+                  Software für Embedded Vision · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -2298,210 +2171,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="e71c2500eabf6485" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="184dfec867aa4ede" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/R38187" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGV1_26_110" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
                 <div class="sub">
-                  Missionsplanung und Steuerung · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="acf8ae6443a7645a" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/R38038" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Navigation und Datenfusion für Hyperschall · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="ca97834a06cc0af4" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/R37597" target="_blank" rel="noopener">Manager (w/m/d)</a>
-                <div class="sub">
-                  Technische Konzepterstellung · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="dcbf7c97a50fc047" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGD3_26_235" target="_blank" rel="noopener">Lead Systems Engineer (m/w/d)</a>
-                <div class="sub">
-                  Laser-Waffensysteme · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="78aa80974614cfd6" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGD3_26_236" target="_blank" rel="noopener">Senior Systems Engineer (m/w/d)</a>
-                <div class="sub">
-                  Systemdesign für Laserwaffensysteme · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="ccbc0aa704f88e38" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_TDWEE_26_208" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Embedded Software · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="968a3bb39f3542ce" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE_26_239" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Elektronikentwicklung · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="b48806711e099910" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/R37488" target="_blank" rel="noopener">Sales Representative (w/m/d)</a>
-                <div class="sub">
-                  Forschung & Technologie · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="bc70aeec92406fd5" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/R37503" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Systemoptronik · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="29720789350187cf" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_TDWES_26_207" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
-                <div class="sub">
-                  Wirksysteme · 
+                  Systemsimulation · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -2540,12 +2215,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="704a01b98dbc65a8" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="27ffbbe17acca85e" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_HRM2-F1_26_602" target="_blank" rel="noopener">TECtrainee (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGA1_25_380" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
                 <div class="sub">
-                  Duales Masterstudium – Qualitätsmanagement · 
+                  Navigation und Datenfusion · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -2562,342 +2237,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="35e1235d0d02b6b2" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="29720789350187cf" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_TDWE_25_326" target="_blank" rel="noopener">Head of Systems Engineering (w/m/d)</a>
-                <div class="sub">
-                  Leitung der Abteilung Systementwicklung · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="d404091b201dc013" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_TDWB_25_364" target="_blank" rel="noopener">Sales & Marketing Key Account Manager (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_TDWES_26_207" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
                 <div class="sub">
                   Wirksysteme · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="871f0fa7bed721d3" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGT_26_048" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Entwicklung Prüf- und Testsysteme · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="6e48b3a919c4024a" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGT_26_178" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Entwicklung Prüf- und Testsysteme für bestückte Leiterkarten · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="febcda9d0e781830" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGV_26_173" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
-                <div class="sub">
-                  Systemintegration und - test für komplexe Waffensysteme · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="965a0f3682df0998" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGC_26_197" target="_blank" rel="noopener">Configuration Manager (w/m/d)</a>
-                <div class="sub">
-                  Änderungs- und Konfigurationsmanagement · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="8b5069e435458b6a" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EG02_26_167" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  System Software · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="dda4ff4dd00274b3" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE1_26_159" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Embedded Software NAS System · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="3ad0f10aeeb9664d" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_HRM2-F1_26_601" target="_blank" rel="noopener">TECtrainee (w/m/d)</a>
-                <div class="sub">
-                  Duales Masterstudium - Industrielle Sicherheit · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="c5b714a3d24faa23" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGD1_26_080" target="_blank" rel="noopener">Lead Systems Engineer (w/m/d)</a>
-                <div class="sub">
-                  Flugkörperentwicklung · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="412ae6ec584ddba2" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGC_25_349" target="_blank" rel="noopener">Configuration Manager (w/m/d)</a>
-                <div class="sub">
-                  Konfigurationsmanagement · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="cbbe48d762ab79f2" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGV_26_134" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
-                <div class="sub">
-                  Produktsicherheit und -zuverlässigkeit · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="54cc213f199abea2" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE_26_143" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Embedded Software · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="b9eaeaee745eb2c4" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGA1_26_126" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Flugregelungs- und Lenkalgorithmen · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="c6031845c65949b6" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_HRM2-F1_25_613" target="_blank" rel="noopener">TECtrainee (w/m/d)</a>
-                <div class="sub">
-                  Duales Masterstudium - Maschinenbau · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="5a02997812443154" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_HRM2-F1_25_612" target="_blank" rel="noopener">TECtrainee (w/m/d)</a>
-                <div class="sub">
-                  Duales Masterstudium - Informatik · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -2936,6 +2281,94 @@
             </div>
           </div>
           
+          <div class="job" data-job-id="35e1235d0d02b6b2" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_TDWE_25_326" target="_blank" rel="noopener">Head of Systems Engineering (w/m/d)</a>
+                <div class="sub">
+                  Leitung der Abteilung Systementwicklung · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="3ad0f10aeeb9664d" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_HRM2-F1_26_601" target="_blank" rel="noopener">TECtrainee (w/m/d)</a>
+                <div class="sub">
+                  Duales Masterstudium - Industrielle Sicherheit · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="412ae6ec584ddba2" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGC_25_349" target="_blank" rel="noopener">Configuration Manager (w/m/d)</a>
+                <div class="sub">
+                  Konfigurationsmanagement · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="44326206fe3b0b7f" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGV1_26_054" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  System Test & HIL Development · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
           <div class="job" data-job-id="4ca727afd4393af5" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -2958,12 +2391,232 @@
             </div>
           </div>
           
+          <div class="job" data-job-id="54cc213f199abea2" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE_26_143" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Embedded Software · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="5a02997812443154" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_HRM2-F1_25_612" target="_blank" rel="noopener">TECtrainee (w/m/d)</a>
+                <div class="sub">
+                  Duales Masterstudium - Informatik · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
           <div class="job" data-job-id="5f5b5050ec8361c3" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
                 <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGD2_26_106" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
                 <div class="sub">
                   Strukturmechanik · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="60318bc639af444b" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGS_25_388" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
+                <div class="sub">
+                  Militärische Kommunikationssysteme · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="636db1c14fcf4acd" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/R38339" target="_blank" rel="noopener">Development Engineer (w/m/d))</a>
+                <div class="sub">
+                  Flugalgorithmik · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="6da8b4765609ba0d" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGD1_25_328" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
+                <div class="sub">
+                  Missile System Design · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="6e48b3a919c4024a" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGT_26_178" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Entwicklung Prüf- und Testsysteme für bestückte Leiterkarten · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="704a01b98dbc65a8" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_HRM2-F1_26_602" target="_blank" rel="noopener">TECtrainee (w/m/d)</a>
+                <div class="sub">
+                  Duales Masterstudium – Qualitätsmanagement · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="77f7e468ac52cf54" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_GPL1_25_302" target="_blank" rel="noopener">Systems Engineer (w/m/d)</a>
+                <div class="sub">
+                  Integrated Logistics Support · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="78aa80974614cfd6" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGD3_26_236" target="_blank" rel="noopener">Senior Systems Engineer (m/w/d)</a>
+                <div class="sub">
+                  Systemdesign für Laserwaffensysteme · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="871f0fa7bed721d3" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGT_26_048" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Entwicklung Prüf- und Testsysteme · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -3024,12 +2677,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="184dfec867aa4ede" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="8b5069e435458b6a" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGV1_26_110" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EG02_26_167" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
                 <div class="sub">
-                  Systemsimulation · 
+                  System Software · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -3046,12 +2699,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="d69bf3b89755f146" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="965a0f3682df0998" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGS_26_099" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_OGC_26_197" target="_blank" rel="noopener">Configuration Manager (w/m/d)</a>
                 <div class="sub">
-                  Software für militärische Kommunikationssysteme · 
+                  Änderungs- und Konfigurationsmanagement · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -3068,12 +2721,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="10a54fce1e99e9ee" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="968a3bb39f3542ce" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE1_26_098" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE_26_239" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
                 <div class="sub">
-                  Software für Embedded Vision · 
+                  Elektronikentwicklung · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -3112,12 +2765,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="fa193ef7a1dd5181" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="ac9a8ba39ce678a3" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGS_26_066" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGS_25_248" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
                 <div class="sub">
-                  Mechatronische Systeme und Leistungselektronik · 
+                  HF Signalverarbeitung · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -3134,100 +2787,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="60318bc639af444b" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="acf8ae6443a7645a" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGS_25_388" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/R38038" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
                 <div class="sub">
-                  Militärische Kommunikationssysteme · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="27ffbbe17acca85e" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGA1_25_380" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Navigation und Datenfusion · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="44326206fe3b0b7f" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGV1_26_054" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  System Test & HIL Development · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="d000df1111f0d2e3" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE1_25_315" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
-                <div class="sub">
-                  Embedded Software · 
-                  Schrobenhausen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="6da8b4765609ba0d" data-company="MBDA" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGD1_25_328" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
-                <div class="sub">
-                  Missile System Design · 
+                  Navigation und Datenfusion für Hyperschall · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -3266,12 +2831,12 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="77f7e468ac52cf54" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="b48806711e099910" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_GPL1_25_302" target="_blank" rel="noopener">Systems Engineer (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/R37488" target="_blank" rel="noopener">Sales Representative (w/m/d)</a>
                 <div class="sub">
-                  Integrated Logistics Support · 
+                  Forschung & Technologie · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -3288,12 +2853,298 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="ac9a8ba39ce678a3" data-company="MBDA" data-status="neu">
+          <div class="job" data-job-id="b9eaeaee745eb2c4" data-company="MBDA" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGS_25_248" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGA1_26_126" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
                 <div class="sub">
-                  HF Signalverarbeitung · 
+                  Flugregelungs- und Lenkalgorithmen · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="bc70aeec92406fd5" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/R37503" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Systemoptronik · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="c5b714a3d24faa23" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGD1_26_080" target="_blank" rel="noopener">Lead Systems Engineer (w/m/d)</a>
+                <div class="sub">
+                  Flugkörperentwicklung · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="c6031845c65949b6" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_HRM2-F1_25_613" target="_blank" rel="noopener">TECtrainee (w/m/d)</a>
+                <div class="sub">
+                  Duales Masterstudium - Maschinenbau · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="ca97834a06cc0af4" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/R37597" target="_blank" rel="noopener">Manager (w/m/d)</a>
+                <div class="sub">
+                  Technische Konzepterstellung · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="cbbe48d762ab79f2" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGV_26_134" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
+                <div class="sub">
+                  Produktsicherheit und -zuverlässigkeit · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="ccbc0aa704f88e38" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_TDWEE_26_208" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Embedded Software · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="d000df1111f0d2e3" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE1_25_315" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Embedded Software · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="d404091b201dc013" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_TDWB_25_364" target="_blank" rel="noopener">Sales & Marketing Key Account Manager (w/m/d)</a>
+                <div class="sub">
+                  Wirksysteme · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="d69bf3b89755f146" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGS_26_099" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Software für militärische Kommunikationssysteme · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="dcbf7c97a50fc047" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGD3_26_235" target="_blank" rel="noopener">Lead Systems Engineer (m/w/d)</a>
+                <div class="sub">
+                  Laser-Waffensysteme · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="dda4ff4dd00274b3" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGE1_26_159" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Embedded Software NAS System · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="e71c2500eabf6485" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/R38187" target="_blank" rel="noopener">Senior Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Missionsplanung und Steuerung · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="fa193ef7a1dd5181" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGS_26_066" target="_blank" rel="noopener">Development Engineer (w/m/d)</a>
+                <div class="sub">
+                  Mechatronische Systeme und Leistungselektronik · 
                   Schrobenhausen · 
                   seit 2026-08-04
                   
@@ -3332,12 +3183,34 @@
             </div>
           </div>
           
+          <div class="job" data-job-id="febcda9d0e781830" data-company="MBDA" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://www.mbda-careers.de/stellen/mbda/SOB_EGV_26_173" target="_blank" rel="noopener">Senior Systems Engineer (w/m/d)</a>
+                <div class="sub">
+                  Systemintegration und - test für komplexe Waffensysteme · 
+                  Schrobenhausen · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
         </div>
       </details>
       
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>Quantum Systems</span>
+          <span class="company-name">Quantum Systems</span>
           <span class="count" data-total="21">(21)</span>
         </summary>
         <div class="company-jobs">
@@ -3345,10 +3218,10 @@
             <button class="show-hidden-btn" data-expanded="false">🙈 <span class="hidden-count">0</span> ausgeblendet (kein Interesse) - anzeigen</button>
           </div>
           
-          <div class="job" data-job-id="9c0a7902c89ed94e" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="012d58e4197ab01b" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/development-engineer-production-mfd-3" target="_blank" rel="noopener">Development Engineer Production (m/f/d)</a>
+                <a href="https://career.quantum-systems.com/o/senior-prototyping-engineer-fmd-hybrid-power-fuel-system-integration" target="_blank" rel="noopener">Senior Prototyping Engineer (f/m/d) – Hybrid Power & Fuel System Integration</a>
                 <div class="sub">
                   
                   Gilching,Bayern,Germany · 
@@ -3367,32 +3240,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="6f5b0551c2dc7e85" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="0d680c8a642f2831" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/electronics-design-engineer-interceptor-cuas-mfd" target="_blank" rel="noopener">Electronics Design Engineer Interceptor C‑UAS (m/f/d)</a>
-                <div class="sub">
-                  
-                  Gilching,Bayern,Germany · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="5bf9c1ba9171f3eb" data-company="Quantum Systems" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://career.quantum-systems.com/o/flight-test-engineer-mfd-5" target="_blank" rel="noopener">Flight Test Engineer (m/f/d)</a>
+                <a href="https://career.quantum-systems.com/o/senior-verification-validation-engineer-interceptor-cuas-mfd" target="_blank" rel="noopener">Senior Verification & Validation Engineer Interceptor C‑UAS (m/f/d)</a>
                 <div class="sub">
                   
                   Gilching,Bayern,Germany · 
@@ -3433,10 +3284,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="58197fdabc05846a" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="38df951ad57bb3a7" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/production-test-engineer-mfd-1" target="_blank" rel="noopener">Production Test Engineer (m/f/d)</a>
+                <a href="https://career.quantum-systems.com/o/vehicle-test-operator-mfd" target="_blank" rel="noopener">Vehicle Test Operator (m/f/d)</a>
                 <div class="sub">
                   
                   Gilching,Bayern,Germany · 
@@ -3455,18 +3306,18 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="e235f9948384b9eb" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="39f1a3922c096a59" data-company="Quantum Systems" data-status="kein interesse">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/prototype-engineer-mfd-eft-mobility-ag" target="_blank" rel="noopener">Prototype Engineer  (m/f/d) - EFT Mobility AG</a>
+                <a href="https://career.quantum-systems.com/o/prototyping-technician-mfd-9" target="_blank" rel="noopener">Prototyping Technician (m/f/d)</a>
                 <div class="sub">
                   
-                  Munich,Bayern,Germany · 
+                  Gilching,Bayern,Germany · 
                   seit 2026-08-04
                   
                 </div>
               </div>
-              <span class="badge neu">neu</span>
+              <span class="badge kein_interesse">kein interesse</span>
             </div>
             <div class="status-buttons">
               <button data-status-value="neu">Neu</button>
@@ -3477,10 +3328,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="491f97f3c5336156" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="405772c72d16361d" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/prototyping-engineer-mfd-test-benches-validation" target="_blank" rel="noopener">Prototyping Engineer (m/f/d) – Test Benches & Validation</a>
+                <a href="https://career.quantum-systems.com/o/system-integration-engineer-mfd-5" target="_blank" rel="noopener">System Integration Engineer (m/f/d)</a>
                 <div class="sub">
                   
                   Gilching,Bayern,Germany · 
@@ -3521,10 +3372,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="39f1a3922c096a59" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="491f97f3c5336156" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/prototyping-technician-mfd-9" target="_blank" rel="noopener">Prototyping Technician (m/f/d)</a>
+                <a href="https://career.quantum-systems.com/o/prototyping-engineer-mfd-test-benches-validation" target="_blank" rel="noopener">Prototyping Engineer (m/f/d) – Test Benches & Validation</a>
                 <div class="sub">
                   
                   Gilching,Bayern,Germany · 
@@ -3543,54 +3394,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="883af1925bea6287" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="58197fdabc05846a" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/senior-electronics-design-engineer-mfd" target="_blank" rel="noopener">Senior Electronics Design Engineer (m/f/d)</a>
-                <div class="sub">
-                  
-                  Munich,Bayern,Germany · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="a60bf8d09b54f5ce" data-company="Quantum Systems" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://career.quantum-systems.com/o/senior-industrialisation-engineer-mfd-eft-mobility-ag" target="_blank" rel="noopener">Senior Industrialisation Engineer (m/f/d) - EFT Mobility AG</a>
-                <div class="sub">
-                  
-                  Munich,Bayern,Germany · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="9cd01a3af466ca4a" data-company="Quantum Systems" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://career.quantum-systems.com/o/senior-mechanical-engineer-interceptor-cuas-mfd" target="_blank" rel="noopener">Senior Mechanical Engineer Interceptor C‑UAS (m/f/d)</a>
+                <a href="https://career.quantum-systems.com/o/production-test-engineer-mfd-1" target="_blank" rel="noopener">Production Test Engineer (m/f/d)</a>
                 <div class="sub">
                   
                   Gilching,Bayern,Germany · 
@@ -3609,98 +3416,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="012d58e4197ab01b" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="5bf9c1ba9171f3eb" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/senior-prototyping-engineer-fmd-hybrid-power-fuel-system-integration" target="_blank" rel="noopener">Senior Prototyping Engineer (f/m/d) – Hybrid Power & Fuel System Integration</a>
-                <div class="sub">
-                  
-                  Gilching,Bayern,Germany · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="ffaeb1f4d6a6dad1" data-company="Quantum Systems" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://career.quantum-systems.com/o/senior-prototyping-engineer-fmd-thermal-systems-cooling-integration" target="_blank" rel="noopener">Senior Prototyping Engineer (f/m/d) – Thermal Systems & Cooling Integration</a>
-                <div class="sub">
-                  
-                  Gilching,Bayern,Germany · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="6a94d138d4417a3c" data-company="Quantum Systems" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://career.quantum-systems.com/o/senior-systems-engineer-product-security-mfd" target="_blank" rel="noopener">Senior Systems Engineer - Product Security (m/f/d)</a>
-                <div class="sub">
-                  
-                  München,Bayern,Germany · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="0d680c8a642f2831" data-company="Quantum Systems" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://career.quantum-systems.com/o/senior-verification-validation-engineer-interceptor-cuas-mfd" target="_blank" rel="noopener">Senior Verification & Validation Engineer Interceptor C‑UAS (m/f/d)</a>
-                <div class="sub">
-                  
-                  Gilching,Bayern,Germany · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="405772c72d16361d" data-company="Quantum Systems" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://career.quantum-systems.com/o/system-integration-engineer-mfd-5" target="_blank" rel="noopener">System Integration Engineer (m/f/d)</a>
+                <a href="https://career.quantum-systems.com/o/flight-test-engineer-mfd-5" target="_blank" rel="noopener">Flight Test Engineer (m/f/d)</a>
                 <div class="sub">
                   
                   Gilching,Bayern,Germany · 
@@ -3741,13 +3460,35 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="c49d70aa523343d0" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="6a94d138d4417a3c" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/team-lead-vehicle-controls-integration-mfd" target="_blank" rel="noopener">Team Lead Vehicle Controls & Integration (m/f/d)</a>
+                <a href="https://career.quantum-systems.com/o/senior-systems-engineer-product-security-mfd" target="_blank" rel="noopener">Senior Systems Engineer - Product Security (m/f/d)</a>
                 <div class="sub">
                   
                   München,Bayern,Germany · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="6f5b0551c2dc7e85" data-company="Quantum Systems" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://career.quantum-systems.com/o/electronics-design-engineer-interceptor-cuas-mfd" target="_blank" rel="noopener">Electronics Design Engineer Interceptor C‑UAS (m/f/d)</a>
+                <div class="sub">
+                  
+                  Gilching,Bayern,Germany · 
                   seit 2026-08-04
                   
                 </div>
@@ -3785,10 +3526,142 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="38df951ad57bb3a7" data-company="Quantum Systems" data-status="neu">
+          <div class="job" data-job-id="883af1925bea6287" data-company="Quantum Systems" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://career.quantum-systems.com/o/vehicle-test-operator-mfd" target="_blank" rel="noopener">Vehicle Test Operator (m/f/d)</a>
+                <a href="https://career.quantum-systems.com/o/senior-electronics-design-engineer-mfd" target="_blank" rel="noopener">Senior Electronics Design Engineer (m/f/d)</a>
+                <div class="sub">
+                  
+                  Munich,Bayern,Germany · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="9c0a7902c89ed94e" data-company="Quantum Systems" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://career.quantum-systems.com/o/development-engineer-production-mfd-3" target="_blank" rel="noopener">Development Engineer Production (m/f/d)</a>
+                <div class="sub">
+                  
+                  Gilching,Bayern,Germany · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="9cd01a3af466ca4a" data-company="Quantum Systems" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://career.quantum-systems.com/o/senior-mechanical-engineer-interceptor-cuas-mfd" target="_blank" rel="noopener">Senior Mechanical Engineer Interceptor C‑UAS (m/f/d)</a>
+                <div class="sub">
+                  
+                  Gilching,Bayern,Germany · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="a60bf8d09b54f5ce" data-company="Quantum Systems" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://career.quantum-systems.com/o/senior-industrialisation-engineer-mfd-eft-mobility-ag" target="_blank" rel="noopener">Senior Industrialisation Engineer (m/f/d) - EFT Mobility AG</a>
+                <div class="sub">
+                  
+                  Munich,Bayern,Germany · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="c49d70aa523343d0" data-company="Quantum Systems" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://career.quantum-systems.com/o/team-lead-vehicle-controls-integration-mfd" target="_blank" rel="noopener">Team Lead Vehicle Controls & Integration (m/f/d)</a>
+                <div class="sub">
+                  
+                  München,Bayern,Germany · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="e235f9948384b9eb" data-company="Quantum Systems" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://career.quantum-systems.com/o/prototype-engineer-mfd-eft-mobility-ag" target="_blank" rel="noopener">Prototype Engineer  (m/f/d) - EFT Mobility AG</a>
+                <div class="sub">
+                  
+                  Munich,Bayern,Germany · 
+                  seit 2026-08-04
+                  
+                </div>
+              </div>
+              <span class="badge neu">neu</span>
+            </div>
+            <div class="status-buttons">
+              <button data-status-value="neu">Neu</button>
+              <button data-status-value="interessant">Interessant</button>
+              <button data-status-value="beworben">Beworben</button>
+              <button data-status-value="kein interesse">Kein Interesse</button>
+              <span class="save-indicator"></span>
+            </div>
+          </div>
+          
+          <div class="job" data-job-id="ffaeb1f4d6a6dad1" data-company="Quantum Systems" data-status="neu">
+            <div class="job-main">
+              <div class="info">
+                <a href="https://career.quantum-systems.com/o/senior-prototyping-engineer-fmd-thermal-systems-cooling-integration" target="_blank" rel="noopener">Senior Prototyping Engineer (f/m/d) – Thermal Systems & Cooling Integration</a>
                 <div class="sub">
                   
                   Gilching,Bayern,Germany · 
@@ -3810,9 +3683,9 @@
         </div>
       </details>
       
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>Rheinmetall (München)</span>
+          <span class="company-name">Rheinmetall (München)</span>
           <span class="count" data-total="18">(18)</span>
         </summary>
         <div class="company-jobs">
@@ -4219,10 +4092,10 @@
         </div>
       </details>
       
-      <details class="company" open>
+      <details class="company">
         <summary>
-          <span>Rheinmetall (Schweiz)</span>
-          <span class="count" data-total="90">(90)</span>
+          <span class="company-name">Rheinmetall (Schweiz)</span>
+          <span class="count" data-total="71">(71)</span>
         </summary>
         <div class="company-jobs">
           <div class="hidden-toggle">
@@ -4251,13 +4124,13 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="0701eabc64ae256c" data-company="Rheinmetall (Schweiz)" data-status="neu">
+          <div class="job" data-job-id="05127300e9a7e7f5" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/elektroniker_baugruppenverdrahtung__m_w_d_/1075796" target="_blank" rel="noopener">Elektroniker Baugruppenverdrahtung (m/w/d)</a>
+                <a href="https://www.rheinmetall.com/de/job/logistiker__m_w_d_/1108091" target="_blank" rel="noopener">Logistiker (m/w/d)</a>
                 <div class="sub">
                   
-                  Rheinmetall Air Defence AG | Zürich · 
+                  RWM Zaugg AG | Lohn-Ammannsegg · 
                   seit 2026-08-04
                   
                 </div>
@@ -4273,10 +4146,10 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="0772d5b86f1b9a8c" data-company="Rheinmetall (Schweiz)" data-status="neu">
+          <div class="job" data-job-id="0701eabc64ae256c" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/fachlicher_teamleiter_messraum_zerspanung__m_w_d_/1067072" target="_blank" rel="noopener">Fachlicher Teamleiter Messraum Zerspanung (m/w/d)</a>
+                <a href="https://www.rheinmetall.com/de/job/elektroniker_baugruppenverdrahtung__m_w_d_/1075796" target="_blank" rel="noopener">Elektroniker Baugruppenverdrahtung (m/w/d)</a>
                 <div class="sub">
                   
                   Rheinmetall Air Defence AG | Zürich · 
@@ -4317,28 +4190,6 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="0b8a577c4b62ea78" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/projektleiter_engineering__m_w_d_/896732" target="_blank" rel="noopener">Projektleiter Engineering (m/w/d)</a>
-                <div class="sub">
-                  
-                  Nitrochemie Wimmis AG | Wimmis · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
           <div class="job" data-job-id="0e5eb774adb84326" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -4346,50 +4197,6 @@
                 <div class="sub">
                   
                   Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="0e7c02b5679830f9" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/elektronik_wareneingangspruefer___leiterplattenpruefer__pcb_pcba___m_w_d_/1063589" target="_blank" rel="noopener">Elektronik-Wareneingangsprüfer / Leiterplattenprüfer (PCB/PCBA) (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="10c9a6c8bfed4654" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/chemielaborant_pyrotechnik__m_w_d__in_studen__sz_/1023749" target="_blank" rel="noopener">Chemielaborant Pyrotechnik (m/w/d) in Studen (SZ)</a>
-                <div class="sub">
-                  
-                  RWM Schweiz AG | Studen · 
                   seit 2026-08-04
                   
                 </div>
@@ -4541,28 +4348,6 @@
             <div class="job-main">
               <div class="info">
                 <a href="https://www.rheinmetall.com/de/job/produktionssteuerer_baugruppen_und_endmontage__m_w_d_/1078652" target="_blank" rel="noopener">Produktionssteuerer Baugruppen- und Endmontage (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="25e789a7aa8bf12f" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/elektroniker___automatiker__m_w_d_/1012481" target="_blank" rel="noopener">Elektroniker / Automatiker (m/w/d)</a>
                 <div class="sub">
                   
                   Rheinmetall Air Defence AG | Zürich · 
@@ -4757,28 +4542,6 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="3ea5160cce39e3ae" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/sachbearbeiter_import___export__m_w_d_/1062380" target="_blank" rel="noopener">Sachbearbeiter Import / Export (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
           <div class="job" data-job-id="408bf975fd8ba17a" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -4845,50 +4608,6 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="44a9a466014433ec" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/mitarbeiter_qualitaetssicherung_elektronik__m_w_d_/945788" target="_blank" rel="noopener">Mitarbeiter Qualitätssicherung Elektronik (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="46dbec2a3499e2ee" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/senior_it_systemtechniker__m_w_d_/1071713" target="_blank" rel="noopener">Senior IT-Systemtechniker (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
           <div class="job" data-job-id="4a3f24687aa93f9e" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -4915,28 +4634,6 @@
             <div class="job-main">
               <div class="info">
                 <a href="https://www.rheinmetall.com/de/job/technischer_einsatzleiter_air_defence_erprobung___demonstration__m_w_d_/1045055" target="_blank" rel="noopener">Technischer Einsatzleiter Air Defence – Erprobung & Demonstration (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="4b3c8b2de7234bbc" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/technischer_projektleiter_gesamtsysteme_missile__m_w_d_/1058738" target="_blank" rel="noopener">Technischer Projektleiter Gesamtsysteme Missile (m/w/d)</a>
                 <div class="sub">
                   
                   Rheinmetall Air Defence AG | Zürich · 
@@ -4984,28 +4681,6 @@
                 <div class="sub">
                   
                   Nitrochemie Wimmis AG | Wimmis · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="518f3eed254ea80a" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/monteur_serienbaugruppen__m_w_d_/1063562" target="_blank" rel="noopener">Monteur Serienbaugruppen (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
                   seit 2026-08-04
                   
                 </div>
@@ -5373,28 +5048,6 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="81412791ef9da35f" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/senior_softwareentwickler_fuehrungssysteme__m_w_d_/994214" target="_blank" rel="noopener">Senior Softwareentwickler Führungssysteme (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
           <div class="job" data-job-id="83f5115c51a3c12f" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -5505,28 +5158,6 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="9bb018f3b2c5e2fb" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/operativer_einkaeufer__m_w_d_/1065884" target="_blank" rel="noopener">Operativer Einkäufer (m/w/d)</a>
-                <div class="sub">
-                  
-                  Nitrochemie Wimmis AG | Wimmis · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
           <div class="job" data-job-id="ab38b4904c400a30" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -5615,28 +5246,6 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="acf128ad01c8a2a7" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/prozessingenieur_im_qualitaetsmanagement__m_w_d_/1010471" target="_blank" rel="noopener">Prozessingenieur im Qualitätsmanagement (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
           <div class="job" data-job-id="b1fd27f2206ed57b" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -5681,50 +5290,6 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="b527864fdd13fa47" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/prozessplaner___avor_elektronische_baugruppen_und_systeme__m_w_d_/1056440" target="_blank" rel="noopener">Prozessplaner / AVOR elektronische Baugruppen und Systeme (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="b6dbf9c6328088aa" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/technischer_projektleiter_gesamtsysteme__m_w_d_/1058741" target="_blank" rel="noopener">Technischer Projektleiter Gesamtsysteme (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
           <div class="job" data-job-id="bc9c2a922011df4d" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -5732,28 +5297,6 @@
                 <div class="sub">
                   
                   Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="bcfbfab689e15b78" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/servicetechniker_im_innendienst__m_w_d_/1030256" target="_blank" rel="noopener">Servicetechniker im Innendienst (m/w/d)</a>
-                <div class="sub">
-                  
-                  Nitrochemie Wimmis AG | Wimmis · 
                   seit 2026-08-04
                   
                 </div>
@@ -5857,28 +5400,6 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="d178bb6228f995c8" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/cnc_fraeser__m_w_d_/1056443" target="_blank" rel="noopener">CNC-Fräser (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
           <div class="job" data-job-id="d4142eda8bc1616a" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
@@ -5886,28 +5407,6 @@
                 <div class="sub">
                   
                   Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="d628bf8f8cff002f" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/prozessmanager_qs__m_w_d_/900761" target="_blank" rel="noopener">Prozessmanager QS (m/w/d)</a>
-                <div class="sub">
-                  
-                  RWM Zaugg AG | Lohn-Ammannsegg · 
                   seit 2026-08-04
                   
                 </div>
@@ -6015,50 +5514,6 @@
             <div class="job-main">
               <div class="info">
                 <a href="https://www.rheinmetall.com/de/job/systemtechniker_flugabwehr_im_aussendienst__m_w_d_/1029095" target="_blank" rel="noopener">Systemtechniker Flugabwehr im Aussendienst (m/w/d)</a>
-                <div class="sub">
-                  
-                  Rheinmetall Air Defence AG | Zürich · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="e91f23b20296aa3f" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/geschuetzmechaniker__m_w_d__in_studen__sz_/1064597" target="_blank" rel="noopener">Geschützmechaniker (m/w/d) in Studen (SZ)</a>
-                <div class="sub">
-                  
-                  RWM Schweiz AG | Studen · 
-                  seit 2026-08-04
-                  
-                </div>
-              </div>
-              <span class="badge neu">neu</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          
-          <div class="job" data-job-id="eb248e2b15417966" data-company="Rheinmetall (Schweiz)" data-status="neu">
-            <div class="job-main">
-              <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/schweisser__m_w_d_/1024751" target="_blank" rel="noopener">Schweisser (m/w/d)</a>
                 <div class="sub">
                   
                   Rheinmetall Air Defence AG | Zürich · 
@@ -6187,13 +5642,13 @@
             </div>
           </div>
           
-          <div class="job" data-job-id="ffc328a2df9e9619" data-company="Rheinmetall (Schweiz)" data-status="neu">
+          <div class="job" data-job-id="ff299228c286057d" data-company="Rheinmetall (Schweiz)" data-status="neu">
             <div class="job-main">
               <div class="info">
-                <a href="https://www.rheinmetall.com/de/job/fachspezialist_einkauf__m_w_d_/1065860" target="_blank" rel="noopener">Fachspezialist Einkauf (m/w/d)</a>
+                <a href="https://www.rheinmetall.com/de/job/fachexperte_baugruppenverdrahtung_kabelfertigung__m_w_d_/1094570" target="_blank" rel="noopener">Fachexperte Baugruppenverdrahtung/Kabelfertigung  (m/w/d)</a>
                 <div class="sub">
                   
-                  Nitrochemie Wimmis AG | Wimmis · 
+                  Rheinmetall Air Defence AG | Zürich · 
                   seit 2026-08-04
                   
                 </div>
