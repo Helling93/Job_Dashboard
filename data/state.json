@@ -787,9 +787,9 @@
         "2a7cdccd365eff87": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://jobs.knds.de/job-invite/3997/?locale=de_DE",
           "location": "München",
           "status": "neu",
@@ -919,9 +919,9 @@
         "a255539f2a40eb55": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://jobs.knds.de/job-invite/3609/?locale=de_DE",
           "location": "München",
           "status": "neu",
@@ -963,9 +963,9 @@
         "c1fcbb1e64342671": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://jobs.knds.de/job-invite/3851/?locale=de_DE",
           "location": "München",
           "status": "neu",
@@ -985,9 +985,9 @@
         "e0d223941b9a2fcb": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://jobs.knds.de/job-invite/3969/?locale=de_DE",
           "location": "München",
           "status": "neu",
@@ -2068,9 +2068,9 @@
         "0b8a577c4b62ea78": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/projektleiter_engineering__m_w_d_/896732",
           "location": "Nitrochemie Wimmis AG | Wimmis",
           "status": "neu",
@@ -2090,13 +2090,24 @@
         "0e7c02b5679830f9": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/elektronik_wareneingangspruefer___leiterplattenpruefer__pcb_pcba___m_w_d_/1063589",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
           "title": "Elektronik-Wareneingangsprüfer / Leiterplattenprüfer (PCB/PCBA) (m/w/d)"
+        },
+        "0fc6ed6d87621161": {
+          "category": null,
+          "date_posted": null,
+          "disappeared_at": null,
+          "first_seen": "2026-08-05",
+          "last_seen": "2026-08-05",
+          "link": "https://www.rheinmetall.com/de/job/messtechniker__m_w_d__in_studen__sz_/1119416",
+          "location": "RWM Schweiz AG | Studen",
+          "status": "neu",
+          "title": "Messtechniker (m/w/d) in Studen (SZ)"
         },
         "10c9a6c8bfed4654": {
           "category": null,
@@ -2134,7 +2145,7 @@
         "126cadb181f027ea": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/quality_manager__m_w_d_/863609",
@@ -2189,9 +2200,9 @@
         "25e789a7aa8bf12f": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/elektroniker___automatiker__m_w_d_/1012481",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2266,7 +2277,7 @@
         "3aed368690454a45": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/electrical_engineer__m_w_d_/1033847",
@@ -2288,9 +2299,9 @@
         "3ea5160cce39e3ae": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/sachbearbeiter_import___export__m_w_d_/1062380",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2332,9 +2343,9 @@
         "44a9a466014433ec": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/mitarbeiter_qualitaetssicherung_elektronik__m_w_d_/945788",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2343,9 +2354,9 @@
         "46dbec2a3499e2ee": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/senior_it_systemtechniker__m_w_d_/1071713",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2365,7 +2376,7 @@
         "4acb8f0d3aa4a247": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/technischer_einsatzleiter_air_defence_erprobung___demonstration__m_w_d_/1045055",
@@ -2398,7 +2409,7 @@
         "5107725085047a8e": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/schichtfuehrer_produktion__m_w_d____inbetriebnahme_neuanlage_2027/1095797",
@@ -2409,9 +2420,9 @@
         "518f3eed254ea80a": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/monteur_serienbaugruppen__m_w_d_/1063562",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2431,7 +2442,7 @@
         "5800c391dafe1db5": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/praktikant_strategie_und_produktmanagement__m_w_d_/1112042",
@@ -2442,7 +2453,7 @@
         "5d1b7b441d176e6c": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/material_manager_procurement__m_w_d_/1113569",
@@ -2464,7 +2475,7 @@
         "63df6cc84b1b0bb2": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/production_engineer_and_lean_supporter_electronic_manufacturing__m_w_d_/1072976",
@@ -2497,7 +2508,7 @@
         "6570a7128956fd52": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/projektleiter_mittelkaliber__w_m_d_/1105724",
@@ -2596,9 +2607,9 @@
         "81412791ef9da35f": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/senior_softwareentwickler_fuehrungssysteme__m_w_d_/994214",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2618,9 +2629,9 @@
         "877aaa4c2ff93709": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-04",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/teamleiter_prozessplanung_montage__m_w_d_/1117976",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2673,9 +2684,9 @@
         "9bb018f3b2c5e2fb": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/operativer_einkaeufer__m_w_d_/1065884",
           "location": "Nitrochemie Wimmis AG | Wimmis",
           "status": "neu",
@@ -2695,7 +2706,7 @@
         "abd600087db4ce10": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/schlosser__m_w_d_/1006130",
@@ -2728,9 +2739,9 @@
         "acf128ad01c8a2a7": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/prozessingenieur_im_qualitaetsmanagement__m_w_d_/1010471",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2761,9 +2772,9 @@
         "b527864fdd13fa47": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/prozessplaner___avor_elektronische_baugruppen_und_systeme__m_w_d_/1056440",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2783,7 +2794,7 @@
         "bc9c2a922011df4d": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/senior_systems_engineer_missile_systems__m_w_d_/1106909",
@@ -2794,9 +2805,9 @@
         "bcfbfab689e15b78": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/servicetechniker_im_innendienst__m_w_d_/1030256",
           "location": "Nitrochemie Wimmis AG | Wimmis",
           "status": "neu",
@@ -2816,13 +2827,24 @@
         "bee69e73a5ed196f": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/integrated_product_support_manager__m_w_d_/1072955",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
           "title": "Integrated Product Support Manager (m/w/d)"
+        },
+        "c1beab9ad116e5f9": {
+          "category": null,
+          "date_posted": null,
+          "disappeared_at": null,
+          "first_seen": "2026-08-05",
+          "last_seen": "2026-08-05",
+          "link": "https://www.rheinmetall.com/de/job/teamlead_professional_onsite_support__m_w_d_/1119596",
+          "location": "Rheinmetall Air Defence AG | Zürich",
+          "status": "neu",
+          "title": "Teamlead Professional Onsite Support (m/w/d)"
         },
         "c2853b67d5863646": {
           "category": null,
@@ -2849,9 +2871,9 @@
         "d178bb6228f995c8": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/cnc_fraeser__m_w_d_/1056443",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -2871,9 +2893,9 @@
         "d628bf8f8cff002f": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/prozessmanager_qs__m_w_d_/900761",
           "location": "RWM Zaugg AG | Lohn-Ammannsegg",
           "status": "neu",
@@ -2893,7 +2915,7 @@
         "dce9cf80b47be3dd": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/senior_maschinenbau_ingenieur__m_w_d_/1050890",
@@ -2904,7 +2926,7 @@
         "ddf3ea87a9c8f248": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/elektrotechniker_takt_inbetriebnahme_flugabwehrsysteme__m_w_d_/1052072",
@@ -2915,7 +2937,7 @@
         "e1cfe8ffe500242a": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/praktikant_im_bereich_deep_learning__m_w_d_/1105727",
@@ -2937,9 +2959,9 @@
         "e91f23b20296aa3f": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-08-05",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-08-04",
+          "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/geschuetzmechaniker__m_w_d__in_studen__sz_/1064597",
           "location": "RWM Schweiz AG | Studen",
           "status": "neu",
@@ -2992,7 +3014,7 @@
         "f6da9c298c3d647d": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/werkstoffspezialist_im_bereich_waermebehandlung__m_w_d_/1046684",
@@ -3014,7 +3036,7 @@
         "ff299228c286057d": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-08-05",
           "first_seen": "2026-08-04",
           "last_seen": "2026-08-05",
           "link": "https://www.rheinmetall.com/de/job/fachexperte_baugruppenverdrahtung_kabelfertigung__m_w_d_/1094570",
@@ -3036,5 +3058,5 @@
       }
     }
   },
-  "last_run": "2026-08-05T06:46:25.554984+00:00"
+  "last_run": "2026-08-05T08:02:10.689319+00:00"
 }
