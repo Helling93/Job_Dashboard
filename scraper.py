@@ -15,9 +15,13 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 REQUEST_TIMEOUT = 20
+# Ein "ehrlicher" Bot-User-Agent (z.B. "job-alert-bot") reicht bei mehreren
+# Ziel-Seiten (u.a. Helsings Vercel-Bot-Schutz) allein schon, um zuverlässig
+# geblockt zu werden - ein normaler Browser-UA kommt durch, ohne dass sich
+# am eigentlichen Verhalten (Frequenz, Zweck) etwas ändert.
 USER_AGENT = (
-    "Mozilla/5.0 (compatible; JobWatcher/1.0; "
-    "+https://github.com/) job-alert-bot"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 )
 
 # Manche Seiten (z.B. Vercel-gehostete) zeigen bei zu vielen/verdächtigen
@@ -72,8 +76,20 @@ def fetch_html(company: dict) -> str:
         from playwright.sync_api import sync_playwright
 
         with sync_playwright() as p:
-            browser = p.chromium.launch()
-            page = browser.new_page(user_agent=USER_AGENT)
+            browser = p.chromium.launch(
+                args=["--disable-blink-features=AutomationControlled"]
+            )
+            page = browser.new_page(
+                user_agent=USER_AGENT,
+                viewport={"width": 1280, "height": 800},
+                locale="de-DE",
+            )
+            # navigator.webdriver=true ist eines der ersten Signale, das
+            # simple Bot-Checks (u.a. Vercels) prüfen - Playwright setzt es
+            # standardmäßig, hier vor jedem Seitenaufruf wieder entfernen.
+            page.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+            )
             # "networkidle" hängt sich bei Seiten mit dauerhaften Hintergrund-
             # Requests (Tracking, Video, Prefetch) oft auf - domcontentloaded
             # + gezieltes Warten auf den Listen-Selektor ist robuster.
