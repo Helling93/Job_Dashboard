@@ -163,9 +163,13 @@
 
   
 
-  <div class="sync-bar" id="sync-bar" data-repo="" data-branch="main">
+  <div class="sync-bar" id="sync-bar" data-repo="Helling93/Job_Dashboard" data-branch="main">
     
-      <span>Sync nicht aktiv (kein Repo bekannt - läuft dieser Build außerhalb von GitHub Actions?). Statusänderungen bleiben nur lokal im Browser gespeichert.</span>
+      <span>🔄 Geräteübergreifende Synchronisation:</span>
+      <input type="password" id="sync-token-input" placeholder="GitHub-Token (Contents: read/write)" autocomplete="off">
+      <button id="sync-token-save">Speichern</button>
+      <button id="sync-token-clear" class="secondary" style="display:none">Token entfernen</button>
+      <span class="sync-status" id="sync-status"></span>
     
   </div>
 
