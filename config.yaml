@@ -51,6 +51,14 @@
 #                          rendern Inhalte in Shadow DOM, das normales
 #                          page.content() nicht sieht. Kopiert Shadow-Root-
 #                          Inhalte vor dem Serialisieren ins Light-DOM.
+#   dismiss_selector       optional, CSS-Selektor oder Liste davon (method:
+#                          playwright) für Banner/Filter-Buttons, die einmalig
+#                          VOR dem Warten auf list_selector der Reihe nach
+#                          weggeklickt werden - z.B. bei Destinus/Workable, wo
+#                          zuerst ein Cookie-Banner und danach ein Geo-Filter
+#                          (Jobs werden anhand der Besucher-IP automatisch auf
+#                          ein Land vorgefiltert) im Weg steht. Wird ein
+#                          Selektor nicht gefunden, passiert einfach nichts.
 
 companies:
   # BMW Group: Die Karriereseite ist eine SPA, aber die Filter (Standort,
@@ -213,6 +221,55 @@ companies:
     link_attr: "href"
     location_selector: "div.col-location .result-text"
     category_selector: "div.result-secondary-text"
+
+  # Embotech (autonome Fahrzeuge für Häfen/Yards, Zürich): Webflow-Seite,
+  # Job-Liste ist eine serverseitig gerenderte CMS-Collection - method:
+  # requests reicht. Bewerbung läuft extern per PDF-Ausschreibung/E-Mail statt
+  # eigener Detailseite, daher zeigt link direkt auf das PDF.
+  - name: "Embotech"
+    url: "https://embotech.com/career"
+    method: requests
+    list_selector: ".w-dyn-item"
+    title_selector: "h3.titel-open-positon"
+    link_selector: "a.link-block-2"
+    link_attr: "href"
+    location_selector: ".location-open-positions-wrapper h4.thin"
+
+  # Destinus (autonome Drohnen/Verteidigung, u.a. München): Workable-Jobboard
+  # (React-SPA) - method: playwright nötig. Die Seite filtert Treffer initial
+  # automatisch anhand der Besucher-IP auf ein Land (z.B. "Germany" oder was
+  # auch immer der GitHub-Actions-Runner gerade auflöst) - dismiss_selector
+  # klickt den "Clear filters"-Link weg, damit wirklich immer alle Länder
+  # durchsucht werden und die eigene location_contains-Filterung unten
+  # zuverlässig greift. load_more_selector lädt danach alle Treffer nach.
+  - name: "Destinus"
+    url: "https://apply.workable.com/destinusgroup/"
+    method: playwright
+    base_url: "https://apply.workable.com"
+    dismiss_selector:
+      - 'button:has-text("Decline all")'
+      - 'a:has-text("Clear filters")'
+    load_more_selector: 'button:has-text("Show more")'
+    list_selector: 'li[data-ui="job"]'
+    title_selector: '[data-ui="job-title"]'
+    link_selector: "a"
+    link_attr: "href"
+    location_selector: '[data-ui="job-location"]'
+    category_selector: '[data-ui="job-department"]'
+    filters:
+      location_contains: ["Munich", "München", "Zürich", "Zurich"]
+
+  # Flux Mobility (Elektro-Nutzfahrzeuge, Winterthur): Webflow-Seite, Job-Liste
+  # ist eine serverseitig gerenderte CMS-Collection - method: requests reicht.
+  # Verlinkt direkt auf die jeweilige Lever-Bewerbungsseite.
+  - name: "Flux Mobility"
+    url: "https://www.fluxmobility.ch/unternehmen/karriere"
+    method: requests
+    list_selector: "a.offene-stellen__itembox"
+    title_selector: "h4.usp__text"
+    link_selector: "self"
+    link_attr: "href"
+    location_selector: ".testimonial__function"
 
 settings:
   # Auch verschwundene Jobs im Dashboard/History anzeigen

@@ -94,6 +94,20 @@ def fetch_html(company: dict) -> str:
             # Requests (Tracking, Video, Prefetch) oft auf - domcontentloaded
             # + gezieltes Warten auf den Listen-Selektor ist robuster.
             page.goto(url, timeout=REQUEST_TIMEOUT * 1000, wait_until="domcontentloaded")
+
+            dismiss_selectors = company.get("dismiss_selector")
+            if dismiss_selectors:
+                if isinstance(dismiss_selectors, str):
+                    dismiss_selectors = [dismiss_selectors]
+                for sel in dismiss_selectors:
+                    try:
+                        banner = page.locator(sel).first
+                        if banner.is_visible(timeout=3000):
+                            banner.click(timeout=3000)
+                            page.wait_for_timeout(500)
+                    except Exception:
+                        pass  # kein Banner/Filter zum Wegklicken vorhanden - ignorieren
+
             if company.get("list_selector"):
                 try:
                     page.wait_for_selector(company["list_selector"], timeout=15000)
