@@ -381,17 +381,32 @@
   }
 
   var SYNC_MAX_RETRIES = 3;
+  var SYNC_RETRY_BASE_DELAY_MS = 400;
 
-  function syncStatusToGitHub(jobEl, company, jobId, status, attempt) {
-    attempt = attempt || 0;
+  // Alle Sync-Anfragen laufen über diese eine Promise-Kette statt parallel -
+  // klickt man mehrere Jobs kurz hintereinander an, würde sonst jeder Klick
+  // einen eigenen, unabhängigen GET/PUT-Zyklus starten und sich gegenseitig
+  // den sha unter den Füßen wegziehen (siehe 409-Debugging). So läuft immer
+  // nur ein Sync gleichzeitig - Kollisionen bleiben auf den selteneren Fall
+  // eines anderen Geräts oder des täglichen Scraper-Laufs beschränkt, wofür
+  // der Retry unten zuständig ist.
+  var syncQueue = Promise.resolve();
+
+  function syncStatusToGitHub(jobEl, company, jobId, status) {
     if (!syncEnabled || !getToken()) return;
+    syncQueue = syncQueue.then(function () {
+      return syncOnce(jobEl, company, jobId, status, 0);
+    });
+  }
+
+  function syncOnce(jobEl, company, jobId, status, attempt) {
     setIndicator(jobEl, "saving");
     var url = "https://api.github.com/repos/" + repo + "/contents/data/state.json";
     // GitHubs Antwort auf diesen GET trägt "Cache-Control: max-age=60" - ohne
     // cache: "no-store" liefert der Browser bei einem Retry innerhalb dieser
     // 60s denselben gecachten (veralteten) sha zurück, wodurch der PUT immer
     // wieder mit 409 fehlschlägt, obwohl "erneut" gelesen wurde.
-    fetch(url + "?ref=" + encodeURIComponent(branch), { headers: apiHeaders(), cache: "no-store" })
+    return fetch(url + "?ref=" + encodeURIComponent(branch), { headers: apiHeaders(), cache: "no-store" })
       .then(function (r) {
         if (!r.ok) throw new Error("GET " + r.status);
         return r.json();
@@ -415,12 +430,17 @@
       })
       .then(function (r) {
         if (r.status === 409 && attempt < SYNC_MAX_RETRIES) {
-          // sha war beim Schreiben schon veraltet - z.B. weil kurz zuvor ein
-          // anderer Job synced wurde oder der tägliche Scraper-Lauf gerade
-          // committet hat. Mit frisch gelesenem Stand erneut versuchen, statt
-          // aufzugeben - der GET oben liest beim nächsten Versuch automatisch
-          // den aktuellen Inhalt inkl. der zwischenzeitlichen Änderung.
-          return syncStatusToGitHub(jobEl, company, jobId, status, attempt + 1);
+          // sha war beim Schreiben schon veraltet - z.B. weil der tägliche
+          // Scraper-Lauf oder ein anderes Gerät gerade geschrieben hat (Syncs
+          // aus demselben Tab können das dank der Queue oben nicht mehr
+          // auslösen). Kurz warten (steigender Abstand, damit sich zwei
+          // gleichzeitige Retries nicht wieder in die Quere kommen) und mit
+          // frisch gelesenem Stand erneut versuchen.
+          return new Promise(function (resolve) {
+            setTimeout(resolve, SYNC_RETRY_BASE_DELAY_MS * (attempt + 1));
+          }).then(function () {
+            return syncOnce(jobEl, company, jobId, status, attempt + 1);
+          });
         }
         if (!r.ok) throw new Error("PUT " + r.status);
         setIndicator(jobEl, "ok");
