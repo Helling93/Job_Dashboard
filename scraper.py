@@ -100,13 +100,28 @@ def fetch_html(company: dict) -> str:
                 if isinstance(dismiss_selectors, str):
                     dismiss_selectors = [dismiss_selectors]
                 for sel in dismiss_selectors:
-                    try:
-                        banner = page.locator(sel).first
-                        if banner.is_visible(timeout=3000):
+                    # locator.is_visible() wartet NICHT (der timeout-Parameter
+                    # wird von Playwright ignoriert - "returns immediately")
+                    # - wait_for(state=...) ist der einzige Weg, wirklich auf
+                    # das (ggf. erst nach domcontentloaded nachladende) Banner
+                    # zu warten. Bis zu 3 Versuche, da ein anderes Overlay den
+                    # Klick abfangen kann, ohne dass er sichtbar fehlschlägt.
+                    banner = page.locator(sel).first
+                    for _ in range(3):
+                        try:
+                            banner.wait_for(state="visible", timeout=4000)
+                        except Exception:
+                            break  # nie erschienen - nichts zum Wegklicken da
+                        try:
                             banner.click(timeout=3000)
-                            page.wait_for_timeout(500)
-                    except Exception:
-                        pass  # kein Banner/Filter zum Wegklicken vorhanden - ignorieren
+                        except Exception:
+                            break
+                        page.wait_for_timeout(500)
+                        try:
+                            banner.wait_for(state="hidden", timeout=2000)
+                            break  # erfolgreich weggeklickt
+                        except Exception:
+                            continue  # noch sichtbar - nochmal versuchen
 
             if company.get("list_selector"):
                 try:
