@@ -271,6 +271,37 @@ companies:
     link_attr: "href"
     location_selector: ".testimonial__function"
 
+  # Large Space Structures / LSS GmbH (Weltraumantennen/-strukturen, Garching
+  # bei München): einfache WordPress-Seite (Gutenberg-Blocks), method:
+  # requests reicht. Kein eigenes Job-Element pro Eintrag - jede Vakanz ist
+  # eine "wp-block-column" mit Titel-Absatz + "More Info"-Button, daher
+  # :has() zur Eingrenzung auf Spalten mit Bewerbungslink (die Seite hat noch
+  # weitere wp-block-column für Layout/Bilder ohne Job-Bezug).
+  - name: "Large Space Structures"
+    url: "https://www.largespace.de/current-vacancies/"
+    method: requests
+    list_selector: ".wp-block-column:has(a.wp-block-button__link)"
+    title_selector: "p"
+    link_selector: "a.wp-block-button__link"
+    link_attr: "href"
+
+  # Autonomous Teaming / ATS (Machine-Vision für Drohnenschwarm-Abwehr,
+  # München/Berlin/Toulouse): Personio-Jobboard, serverseitig gerendert -
+  # method: requests reicht. ".jb-title"/".jb-description" sind Personios
+  # eigene (stabile) Utility-Klassen neben den gehashten CSS-Modul-Klassen -
+  # robuster als über Letztere zu gehen. Erstes Meta-Element pro Job ist
+  # immer der Standort, drittes die Anstellungsart.
+  - name: "Autonomous Teaming"
+    url: "https://autonomous-teaming.jobs.personio.de/"
+    method: requests
+    base_url: "https://autonomous-teaming.jobs.personio.de"
+    list_selector: "a.job-box"
+    title_selector: ".jb-title"
+    link_selector: "self"
+    link_attr: "href"
+    location_selector: ".jb-description > div:nth-of-type(1) span"
+    category_selector: ".jb-description > div:nth-of-type(3) span"
+
 settings:
   # Auch verschwundene Jobs im Dashboard/History anzeigen
   track_disappeared: true
