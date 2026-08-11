@@ -380,7 +380,10 @@
     };
   }
 
-  function syncStatusToGitHub(jobEl, company, jobId, status) {
+  var SYNC_MAX_RETRIES = 3;
+
+  function syncStatusToGitHub(jobEl, company, jobId, status, attempt) {
+    attempt = attempt || 0;
     if (!syncEnabled || !getToken()) return;
     setIndicator(jobEl, "saving");
     var url = "https://api.github.com/repos/" + repo + "/contents/data/state.json";
@@ -407,6 +410,14 @@
         });
       })
       .then(function (r) {
+        if (r.status === 409 && attempt < SYNC_MAX_RETRIES) {
+          // sha war beim Schreiben schon veraltet - z.B. weil kurz zuvor ein
+          // anderer Job synced wurde oder der tägliche Scraper-Lauf gerade
+          // committet hat. Mit frisch gelesenem Stand erneut versuchen, statt
+          // aufzugeben - der GET oben liest beim nächsten Versuch automatisch
+          // den aktuellen Inhalt inkl. der zwischenzeitlichen Änderung.
+          return syncStatusToGitHub(jobEl, company, jobId, status, attempt + 1);
+        }
         if (!r.ok) throw new Error("PUT " + r.status);
         setIndicator(jobEl, "ok");
       })
