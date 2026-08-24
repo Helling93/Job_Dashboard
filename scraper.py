@@ -281,6 +281,10 @@ def _matches_filters(job: Job, filters: dict) -> bool:
     if location_contains and not any(kw.lower() in location for kw in location_contains):
         return False
 
+    exclude_location_contains = filters.get("exclude_location_contains")
+    if exclude_location_contains and any(kw.lower() in location for kw in exclude_location_contains):
+        return False
+
     title_contains = filters.get("title_contains")
     if title_contains and not any(kw.lower() in title for kw in title_contains):
         return False

@@ -29,6 +29,8 @@
 #   filters             optional, zusätzlicher Filter NACH dem Scrapen:
 #     location_contains:         nur Jobs, deren Standort einen dieser
 #                                 Begriffe enthält (case-insensitive)
+#     exclude_location_contains: Jobs mit einem dieser Begriffe im Standort
+#                                 aussortieren
 #     title_contains:            nur Jobs, deren Titel einen dieser Begriffe
 #                                 enthält
 #     exclude_title_contains:    Jobs mit einem dieser Begriffe im Titel
@@ -234,6 +236,8 @@ companies:
     link_selector: "a.link-block-2"
     link_attr: "href"
     location_selector: ".location-open-positions-wrapper h4.thin"
+    filters:
+      exclude_location_contains: ["Rotterdam"]
 
   # Destinus (autonome Drohnen/Verteidigung, u.a. Zürich und München):
   # Workable-Jobboard (React-SPA) - method: playwright nötig. Die Seite
