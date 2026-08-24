@@ -476,6 +476,47 @@
   for (var i = 0; i < allJobs.length; i++) wireJob(allJobs[i]);
   updateCompanyCounts();
 
+  function refreshStatusesFromGitHub() {
+    // Ohne das würde ein Gerät immer nur den Stand vom letzten Dashboard-Build
+    // (docs/index.html) plus seine eigenen lokalen Overrides sehen - eine
+    // Statusänderung auf einem anderen, ebenfalls synchronisierten Gerät kommt
+    // sonst erst beim nächsten täglichen Scraper-Lauf an. Einmal beim Laden
+    // den aktuellen state.json-Stand nachladen und übernehmen, damit
+    // Ausblendungen etc. sofort geräteübergreifend sichtbar sind.
+    if (!syncEnabled || !getToken()) return;
+    var url = "https://api.github.com/repos/" + repo + "/contents/data/state.json";
+    fetch(url + "?ref=" + encodeURIComponent(branch), { headers: apiHeaders(), cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("GET " + r.status);
+        return r.json();
+      })
+      .then(function (fileData) {
+        var stateObj = JSON.parse(b64ToUtf8(fileData.content));
+        var changed = false;
+        for (var i = 0; i < allJobs.length; i++) {
+          var jobEl = allJobs[i];
+          var id = jobEl.dataset.jobId;
+          var company = jobEl.dataset.company;
+          var jobs = stateObj.companies && stateObj.companies[company] && stateObj.companies[company].jobs;
+          var remoteStatus = jobs && jobs[id] && jobs[id].status;
+          if (remoteStatus && remoteStatus !== (overrides[id] || jobEl.dataset.status || "neu")) {
+            overrides[id] = remoteStatus;
+            changed = true;
+            jobEl.dataset.forceShow = "false";
+            applyStatus(jobEl, remoteStatus);
+          }
+        }
+        if (changed) {
+          saveOverrides(overrides);
+          updateCompanyCounts();
+        }
+      })
+      .catch(function (e) {
+        console.error("Aktuellen Sync-Stand laden fehlgeschlagen:", e);
+      });
+  }
+  refreshStatusesFromGitHub();
+
   var showButtons = document.querySelectorAll(".show-hidden-btn");
   for (var i = 0; i < showButtons.length; i++) {
     showButtons[i].addEventListener("click", function (ev) {
