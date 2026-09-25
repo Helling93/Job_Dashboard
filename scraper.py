@@ -272,7 +272,11 @@ def extract_jobs(html: str, company: dict) -> list[Job]:
 def _matches_filters(job: Job, filters: dict) -> bool:
     """Post-Filter zusätzlich zu ggf. serverseitigen Filtern (z.B. BMWs
     Standort-/Kategorie-Filter in der URL). Alle Keywords werden
-    case-insensitiv als Teilstring geprüft."""
+    case-insensitiv als Teilstring geprüft - bewusst kein Wortgrenzen-Match,
+    da deutsche Komposita (z.B. "Mechaniker" in "Geschützmechaniker",
+    "Laborant" in "Chemielaborant") sonst nicht mehr träfen. Kurze,
+    kollisionsträchtige Keywords (z.B. "Intern") daher in der Config lieber
+    spezifisch genug wählen (siehe global_exclude_title_contains)."""
     location = (job.location or "").lower()
     title = job.title.lower()
     category = (job.category or "").lower()

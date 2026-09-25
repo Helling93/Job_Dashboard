@@ -147,6 +147,16 @@ Alle Vergleiche sind case-insensitive Teilstring-Treffer. Welche Werte für
 man die Firma zunächst ohne `filters` laufen lässt und im Dashboard schaut,
 welche Kategorien (sichtbar in der Job-Unterzeile) tatsächlich vorkommen.
 
+Zusätzlich gibt es unter `settings.global_exclude_title_contains` eine
+Keyword-Liste, die `main.py` vor dem Scrapen automatisch in JEDE Firma
+mergt - für Kategorien, die grundsätzlich nicht zum eigenen Profil passen
+(Praktika/Werkstudierende/Trainee-Programme, reine gewerbliche
+Fertigungs-/Technikerstellen, Vertrieb/Einkauf/Finance/Admin), statt sie
+pro Firma einzeln eintragen zu müssen. Gleiche Teilstring-Logik wie oben -
+bei kurzen/generischen Begriffen (z.B. "Intern") auf Kollisionen mit
+anderen Wörtern achten (z.B. "international"), siehe Kommentar in
+`config.yaml`.
+
 ### 7. Workflow aktivieren
 
 Standardmäßig läuft der Scan täglich um 8 Uhr (Cron in `scrape.yml`, siehe

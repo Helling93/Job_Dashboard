@@ -334,3 +334,77 @@ settings:
   notify_on_error: true
   # Bei neuen Jobs eine Telegram-Nachricht senden
   notify_on_new_jobs: true
+
+  # Wird vor dem Scrapen automatisch in JEDER Firma in filters.exclude_title_contains
+  # gemergt (main.py) - Kategorien, die grundsätzlich nicht zum Profil passen
+  # (M.Sc. Fahrzeugtechnik, Test-/Systems Engineering, Konstruktion), statt sie
+  # pro Firma einzeln eintragen zu müssen. Prüfung ist Teilstring, case-insensitiv
+  # (wie alle *_contains-Filter, siehe oben) - bewusst KEIN reiner Wortgrenzen-
+  # Match, da deutsche Komposita (z.B. "Mechaniker" in "Geschützmechaniker")
+  # sonst nicht mehr träfen. Deshalb bei kurzen/generischen Begriffen (z.B.
+  # "Intern") auf Kollisionen mit anderen Wörtern achten (z.B. "international",
+  # "interne") - hier deshalb bewusst spezifischere Varianten statt des bloßen
+  # Worts "Intern".
+  global_exclude_title_contains:
+    # Praktika/Trainee-/Werkstudierenden-Programme - falsches Karrierelevel,
+    # nicht nur ein einzelner Job, der nicht passt.
+    - "Praktikant"
+    - "Praktikum"
+    - "Werkstudent"
+    - "Trainee"
+    - "Traineeship"
+    - "Internship"
+    - "Intern ("
+    - "Intern –"
+    - "Intern -"
+    # Reine gewerbliche Fertigungs-/Technikerstellen (Arbeit direkt am Gerät/
+    # in der Produktion, kein Ingenieurstudium vorausgesetzt) - fachlich zu
+    # weit vom M.Sc.-Ingenieurprofil entfernt.
+    - "Mechaniker"
+    - "Schweisser"
+    - "Schlosser"
+    - "CNC"
+    - "Laborant"
+    - "Betriebselektriker"
+    - "Prüffeldtechniker"
+    - "Elektroniker"
+    - "Wareneingangsprüfer"
+    - "Leiterplattenprüfer"
+    - "SMD Operator"
+    - "Messtechniker"
+    - "Produktionssteuerer"
+    - "Mitarbeiter Qualitätssicherung"
+    - "Composite Fitter"
+    - "Composite Laminator"
+    - "Infrastructure Technician"
+    - "AOI Supporter"
+    - "Werkstoffspezialist"
+    - "Qualitätsprüfer"
+    - "Monteur"
+    - "Prototyping Technician"
+    - "Production Technician"
+    - "Lackier"
+    # Kaufmännische/administrative Stellen ohne technischen Bezug (Vertrieb,
+    # Einkauf, Finance/Controlling, HR/Assistenz) - ebenfalls fachlich zu weit
+    # vom Profil entfernt.
+    - "Sales"
+    - "Vertrieb"
+    - "Marketing"
+    - "Einkäufer"
+    - "Einkauf"
+    - "Procurement"
+    - "Controller"
+    - "Payroll"
+    - "Revisor"
+    - "Kaufmännisch"
+    - "Kaufmann"
+    - "Executive Assistant"
+    - "Teamassistenz"
+    - "Office Manager"
+    - "Finance Manager"
+    - "ERP Specialist"
+    - "Customer Care"
+    - "Sachbearbeiter"
+    - "Key Account Manager"
+    - "IT Business Relationship Manager"
+    - "Spezialist Zoll"

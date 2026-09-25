@@ -40,6 +40,14 @@ def run() -> int:
     bot_token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
 
+    global_exclude_title = settings.get("global_exclude_title_contains") or []
+    if global_exclude_title:
+        for company in companies:
+            filters = company.setdefault("filters", {})
+            existing = filters.get("exclude_title_contains") or []
+            # Dedupe, Reihenfolge egal - wird nur für Mitgliedschaftstests genutzt
+            filters["exclude_title_contains"] = list({*existing, *global_exclude_title})
+
     state = storage.load_state(STATE_PATH)
     run_date = storage.today_str()
 
