@@ -850,6 +850,17 @@
           "status": "neu",
           "title": "Sr Commercial Partnership Manager"
         },
+        "d8077ecdbcc4729b": {
+          "category": "Business Development & Sales",
+          "date_posted": null,
+          "disappeared_at": null,
+          "first_seen": "2026-09-25",
+          "last_seen": "2026-09-25",
+          "link": "https://apply.workable.com/destinusgroup/j/313C553985/",
+          "location": "Munich,Bavaria,Germany",
+          "status": "neu",
+          "title": "Business Development Director (DACH)"
+        },
         "eaf93d98bf2dfd4e": {
           "category": "Administration & Office Management",
           "date_posted": null,
@@ -2204,7 +2215,7 @@
         "086e63fea8c43ee9": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/3953/?locale=de_DE",
@@ -2237,7 +2248,7 @@
         "0da5fe0327db8504": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-09-22",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/3954/?locale=de_DE",
@@ -2314,7 +2325,7 @@
         "2bd7145fc0e3bea5": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-09-03",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/4113/?locale=de_DE",
@@ -2369,7 +2380,7 @@
         "3d8ec9439ca9c2fc": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-15",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/3154/?locale=de_DE",
@@ -2391,7 +2402,7 @@
         "4a4c90b5e73a6df8": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-09-21",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/1449/?locale=de_DE",
@@ -2435,7 +2446,7 @@
         "5fc32cffcdf8b5c5": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-09-10",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/3710/?locale=de_DE",
@@ -2468,7 +2479,7 @@
         "6c9960434aaa7a1d": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-17",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/3983/?locale=de_DE",
@@ -2490,7 +2501,7 @@
         "766490d7c789a465": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-18",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/4107/?locale=de_DE",
@@ -2567,7 +2578,7 @@
         "8fff84d3c70d7454": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/4027/?locale=de_DE",
@@ -2611,7 +2622,7 @@
         "a255539f2a40eb55": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/3609/?locale=de_DE",
@@ -2699,7 +2710,7 @@
         "c2428d280989f125": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/3968/?locale=de_DE",
@@ -2732,7 +2743,7 @@
         "d7fe7941cefbb7fd": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-09-03",
           "last_seen": "2026-09-25",
           "link": "https://jobs.knds.de/job-invite/3960/?locale=de_DE",
@@ -4402,9 +4413,9 @@
         "030f575414f6bc8c": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-09-25",
+          "disappeared_at": null,
           "first_seen": "2026-09-01",
-          "last_seen": "2026-09-24",
+          "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/head_of_quality_division_air_defence__m_w_d_/1148525",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -4413,7 +4424,7 @@
         "05127300e9a7e7f5": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/logistiker__m_w_d_/1108091",
@@ -4677,9 +4688,9 @@
         "24e25805a2a9fcda": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-09-25",
+          "disappeared_at": null,
           "first_seen": "2026-08-27",
-          "last_seen": "2026-09-24",
+          "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/senior_financial_accountant__m_w_d_/1140272",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "kein interesse",
@@ -4710,7 +4721,7 @@
         "267bc6c62e97fb65": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-09-24",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/projektleiter_operations__m_w_d_/1168913",
@@ -4974,7 +4985,7 @@
         "4acb8f0d3aa4a247": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/technischer_einsatzleiter_air_defence_erprobung___demonstration__m_w_d_/1045055",
@@ -5018,9 +5029,9 @@
         "50580c5ff2a4aba5": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-09-25",
+          "disappeared_at": null,
           "first_seen": "2026-08-27",
-          "last_seen": "2026-09-24",
+          "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/supplier_quality_coordinator__m_w_d_/1140278",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "kein interesse",
@@ -5029,7 +5040,7 @@
         "5107725085047a8e": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/schichtfuehrer_produktion__m_w_d____inbetriebnahme_neuanlage_2027/1095797",
@@ -5293,7 +5304,7 @@
         "76501ca2819617c5": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-29",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/leiter_fertigung__m_w_d_/1147121",
@@ -5304,9 +5315,9 @@
         "7c12d92b549662ea": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-09-25",
+          "disappeared_at": null,
           "first_seen": "2026-09-17",
-          "last_seen": "2026-09-24",
+          "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/test_engineer_c2_and_training_system__m_w_d_/1162370",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -5359,7 +5370,7 @@
         "83f5115c51a3c12f": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/rams_manager__m_w_d_/1009352",
@@ -5502,9 +5513,9 @@
         "a0b8e331552fff42": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-09-25",
+          "disappeared_at": null,
           "first_seen": "2026-08-27",
-          "last_seen": "2026-09-24",
+          "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/maschinenbautechniker__fachrichtung_konstruktion__m_w_d_/1140215",
           "location": "RWM Zaugg AG | Lohn-Ammannsegg",
           "status": "kein interesse",
@@ -5546,7 +5557,7 @@
         "ac2823cfdcea29ef": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-09-11",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/technischer_projektleiter_stationaere_systeme__m_w_d_/1058741",
@@ -5612,7 +5623,7 @@
         "b527864fdd13fa47": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/prozessplaner___avor_elektronische_baugruppen_und_systeme__m_w_d_/1056440",
@@ -5645,7 +5656,7 @@
         "b9e381a0f0d7cdea": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-28",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/configuration_and_data_manager__m_w_d_/1145819",
@@ -5656,7 +5667,7 @@
         "bc9c2a922011df4d": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/senior_systems_engineer_missile_systems__m_w_d_/1106909",
@@ -5733,7 +5744,7 @@
         "c3173bc4cff79cf6": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/elektrotechniker_inbetriebnahme_flugabwehrsysteme__m_w_d_/888857",
@@ -5751,6 +5762,17 @@
           "location": "RWM Schweiz AG | Altdorf (UR)",
           "status": "neu",
           "title": "Trainee Operations Management (m/w/d)"
+        },
+        "cc1e59b354f3b430": {
+          "category": null,
+          "date_posted": null,
+          "disappeared_at": null,
+          "first_seen": "2026-09-25",
+          "last_seen": "2026-09-25",
+          "link": "https://www.rheinmetall.com/de/job/sap_hcm_specialist__m_w_d_/1171910",
+          "location": "Rheinmetall Air Defence AG | Zürich",
+          "status": "neu",
+          "title": "SAP HCM Specialist (m/w/d)"
         },
         "d0a76e7d674def7a": {
           "category": null,
@@ -5887,7 +5909,7 @@
         "e3cde3c7bf05054f": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-09-19",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/teamleiter_arbeitsvorbereitung__m_w_d_/1166351",
@@ -5975,9 +5997,9 @@
         "ee51e28d41a7e139": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-09-25",
+          "disappeared_at": null,
           "first_seen": "2026-09-17",
-          "last_seen": "2026-09-24",
+          "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/training_system_engineer__m_w_d_/1162373",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -6008,7 +6030,7 @@
         "f451f3a8f6e9fb3a": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": null,
+          "disappeared_at": "2026-09-25",
           "first_seen": "2026-08-04",
           "last_seen": "2026-09-25",
           "link": "https://www.rheinmetall.com/de/job/projektingenieur_elektronik___embedded_systems__m_w_d_/1097843",
@@ -6085,5 +6107,5 @@
       }
     }
   },
-  "last_run": "2026-09-25T08:59:41.508141+00:00"
+  "last_run": "2026-09-25T11:48:08.155712+00:00"
 }
