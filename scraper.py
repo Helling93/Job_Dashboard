@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
-REQUEST_TIMEOUT = 20
+REQUEST_TIMEOUT = 30
 # Ein "ehrlicher" Bot-User-Agent (z.B. "job-alert-bot") reicht bei mehreren
 # Ziel-Seiten (u.a. Helsings Vercel-Bot-Schutz) allein schon, um zuverlässig
 # geblockt zu werden - ein normaler Browser-UA kommt durch, ohne dass sich
@@ -171,13 +171,31 @@ def _looks_like_bot_challenge(html: str) -> bool:
 
 
 def fetch_html_with_retry(company: dict) -> str:
-    """Wie fetch_html(), aber mit Retry bei erkannter Bot-Challenge-Seite
-    (z.B. Vercel Security Checkpoint) - das ist meist transient und tritt bei
-    zu vielen/verdächtigen Anfragen kurzfristig auf, nicht bei einer
-    tatsächlichen Strukturänderung der Seite."""
+    """Wie fetch_html(), aber mit Retry bei (a) erkannter Bot-Challenge-Seite
+    (z.B. Vercel Security Checkpoint) und (b) transienten Fetch-Fehlern
+    (Timeout, Netzwerkfehler) - beides tritt erfahrungsgemäß kurzfristig auf,
+    nicht bei einer tatsächlichen Strukturänderung der Seite. Insbesondere
+    Playwright-Timeouts (z.B. bei Rheinmetalls paginierter Nuxt-SPA, wo ein
+    einzelner langsamer Seitenaufruf sonst die gesamte Firma für den Lauf
+    scheitern ließ) wurden früher gar nicht wiederholt - nur die
+    Bot-Challenge-Erkennung griff, die einen erfolgreichen fetch_html()-Aufruf
+    voraussetzt."""
     html = ""
+    last_error: Exception | None = None
     for attempt in range(1, FETCH_RETRY_ATTEMPTS + 1):
-        html = fetch_html(company)
+        try:
+            html = fetch_html(company)
+            last_error = None
+        except Exception as e:  # noqa: BLE001 - Timeout/Netzwerkfehler jeder Art abfangen
+            last_error = e
+            logger.warning(
+                "Fehler beim Laden von %s (Versuch %d/%d): %s",
+                company.get("name"), attempt, FETCH_RETRY_ATTEMPTS, e,
+            )
+            if attempt < FETCH_RETRY_ATTEMPTS:
+                time.sleep(FETCH_RETRY_DELAY_SECONDS)
+            continue
+
         if not _looks_like_bot_challenge(html):
             return html
         logger.warning(
@@ -186,6 +204,9 @@ def fetch_html_with_retry(company: dict) -> str:
         )
         if attempt < FETCH_RETRY_ATTEMPTS:
             time.sleep(FETCH_RETRY_DELAY_SECONDS)
+
+    if last_error is not None:
+        raise last_error
     return html
 
 
@@ -311,7 +332,15 @@ def _matches_filters(job: Job, filters: dict) -> bool:
 def _scrape_paginated(company: dict) -> list[Job]:
     """Holt mehrere Seiten (URL enthält "{page}" als Platzhalter, 1-basiert)
     und hängt die Ergebnisse aneinander. Stoppt, sobald eine Folgeseite keine
-    Treffer mehr liefert, oder spätestens bei max_pages (Standard: 15)."""
+    Treffer mehr liefert, oder spätestens bei max_pages (Standard: 15).
+
+    Scheitert das Laden einer Folgeseite auch nach den Retries in
+    fetch_html_with_retry endgültig (z.B. ein einzelner besonders langsamer
+    Request bei einer vielseitigen Firma wie Rheinmetall), wird die
+    Pagination dort abgebrochen und das bis dahin gesammelte Teilergebnis
+    zurückgegeben - besser ein unvollständiger Lauf mit den meisten Jobs als
+    ein vollständig verworfener, nur weil eine von z.B. 12 Seiten einmal
+    nicht durchkam."""
     all_jobs: list[Job] = []
     max_pages = company.get("max_pages", 15)
     url_template = company["url"]
@@ -319,7 +348,17 @@ def _scrape_paginated(company: dict) -> list[Job]:
     for page in range(1, max_pages + 1):
         page_company = dict(company)
         page_company["url"] = url_template.format(page=page)
-        html = fetch_html_with_retry(page_company)
+        try:
+            html = fetch_html_with_retry(page_company)
+        except Exception as e:  # noqa: BLE001 - Seite dauerhaft nicht ladbar
+            if page == 1:
+                raise
+            logger.warning(
+                "Seite %d von %s dauerhaft nicht ladbar (%s) - Pagination hier abgebrochen, "
+                "%d bereits gefundene Jobs werden trotzdem übernommen.",
+                page, company.get("name"), e, len(all_jobs),
+            )
+            break
         try:
             jobs = extract_jobs(html, page_company)
         except ScrapeError:
