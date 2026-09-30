@@ -42,7 +42,15 @@
 #   paginate            optional, true = url enthält "{page}" als Platzhalter
 #                        (1-basiert), scraper.py holt Seiten nacheinander bis
 #                        eine Seite keine Treffer mehr liefert
-#   max_pages            optional, Sicherheitslimit für paginate (Standard: 15)
+#                        Alternativ "{offset}" statt "{page}" für Seiten, die
+#                        einen Start-Index erwarten (z.B. startrow=0/25/50) -
+#                        dann page_size (Treffer pro Seite) mit angeben.
+#   max_pages            optional, Sicherheitslimit für paginate bzw.
+#                        next_page_selector (Standard: 15)
+#   next_page_selector   optional, CSS-Selektor eines "Weiter"-Buttons
+#                        (method: playwright) für Blätter-Pagination ohne
+#                        eigene URL pro Seite (z.B. Workday) - alle Seiten
+#                        werden nacheinander eingesammelt
 #   load_more_selector    optional, CSS-Selektor eines "Mehr laden"-Buttons
 #                         (method: playwright) - wird automatisch geklickt,
 #                         bis er verschwindet/nicht mehr sichtbar ist
@@ -325,6 +333,163 @@ companies:
     link_attr: "href"
     location_selector: ".jb-description > div:nth-of-type(1) span"
     category_selector: ".jb-description > div:nth-of-type(3) span"
+
+  # ARX Robotics (unbemannte Bodenfahrzeuge/UGVs für Verteidigung, München):
+  # Greenhouse-Jobboard (EU-Instanz), serverseitig gerendert - method:
+  # requests reicht. Zeigt max. 50 Jobs pro Seite, daher paginate über
+  # "?page=". Alle Stellen sind in München, kein Standortfilter nötig.
+  - name: "ARX Robotics"
+    url: "https://job-boards.eu.greenhouse.io/arxroboticsgmbh?page={page}"
+    method: requests
+    paginate: true
+    max_pages: 5
+    list_selector: "tr.job-post"
+    title_selector: "p.body--medium"
+    link_selector: "a"
+    link_attr: "href"
+    location_selector: "p.body--metadata"
+
+  # Auterion (Autonomie-Software für Drohnen/Verteidigung, Zürich): die
+  # Karriereseite bettet ein Greenhouse-Jobboard per iframe ein - hier direkt
+  # die (serverseitig gerenderte) Embed-URL. Links zeigen auf auterion.com.
+  # Hinweis: die US-Greenhouse-Instanz antwortet gelegentlich kurz mit
+  # 502/503 - die Retries in fetch_html_with_retry fangen das meist ab.
+  - name: "Auterion"
+    url: "https://job-boards.greenhouse.io/embed/job_board?for=auterion"
+    method: requests
+    list_selector: "tr.job-post"
+    title_selector: "p.body--medium"
+    link_selector: "a"
+    link_attr: "href"
+    location_selector: "p.body--metadata"
+    filters:
+      location_contains: ["Zurich", "Zürich"]
+
+  # The Exploration Company (Raumkapsel Nyx, Planegg bei München): Ashby-
+  # Jobboard (React-SPA) - method: playwright. Die Detailzeile pro Job
+  # ("Abteilung • Standort(e) • Anstellungsart") wird als Standort genommen,
+  # darüber lassen sich Standort UND Praktika ("• Intern") filtern.
+  - name: "The Exploration Company"
+    url: "https://jobs.ashbyhq.com/the-exploration-company"
+    method: playwright
+    base_url: "https://jobs.ashbyhq.com"
+    list_selector: 'a[href^="/the-exploration-company/"]:has(h3)'
+    title_selector: "h3"
+    link_selector: "self"
+    link_attr: "href"
+    location_selector: ".ashby-job-posting-brief-details p"
+    filters:
+      location_contains: ["Munich"]
+      exclude_location_contains: ["Intern"]
+
+  # Tytan Technologies (KI-Abfangdrohnen, München): Recruitee-Jobboard,
+  # serverseitig gerendert - method: requests reicht. CSS-Klassen sind
+  # gehasht (styled-components), daher über data-testid + Struktur (Karte =
+  # div mit verschachteltem /o/-Link) statt über Klassennamen.
+  - name: "Tytan Technologies"
+    url: "https://tytantechnologiesgmbh.recruitee.com/"
+    method: requests
+    base_url: "https://tytantechnologiesgmbh.recruitee.com"
+    list_selector: '[data-testid="offer-list-cards-desktop-display"] div:has(> div > div > a[href^="/o/"])'
+    title_selector: 'a[href^="/o/"]'
+    link_selector: 'a[href^="/o/"]'
+    link_attr: "href"
+    location_selector: '[data-testid="styled-location-list-item"]'
+    filters:
+      location_contains: ["Munich", "München"]
+      exclude_title_contains: ["Talent Pool"]
+
+  # IABG (Test/V&V, Systemanalyse für Verteidigung & Luftfahrt, Ottobrunn):
+  # Jobbörse (Java-"engage/jobexchange"), die Trefferliste erscheint erst
+  # nach Absenden des Suchformulars (POST) - daher method: playwright und
+  # dismiss_selector klickt einmal auf "Suchen" (leere Suche = alle Jobs).
+  # Spalten: Bezeichnung | Zielgruppe | Standort.
+  - name: "IABG"
+    url: "https://jobboerse.iabg.de/engage/jobexchange/searchJobOffersQuick.do?languageChanged=true&j=myjobexchange"
+    method: playwright
+    dismiss_selector: 'input[value="Suchen"]'
+    list_selector: "tr.joboffer"
+    title_selector: "td:nth-of-type(1) a"
+    link_selector: "td:nth-of-type(1) a"
+    link_attr: "href"
+    category_selector: "td:nth-of-type(3) a"
+    location_selector: "td:nth-of-type(5) a"
+    filters:
+      location_contains: ["Ottobrunn", "München"]
+      exclude_category_contains: ["Werkstudent", "Masterand"]
+
+  # Hensoldt (Sensorik/Verteidigungselektronik, Taufkirchen): SAP
+  # SuccessFactors-Karriereseite, serverseitig gerendert - method: requests.
+  # 25 Treffer pro Seite, Blättern über "startrow=0/25/50..." - daher
+  # "{offset}" + page_size statt "{page}". Standortfilter über die Suche.
+  - name: "Hensoldt (Taufkirchen)"
+    url: "https://jobs.hensoldt.net/search/?q=&locationsearch=Taufkirchen&startrow={offset}"
+    method: requests
+    base_url: "https://jobs.hensoldt.net"
+    paginate: true
+    page_size: 25
+    max_pages: 8
+    list_selector: "li.job-tile"
+    title_selector: "a.jobTitle-link"
+    link_selector: "a.jobTitle-link"
+    link_attr: "href"
+    filters:
+      exclude_title_contains: ["Masterarbeit", "Bachelorarbeit", "Abschlussarbeit", "Duales Studium"]
+
+  # Airbus Defence and Space (Manching, Taufkirchen/Ottobrunn, München):
+  # Workday-Jobportal (SPA) - method: playwright. Filter über die URL-
+  # Parameter der Filter-UI (IDs aus Workdays Facetten):
+  #   locations       -> Manching, München Area, Taufkirchen / Ottobrunn
+  #   workerSubType   -> Regular (keine Studenten/Azubis/Befristete)
+  #   jobFamilyGroup  -> Engineering, Manuf./Assembly/Integr. & Test, Management
+  # Workday zeigt 20 Treffer pro Seite ohne eigene URL pro Seite -
+  # next_page_selector klickt sich durch und sammelt alle Seiten ein.
+  - name: "Airbus Defence and Space"
+    url: "https://ag.wd3.myworkdayjobs.com/de-DE/Airbus/jobs?locations=f5811cef9cb501505ee2ac6a4c0aff49&locations=f5811cef9cb501a49eac0a694c0a8244&locations=f5811cef9cb50199bf69196b4c0a674b&workerSubType=f5811cef9cb501a69768a71d470a6d15&jobFamilyGroup=f5811cef9cb5018463377f3f550a1bf2&jobFamilyGroup=f5811cef9cb5010551c57e3f550a19f2&jobFamilyGroup=f5811cef9cb50102a000803f550a1ff2"
+    method: playwright
+    base_url: "https://ag.wd3.myworkdayjobs.com"
+    list_selector: 'li:has(a[data-automation-id="jobTitle"])'
+    title_selector: 'a[data-automation-id="jobTitle"]'
+    link_selector: 'a[data-automation-id="jobTitle"]'
+    link_attr: "href"
+    location_selector: '[data-automation-id="locations"] dd'
+    date_selector: '[data-automation-id="postedOn"] dd'
+    next_page_selector: 'button[data-uxi-element-id="next"]'
+    max_pages: 10
+
+  # thyssenkrupp Presta (Lenkungssysteme/Steer-by-Wire, Eschen FL): läuft
+  # über das Konzern-Jobboard (Next.js) - die gefilterte Liste wird erst
+  # clientseitig geladen, daher method: playwright. Filter auf Land
+  # Liechtenstein (enthält neben Presta auch die Schwester-Gesellschaft
+  # Dynamic Components TecCenter in Eschen). Die Gesellschaft landet als
+  # Kategorie im Dashboard.
+  - name: "thyssenkrupp Presta (Eschen)"
+    url: "https://jobs.thyssenkrupp.com/de?locations.country=Liechtenstein"
+    method: playwright
+    base_url: "https://jobs.thyssenkrupp.com"
+    list_selector: "tr.group"
+    title_selector: 'a[href*="/job/"]'
+    link_selector: 'a[href*="/job/"]'
+    link_attr: "href"
+    category_selector: "td:nth-of-type(1) p"
+    location_selector: "td:nth-of-type(3) p"
+
+  # Kistler (Messtechnik/Prüfstände, Winterthur): Angular-Seite - method:
+  # playwright. "?country=CH" filtert auf die Schweiz (alle Stellen dort
+  # sind in Winterthur); location_contains als Absicherung, falls der
+  # Länderfilter mal nicht greift.
+  - name: "Kistler"
+    url: "https://www.kistler.com/CH/en/jobs?country=CH"
+    method: playwright
+    base_url: "https://www.kistler.com"
+    list_selector: "div.job"
+    title_selector: "a.job__description"
+    link_selector: "a.job__description"
+    link_attr: "href"
+    location_selector: "span.job__position"
+    filters:
+      location_contains: ["Winterthur"]
+      exclude_title_contains: ["INITIATIV"]
 
 settings:
   # Auch verschwundene Jobs im Dashboard/History anzeigen

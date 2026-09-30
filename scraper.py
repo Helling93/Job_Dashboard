@@ -142,6 +142,31 @@ def fetch_html(company: dict) -> str:
                     except Exception:
                         break  # kein Button (mehr) da - alles geladen
 
+            # Klassische Blätter-Pagination ohne eigene URL pro Seite (z.B.
+            # Workday): Inhalt jeder Seite einsammeln, "Weiter" klicken und
+            # warten, bis sich das erste Listenelement geändert hat. Die
+            # Seiten-HTMLs werden am Ende einfach aneinandergehängt -
+            # extract_jobs() findet die Jobs aller Seiten darin.
+            next_page_selector = company.get("next_page_selector")
+            page_snapshots: list[str] = []
+            if next_page_selector and company.get("list_selector"):
+                for _ in range(company.get("max_pages", 15) - 1):
+                    page_snapshots.append(page.content())
+                    button = page.locator(next_page_selector).first
+                    try:
+                        if not button.is_visible() or not button.is_enabled():
+                            break
+                        first_before = page.locator(company["list_selector"]).first.inner_text()
+                        button.click(timeout=3000)
+                        page.wait_for_function(
+                            "([sel, before]) => { const el = document.querySelector(sel);"
+                            " return el && el.innerText !== before; }",
+                            arg=[company["list_selector"], first_before],
+                            timeout=15000,
+                        )
+                    except Exception:
+                        break  # kein (aktiver) Weiter-Button mehr - letzte Seite erreicht
+
             if company.get("flatten_shadow_dom"):
                 # Manche Seiten (z.B. KNDS, gebaut mit Stencil.js Web
                 # Components) rendern Jobs in Shadow DOM - page.content()
@@ -160,6 +185,10 @@ def fetch_html(company: dict) -> str:
 
             html = page.content()
             browser.close()
+            if page_snapshots:
+                if page_snapshots[-1] == html:
+                    page_snapshots.pop()  # letzte Seite nicht doppelt übernehmen
+                html = "\n".join(page_snapshots + [html])
             return html
 
     raise ScrapeError(f"Unbekannte method '{method}' für Firma {company.get('name')}")
@@ -342,12 +371,16 @@ def _scrape_paginated(company: dict) -> list[Job]:
     ein vollständig verworfener, nur weil eine von z.B. 12 Seiten einmal
     nicht durchkam."""
     all_jobs: list[Job] = []
+    seen_links: set[str] = set()
     max_pages = company.get("max_pages", 15)
+    page_size = company.get("page_size", 1)
     url_template = company["url"]
 
     for page in range(1, max_pages + 1):
         page_company = dict(company)
-        page_company["url"] = url_template.format(page=page)
+        # "{offset}" für Seiten, die statt einer Seitennummer einen
+        # Start-Index erwarten (z.B. SuccessFactors "startrow=0/25/50")
+        page_company["url"] = url_template.format(page=page, offset=(page - 1) * page_size)
         try:
             html = fetch_html_with_retry(page_company)
         except Exception as e:  # noqa: BLE001 - Seite dauerhaft nicht ladbar
@@ -365,9 +398,14 @@ def _scrape_paginated(company: dict) -> list[Job]:
             if page == 1:
                 raise
             break  # keine weiteren Treffer - Ende der Pagination erreicht
-        if not jobs:
+        # Manche Seiten liefern hinter der letzten Seite einfach wieder die
+        # letzte (oder erste) Seite statt einer leeren Liste - daher nur
+        # wirklich neue Jobs übernehmen und abbrechen, sobald keine mehr kommen.
+        new_jobs = [j for j in jobs if j.link not in seen_links]
+        if not new_jobs:
             break
-        all_jobs.extend(jobs)
+        seen_links.update(j.link for j in new_jobs)
+        all_jobs.extend(new_jobs)
 
     return all_jobs
 
