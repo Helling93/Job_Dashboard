@@ -48,6 +48,11 @@ def run() -> int:
             # Dedupe, Reihenfolge egal - wird nur für Mitgliedschaftstests genutzt
             filters["exclude_title_contains"] = list({*existing, *global_exclude_title})
 
+    global_region = settings.get("global_region_contains") or []
+    if global_region:
+        for company in companies:
+            company.setdefault("filters", {}).setdefault("region_contains", global_region)
+
     state = storage.load_state(STATE_PATH)
     run_date = storage.today_str()
 

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from scraper import ScrapeError, extract_jobs
+from scraper import Job, ScrapeError, _matches_filters, extract_jobs
 
 FIXTURE = (Path(__file__).parent / "fixtures" / "sample_company.html").read_text(encoding="utf-8")
 
@@ -40,3 +40,15 @@ def test_extract_jobs_raises_when_selector_matches_nothing():
         assert False, "sollte ScrapeError werfen"
     except ScrapeError:
         pass
+
+
+def test_region_filter_keeps_jobs_without_location_and_multi_site_matches():
+    filters = {"region_contains": ["Munich", "Zürich"]}
+
+    def job(location):
+        return Job(title="Systems Engineer", link="https://x", location=location)
+
+    assert _matches_filters(job("Berlin; London; Munich"), filters)
+    assert _matches_filters(job(None), filters)
+    assert _matches_filters(job(""), filters)
+    assert not _matches_filters(job("London"), filters)

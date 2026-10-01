@@ -335,6 +335,13 @@ def _matches_filters(job: Job, filters: dict) -> bool:
     if location_contains and not any(kw.lower() in location for kw in location_contains):
         return False
 
+    # Wie location_contains, aber Jobs OHNE Standortangabe bleiben drin (manche
+    # Seiten liefern keinen Standort, z.B. Hensoldt) - für die globale
+    # Pendelregion aus settings.global_region_contains (siehe main.py).
+    region_contains = filters.get("region_contains")
+    if region_contains and location.strip() and not any(kw.lower() in location for kw in region_contains):
+        return False
+
     exclude_location_contains = filters.get("exclude_location_contains")
     if exclude_location_contains and any(kw.lower() in location for kw in exclude_location_contains):
         return False
