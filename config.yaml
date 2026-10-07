@@ -491,6 +491,41 @@ companies:
       location_contains: ["Winterthur"]
       exclude_title_contains: ["INITIATIV"]
 
+  # Bosch (Stellenportal Deutschland, Next.js): die Filter stecken in der URL
+  # (Standorte Garching/München-Mitte/München-Neuperlach/München,
+  # Berufserfahrene, Arbeitsbereiche Technik/Ingenieurwesen sowie Forschung,
+  # Voraus- und Technologieentwicklung). Die Trefferliste wird clientseitig
+  # nachgeladen, daher method: playwright. Jede Job-Karte ist selbst ein
+  # <a href="/job/...">. Der Standort-Text enthält das Label "Standort:".
+  - name: "Bosch (München)"
+    url: "https://jobs.bosch.de/?filter=locations.cityState%3AGarching+bei+M%C3%BCnchen_IN_+Bayern%2Clocations.cityState%3AM%C3%BCnchen-Mitte_IN_+Bayern%2Clocations.cityState%3AM%C3%BCnchen-Neuperlach_IN_+Bayern%2Clocations.cityState%3AM%C3%BCnchen_IN_+Bayern%2CentryLevel%3ABerufserfahrene%2CjobField%3ATechnik%2FIngenieurwesen%2CjobField%3AForschung_IN_+Voraus-+und+Technologieentwicklung"
+    method: playwright
+    base_url: "https://jobs.bosch.de"
+    list_selector: 'a[href^="/job/"]'
+    title_selector: "p.text-primary"
+    link_selector: "self"
+    link_attr: "href"
+    location_selector: "div.grid > div:nth-of-type(1) > div"
+    category_selector: "div.grid > div:nth-of-type(2) p:nth-of-type(2)"
+
+  # MAN Truck & Bus (SuccessFactors-Jobbörse, neue RMK-Oberfläche): Facetten
+  # als JSON im URL-Parameter facetFilters - filter1 = Funktionsbereich
+  # ("Forschung und Entwicklung"), filter6 = Karrierestufe ("Berufserfahrene").
+  # Die Jobliste wird in Shadow DOM (UI5 Web Components) gerendert, daher
+  # method: playwright + flatten_shadow_dom. Footer-Zeilen der Karte:
+  # 1 = Karrierestufe, 2 = Funktionsbereich, 3 = Standort, 4 = Gesellschaft.
+  - name: "MAN Truck & Bus"
+    url: "https://jobs.man.eu/search/?q=&locale=de_DE&searchResultView=LIST&facetFilters=%7B%22filter1%22%3A%5B%22Forschung+und+Entwicklung%22%5D%2C%22filter6%22%3A%5B%22Berufserfahrene%22%5D%7D"
+    method: playwright
+    flatten_shadow_dom: true
+    base_url: "https://jobs.man.eu"
+    list_selector: 'li[data-testid="jobCard"]'
+    title_selector: "a.jobCardTitle"
+    link_selector: "a.jobCardTitle"
+    link_attr: "href"
+    location_selector: 'div[data-testid="jobCardFooter"] > div:nth-of-type(3) span:nth-of-type(2)'
+    category_selector: 'div[data-testid="jobCardFooter"] > div:nth-of-type(4) span:nth-of-type(2)'
+
 settings:
   # Auch verschwundene Jobs im Dashboard/History anzeigen
   track_disappeared: true
