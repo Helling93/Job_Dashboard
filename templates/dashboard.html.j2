@@ -141,6 +141,37 @@
   .save-indicator.ok { color: var(--new); }
   .save-indicator.err { color: var(--gone); }
 
+  /* Suche/Filter */
+  .search-bar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg); padding: 0.6rem 0 0.8rem; margin-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-row { display: flex; gap: 0.5rem; align-items: center; }
+  .search-row input[type="search"] {
+    flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.6rem 0.8rem; color: var(--text); font-size: 0.95rem;
+  }
+  .search-row input[type="search"]:focus { outline: none; border-color: var(--accent); }
+  .search-row button {
+    background: transparent; color: var(--muted); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.55rem 0.8rem; font-size: 0.8rem; cursor: pointer; white-space: nowrap;
+  }
+  .search-row button:hover { color: var(--text); border-color: var(--muted); }
+  .filter-chips { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.55rem; align-items: center; }
+  .filter-chips button {
+    background: var(--card); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 999px; padding: 0.25rem 0.7rem; font-size: 0.75rem; cursor: pointer;
+  }
+  .filter-chips button:hover { border-color: var(--accent); color: var(--text); }
+  .filter-chips button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .search-result { font-size: 0.78rem; color: var(--muted); margin-left: auto; }
+  .job.search-miss, details.company.search-empty { display: none !important; }
+  .job.search-force { display: block !important; }
+  body.searching .hidden-toggle { display: none !important; }
+  .match-count { color: var(--accent); font-weight: 400; font-size: 0.8rem; flex-shrink: 0; }
+  mark { background: color-mix(in srgb, var(--accent) 35%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
+
   .howto {
     font-size: 0.8rem; color: var(--muted); background: var(--card);
     border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.1rem;
@@ -180,6 +211,21 @@
     {% endif %}
   </div>
 
+  <div class="search-bar">
+    <div class="search-row">
+      <input type="search" id="job-search" placeholder="Suchen: Titel, Firma, Ort … (z.B. „systems engineer münchen“)" autocomplete="off">
+      <button id="job-search-clear" type="button">Zurücksetzen</button>
+    </div>
+    <div class="filter-chips" id="status-filter">
+      <button type="button" data-filter="alle" class="active">Alle</button>
+      <button type="button" data-filter="neu">Neu</button>
+      <button type="button" data-filter="interessant">Interessant</button>
+      <button type="button" data-filter="beworben">Beworben</button>
+      <button type="button" data-filter="kein interesse">Kein Interesse</button>
+      <span class="search-result" id="search-result"></span>
+    </div>
+  </div>
+
   <section>
     <h2>Offene Stellen</h2>
     {% if companies_open %}
@@ -187,6 +233,7 @@
       <details class="company">
         <summary>
           <span class="company-name">{{ company }}</span>
+          <span class="match-count"></span>
           <span class="count" data-total="{{ jobs|length }}">({{ jobs|length }})</span>
         </summary>
         <div class="company-jobs">
@@ -231,6 +278,7 @@
       <details class="company">
         <summary>
           <span class="company-name">{{ company }}</span>
+          <span class="match-count"></span>
           <span class="count">({{ jobs|length }})</span>
         </summary>
         <div class="company-jobs">
@@ -361,6 +409,136 @@
         if (hiddenCountEl) hiddenCountEl.textContent = hidden;
       }
     }
+    applySearch();
+  }
+
+  // Suche/Filter: Freitext (alle Wörter müssen vorkommen, Groß-/Klein-
+  // schreibung und Umlaute/Akzente egal - "zurich" findet "Zürich") über
+  // Titel, Firma, Kategorie und Ort, kombiniert mit einem Status-Filter.
+  // Arbeitet nur mit CSS-Klassen, damit die bestehende "Kein Interesse"-
+  // Ausblendung (style.display) unangetastet bleibt.
+  var searchInput, statusFilter = "alle";
+
+  function norm(s) {
+    return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ß/g, "ss");
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function highlightTitle(jobEl, terms) {
+    var a = jobEl.querySelector(".info a");
+    if (!a) return;
+    if (a.dataset.rawTitle === undefined) a.dataset.rawTitle = a.textContent;
+    var raw = a.dataset.rawTitle;
+    if (!terms.length) { a.textContent = raw; return; }
+    // Treffer auf dem normalisierten Text suchen (gleiche Länge wie der
+    // Originaltext, solange keine Sonderfälle wie ß auftreten) und im
+    // Original markieren.
+    var n = raw.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+    if (n.length !== raw.length) { a.textContent = raw; return; }
+    var marks = [];
+    terms.forEach(function (t) {
+      var idx = n.indexOf(t);
+      while (idx !== -1) { marks.push([idx, idx + t.length]); idx = n.indexOf(t, idx + t.length); }
+    });
+    if (!marks.length) { a.textContent = raw; return; }
+    marks.sort(function (x, y) { return x[0] - y[0]; });
+    var html = "", pos = 0;
+    marks.forEach(function (m) {
+      if (m[0] < pos) return;  // überlappende Treffer überspringen
+      html += escapeHtml(raw.slice(pos, m[0])) + "<mark>" + escapeHtml(raw.slice(m[0], m[1])) + "</mark>";
+      pos = m[1];
+    });
+    a.innerHTML = html + escapeHtml(raw.slice(pos));
+  }
+
+  function applySearch() {
+    if (!searchInput) return;
+    var terms = norm(searchInput.value).split(/\s+/).filter(Boolean);
+    var active = terms.length > 0 || statusFilter !== "alle";
+    var totalMatches = 0, companyMatches = 0;
+    document.body.classList.toggle("searching", active);
+    var companies = document.querySelectorAll("details.company");
+    for (var i = 0; i < companies.length; i++) {
+      var companyEl = companies[i];
+      var companyName = norm(companyEl.querySelector(".company-name").textContent);
+      var jobs = companyEl.querySelectorAll(".job[data-job-id]");
+      var matches = 0;
+      for (var j = 0; j < jobs.length; j++) {
+        var jobEl = jobs[j];
+        var status = jobEl.dataset.effectiveStatus || jobEl.dataset.status || "neu";
+        var hay = companyName + " " + norm(jobEl.querySelector(".info").textContent);
+        var textOk = terms.every(function (t) { return hay.indexOf(t) !== -1; });
+        // Ohne expliziten "Kein Interesse"-Filter bleiben ausgeblendete Jobs
+        // auch in der Suche ausgeblendet (außer per "anzeigen" eingeblendet).
+        var statusOk = statusFilter === "alle"
+          ? (status !== "kein interesse" || jobEl.dataset.forceShow === "true")
+          : status === statusFilter;
+        var match = textOk && statusOk;
+        jobEl.classList.toggle("search-miss", active && !match);
+        jobEl.classList.toggle("search-force", active && match && status === "kein interesse");
+        highlightTitle(jobEl, terms);
+        if (match) matches++;
+      }
+      var matchEl = companyEl.querySelector(".match-count");
+      if (active) {
+        if (companyEl.dataset.wasOpen === undefined) companyEl.dataset.wasOpen = companyEl.open ? "1" : "0";
+        companyEl.classList.toggle("search-empty", matches === 0);
+        if (matches > 0) companyEl.open = true;
+        if (matchEl) matchEl.textContent = matches ? matches + " Treffer" : "";
+        if (matches) { totalMatches += matches; companyMatches++; }
+      } else {
+        companyEl.classList.remove("search-empty");
+        if (companyEl.dataset.wasOpen !== undefined) {
+          companyEl.open = companyEl.dataset.wasOpen === "1";
+          delete companyEl.dataset.wasOpen;
+        }
+        if (matchEl) matchEl.textContent = "";
+      }
+    }
+    var resultEl = document.getElementById("search-result");
+    if (resultEl) {
+      resultEl.textContent = active
+        ? (totalMatches ? totalMatches + " Treffer in " + companyMatches + (companyMatches === 1 ? " Firma" : " Firmen") : "Keine Treffer")
+        : "";
+    }
+  }
+
+  searchInput = document.getElementById("job-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", applySearch);
+    searchInput.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape") { searchInput.value = ""; applySearch(); }
+    });
+    // "/" springt von überall ins Suchfeld (wie bei GitHub)
+    document.addEventListener("keydown", function (ev) {
+      var tag = (document.activeElement && document.activeElement.tagName) || "";
+      if (ev.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+        ev.preventDefault();
+        searchInput.focus();
+      }
+    });
+  }
+  var chips = document.querySelectorAll("#status-filter button");
+  for (var c = 0; c < chips.length; c++) {
+    chips[c].addEventListener("click", function (ev) {
+      statusFilter = ev.currentTarget.dataset.filter;
+      for (var k = 0; k < chips.length; k++) chips[k].classList.toggle("active", chips[k] === ev.currentTarget);
+      applySearch();
+    });
+  }
+  var clearSearchBtn = document.getElementById("job-search-clear");
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener("click", function () {
+      searchInput.value = "";
+      statusFilter = "alle";
+      for (var k = 0; k < chips.length; k++) chips[k].classList.toggle("active", chips[k].dataset.filter === "alle");
+      applySearch();
+    });
   }
 
   function setIndicator(jobEl, state) {
