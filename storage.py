@@ -13,6 +13,13 @@ from scraper import Job
 logger = logging.getLogger(__name__)
 
 DEFAULT_STATUS = "neu"
+# Erst wenn ein Job so viele Läufe IN FOLGE fehlt, gilt er als verschwunden.
+# Paginierte Seiten (v.a. Rheinmetall) sortieren nicht stabil - beim
+# Durchblättern rutschen einzelne Jobs zwischen zwei Seitenaufrufen auf eine
+# schon geholte Seite und werden in diesem Lauf übersehen. Ohne Karenz
+# verschwinden sie dann für einen Tag aus dem Dashboard und tauchen am
+# nächsten Tag wieder auf.
+MISSED_RUNS_BEFORE_DISAPPEARED = 2
 
 
 def job_id_for(company_name: str, job: Job) -> str:
@@ -60,6 +67,7 @@ def update_company(
             record = existing_jobs[jid]
             record["last_seen"] = run_date
             record["disappeared_at"] = None
+            record.pop("missed_runs", None)
             # Titel/Standort/Datum/Kategorie aktuell halten, falls sich Kleinigkeiten ändern
             record["title"] = job.title
             record["location"] = job.location
@@ -83,6 +91,11 @@ def update_company(
     disappeared_jobs: list[dict] = []
     for jid, record in existing_jobs.items():
         if jid not in seen_ids and record.get("disappeared_at") is None:
+            missed = record.get("missed_runs", 0) + 1
+            if missed < MISSED_RUNS_BEFORE_DISAPPEARED:
+                record["missed_runs"] = missed
+                continue
+            record.pop("missed_runs", None)
             record["disappeared_at"] = run_date
             disappeared_jobs.append({"id": jid, "company": company_name, **record})
 

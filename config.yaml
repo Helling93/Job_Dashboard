@@ -613,6 +613,26 @@ settings:
     - "Atlassian"
     - "People Development"
     - "Onsite Support"
+    # HR/People, Recht, Buchhaltung - nachgetragen, nachdem z.B. "People
+    # Analytics & AI Optimization Expert" (ARX) oder "Head of Controlling"
+    # (Rheinmetall) durchgerutscht sind. Bewusst NICHT bloß "Controlling" -
+    # das träfe auch "Projektingenieur ... Schwerpunkt Projektcontrolling".
+    - "People Analytics"
+    - "People Operations"
+    - "People & Office"
+    - "HR Business Partner"
+    - "HR Specialist"
+    - "HR Generalist"
+    - "Human Resources"
+    - "Talent Acquisition"
+    - "Recruiter"
+    - "Legal Counsel"
+    - "Commercial Counsel"
+    - "Accountant"
+    - "Accounting"
+    - "Head of Controlling"
+    - "Leiter Controlling"
+    - "Abteilungsleiter Controlling"
     # Ergänzt 2026-10-01 nach Durchsicht der 9 neu hinzugefügten Firmen:
     # Ausbildung/Hilfskräfte und gewerbliche Bedienerstellen
     - "Working Student"
