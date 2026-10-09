@@ -236,14 +236,16 @@ möchtest - das ist bewusst nicht vorimplementiert, da es von deinem Setup
 
 ## Cron & Zeitzone
 
-GitHub-Actions-Cron läuft in UTC. `12 6 * * *` entspricht ca. 8:12 Uhr in
-Zürich/München **während der Sommerzeit (UTC+2)**. Im Winter (UTC+1) läuft
-der Scan dann um 7:12 Uhr. Falls exakt zur vollen Stunde wichtig ist, davon
-abraten: GitHub verzögert oder überspringt Scheduled Workflows bevorzugt
-genau "on the hour" (höchste Serverlast) - deshalb bewusst 12 Minuten
-versetzt. Falls exakt 8:00 Uhr ganzjährig wichtig ist, zwei Cron-Einträge
-nutzen (`12 6 * 3-10 *` und `12 7 * 11,12,1,2 *`) oder die kleine Abweichung
-zweimal im Jahr in Kauf nehmen.
+GitHub-Actions-Cron läuft in UTC und kennt keine Zeitzonen. Damit der Scan
+ganzjährig um ca. 8:12 Uhr in Zürich/München läuft, gibt es zwei Einträge:
+`12 6 * * *` (= 8:12 Uhr Sommerzeit, UTC+2) und `12 7 * * *` (= 8:12 Uhr
+Winterzeit, UTC+1). Der vorgeschaltete Job `gate` prüft anhand des
+auslösenden Cron-Eintrags, welcher davon zur aktuell gültigen Zeit in
+`Europe/Zurich` passt, und überspringt den anderen - die Zeitumstellung wird
+also automatisch berücksichtigt, im Actions-Tab erscheint pro Tag ein
+übersprungener Lauf. Bewusst 12 Minuten nach der vollen Stunde: GitHub
+verzögert oder überspringt Scheduled Workflows bevorzugt genau "on the hour"
+(höchste Serverlast).
 
 Falls ein geplanter Lauf trotzdem mal komplett ausbleibt: Das ist ein
 bekanntes, gelegentliches GitHub-Verhalten bei Scheduled Workflows (keine

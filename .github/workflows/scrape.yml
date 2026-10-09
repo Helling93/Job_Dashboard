@@ -2,13 +2,16 @@ name: Job Scraper
 
 on:
   schedule:
-    # 08:12 in Zürich/München. GitHub Actions cron läuft in UTC, daher
-    # entspricht das je nach Sommer-/Winterzeit 06:12 oder 07:12 UTC.
-    # Aktuell auf Sommerzeit (UTC+2) eingestellt -> ggf. 2x jährlich anpassen,
-    # siehe README "Cron & Zeitzone". Bewusst NICHT auf die volle Stunde
-    # gelegt - GitHub warnt, dass Scheduled Workflows genau "on the hour"
-    # (v.a. bei hoher Last) verzögert oder übersprungen werden können.
+    # 08:12 in Zürich/München - ganzjährig. GitHub-Actions-Cron läuft in UTC
+    # und kennt keine Zeitzonen, daher zwei Einträge: 06:12 UTC (= 08:12
+    # Sommerzeit, UTC+2) und 07:12 UTC (= 08:12 Winterzeit, UTC+1). Der Job
+    # "gate" unten lässt pro Tag nur den Eintrag laufen, der zur aktuell
+    # gültigen Zeit in Europe/Zurich passt - keine manuelle Umstellung nötig.
+    # Bewusst NICHT auf die volle Stunde gelegt - GitHub warnt, dass Scheduled
+    # Workflows genau "on the hour" (v.a. bei hoher Last) verzögert oder
+    # übersprungen werden können.
     - cron: "12 6 * * *"
+    - cron: "12 7 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -21,7 +24,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Entscheidet anhand des auslösenden Cron-Eintrags (nicht der aktuellen
+  # Uhrzeit - GitHub startet geplante Läufe teils mit Verzögerung), ob dieser
+  # Lauf der "richtige" für die aktuelle Sommer-/Winterzeit ist. Manuelle
+  # Starts (workflow_dispatch) laufen immer.
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - id: check
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$(TZ=Europe/Zurich date +%z)" = "+0200" ]; then
+            wanted="12 6 * * *"   # Sommerzeit
+          else
+            wanted="12 7 * * *"   # Winterzeit
+          fi
+          if [ "${{ github.event.schedule }}" = "$wanted" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Cron '${{ github.event.schedule }}' passt nicht zur aktuellen Zeitzone (erwartet '$wanted') - Lauf übersprungen."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
   scrape:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
