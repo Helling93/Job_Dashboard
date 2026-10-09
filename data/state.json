@@ -285,6 +285,7 @@
           "last_seen": "2026-10-09",
           "link": "https://job-boards.eu.greenhouse.io/arxroboticsgmbh/jobs/4998863101",
           "location": "Munich",
+          "missed_runs": 1,
           "status": "kein interesse",
           "title": "People Analytics & AI Optimization Expert (m/f/d)"
         },
@@ -1492,6 +1493,7 @@
           "last_seen": "2026-10-09",
           "link": "https://www.audif1.com/career/details/2791353",
           "location": "Hinwil Switzerland | Full time",
+          "missed_runs": 1,
           "status": "kein interesse",
           "title": "Senior Talent Acquisition Specialist - 12 months Fixed-term"
         },
@@ -4956,9 +4958,9 @@
         "0da5fe0327db8504": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-07",
+          "disappeared_at": null,
           "first_seen": "2026-09-22",
-          "last_seen": "2026-10-06",
+          "last_seen": "2026-10-09",
           "link": "https://jobs.knds.de/job-invite/3954/?locale=de_DE",
           "location": "München",
           "status": "kein interesse",
@@ -5121,9 +5123,9 @@
         "3d8ec9439ca9c2fc": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-08",
+          "disappeared_at": null,
           "first_seen": "2026-08-15",
-          "last_seen": "2026-10-07",
+          "last_seen": "2026-10-09",
           "link": "https://jobs.knds.de/job-invite/3154/?locale=de_DE",
           "location": "München",
           "status": "kein interesse",
@@ -5352,9 +5354,9 @@
         "9d55ee97603f346b": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-09",
+          "disappeared_at": null,
           "first_seen": "2026-08-22",
-          "last_seen": "2026-10-08",
+          "last_seen": "2026-10-09",
           "link": "https://jobs.knds.de/job-invite/3520/?locale=de_DE",
           "location": "München",
           "status": "kein interesse",
@@ -5374,9 +5376,9 @@
         "a255539f2a40eb55": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-09",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-10-08",
+          "last_seen": "2026-10-09",
           "link": "https://jobs.knds.de/job-invite/3609/?locale=de_DE",
           "location": "München",
           "status": "kein interesse",
@@ -5385,9 +5387,9 @@
         "a358f90459a306a9": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-09",
+          "disappeared_at": null,
           "first_seen": "2026-10-06",
-          "last_seen": "2026-10-08",
+          "last_seen": "2026-10-09",
           "link": "https://jobs.knds.de/job-invite/4228/?locale=de_DE",
           "location": "München",
           "status": "interessant",
@@ -6711,6 +6713,17 @@
           "status": "neu",
           "title": "Production Test Engineer (m/f/d)"
         },
+        "5a5e9dab2a5c8b2a": {
+          "category": null,
+          "date_posted": null,
+          "disappeared_at": null,
+          "first_seen": "2026-10-09",
+          "last_seen": "2026-10-09",
+          "link": "https://career.quantum-systems.com/o/mechanical-development-engineer-drone-technologies-mfd-7",
+          "location": "Gilching,Bayern,Germany",
+          "status": "neu",
+          "title": "Mechanical Development Engineer - Drone Technologies (m/f/d)"
+        },
         "5bf9c1ba9171f3eb": {
           "category": null,
           "date_posted": null,
@@ -7097,6 +7110,7 @@
           "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/abteilungsleiter_controlling_programs__m_w_d_/1125458",
           "location": "Rheinmetall MAN Military Vehicles GmbH | München",
+          "missed_runs": 1,
           "status": "kein interesse",
           "title": "Abteilungsleiter Controlling Programs (m/w/d)"
         },
@@ -7224,9 +7238,9 @@
         "676af4544a7fca87": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-08",
+          "disappeared_at": null,
           "first_seen": "2026-09-20",
-          "last_seen": "2026-10-07",
+          "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/satellite_operations_specialist__m_f_d_/1166312",
           "location": "Rheinmetall ICEYE Space Solutions GmbH | München",
           "status": "kein interesse",
@@ -7635,9 +7649,9 @@
         "168c890bcf7cbaec": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-09",
+          "disappeared_at": null,
           "first_seen": "2026-09-13",
-          "last_seen": "2026-10-08",
+          "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/system_engineer_mobile_systems__m_w_d_/1160528",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -7783,6 +7797,7 @@
           "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/projektleiter_operations__m_w_d_/1168913",
           "location": "Rheinmetall Air Defence AG | Zürich",
+          "missed_runs": 1,
           "status": "neu",
           "title": "Projektleiter Operations (m/w/d)"
         },
@@ -7937,6 +7952,7 @@
           "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/senior_project_manager_air_defence__m_w_d_/1163741",
           "location": "Rheinmetall Air Defence AG | Zürich",
+          "missed_runs": 1,
           "status": "neu",
           "title": "Senior Project Manager Air Defence (m/w/d)"
         },
@@ -7954,9 +7970,9 @@
         "3ee0f6c3f971a94d": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-08",
+          "disappeared_at": null,
           "first_seen": "2026-08-21",
-          "last_seen": "2026-10-07",
+          "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/production_planner__m_w_d_/1132673",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "kein interesse",
@@ -8135,6 +8151,7 @@
           "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/system_engineer_gun_effectors__m_w_d_/1177694",
           "location": "Rheinmetall Air Defence AG | Zürich",
+          "missed_runs": 1,
           "status": "interessant",
           "title": "System Engineer Gun Effectors (m/w/d)"
         },
@@ -8460,9 +8477,9 @@
         "7f1c1e1b1fd14cfd": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-09",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-10-08",
+          "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/head_of_integrated_product_support__ips__management__m_w_d_/1083539",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "kein interesse",
@@ -8493,9 +8510,9 @@
         "83f5115c51a3c12f": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-09",
+          "disappeared_at": null,
           "first_seen": "2026-08-04",
-          "last_seen": "2026-10-08",
+          "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/rams_manager__m_w_d_/1009352",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "kein interesse",
@@ -8614,9 +8631,9 @@
         "9734f7a6543879cf": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-09",
+          "disappeared_at": null,
           "first_seen": "2026-09-10",
-          "last_seen": "2026-10-08",
+          "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/head_of_engineering__m_w_d_/1158080",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "kein interesse",
@@ -8647,9 +8664,9 @@
         "9d7e9bca3343584e": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-09",
+          "disappeared_at": null,
           "first_seen": "2026-09-10",
-          "last_seen": "2026-10-08",
+          "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/teamleitung_externe_fertigung__m_w_d_/1158092",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "kein interesse",
@@ -8949,6 +8966,7 @@
           "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/supplier_quality_manager_sensorik__m_w_d_/1127987",
           "location": "Rheinmetall Air Defence AG | Zürich",
+          "missed_runs": 1,
           "status": "kein interesse",
           "title": "Supplier Quality Manager Sensorik (m/w/d)"
         },
@@ -9142,9 +9160,9 @@
         "ee51e28d41a7e139": {
           "category": null,
           "date_posted": null,
-          "disappeared_at": "2026-10-08",
+          "disappeared_at": null,
           "first_seen": "2026-09-17",
-          "last_seen": "2026-10-07",
+          "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/training_system_engineer__m_w_d_/1162373",
           "location": "Rheinmetall Air Defence AG | Zürich",
           "status": "neu",
@@ -9202,6 +9220,7 @@
           "last_seen": "2026-10-09",
           "link": "https://www.rheinmetall.com/de/job/ip_ingenieur__m_w_d_/1138784",
           "location": "Rheinmetall IP Management GmbH | Zürich",
+          "missed_runs": 1,
           "status": "kein interesse",
           "title": "IP Ingenieur (m/w/d)"
         },
@@ -10346,6 +10365,17 @@
           "status": "kein interesse",
           "title": "Senior Software Architect (m/f/d)"
         },
+        "d3ab7e49c5d87e69": {
+          "category": null,
+          "date_posted": null,
+          "disappeared_at": null,
+          "first_seen": "2026-10-09",
+          "last_seen": "2026-10-09",
+          "link": "https://tytantechnologiesgmbh.recruitee.com/o/controls-engineer-gis-ground-infrastructure-system",
+          "location": "Munich",
+          "status": "neu",
+          "title": "Controls Engineer - GIS (Ground Infrastructure System)"
+        },
         "e2c34829d5d059ef": {
           "category": null,
           "date_posted": null,
@@ -10518,5 +10548,5 @@
       }
     }
   },
-  "last_run": "2026-10-09T09:41:54.050434+00:00"
+  "last_run": "2026-10-09T13:12:10.648929+00:00"
 }
