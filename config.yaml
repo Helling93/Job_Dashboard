@@ -385,12 +385,14 @@ companies:
   # Tytan Technologies (KI-Abfangdrohnen, München): Recruitee-Jobboard,
   # serverseitig gerendert - method: requests reicht. CSS-Klassen sind
   # gehasht (styled-components), daher über data-testid + Struktur (Karte =
-  # div mit verschachteltem /o/-Link) statt über Klassennamen.
+  # zweite Ebene unter dem Listen-Container) statt über Klassennamen.
+  # Kein ":has(> div > div > a)" - soupsieve >= 3.0 (in Actions ungepinnt
+  # installiert) erlaubt komplexe Kombinatoren in :has() nicht mehr.
   - name: "Tytan Technologies"
     url: "https://tytantechnologiesgmbh.recruitee.com/"
     method: requests
     base_url: "https://tytantechnologiesgmbh.recruitee.com"
-    list_selector: '[data-testid="offer-list-cards-desktop-display"] div:has(> div > div > a[href^="/o/"])'
+    list_selector: '[data-testid="offer-list-cards-desktop-display"] > div > div'
     title_selector: 'a[href^="/o/"]'
     link_selector: 'a[href^="/o/"]'
     link_attr: "href"

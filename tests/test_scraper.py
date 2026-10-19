@@ -52,3 +52,20 @@ def test_region_filter_keeps_jobs_without_location_and_multi_site_matches():
     assert _matches_filters(job(None), filters)
     assert _matches_filters(job(""), filters)
     assert not _matches_filters(job("London"), filters)
+
+
+def test_all_config_selectors_compile_with_installed_soupsieve():
+    # Actions installiert soupsieve ungepinnt - neuere Versionen sind strenger
+    # (z.B. 3.0: keine komplexen Kombinatoren in :has()). Fängt solche Brüche
+    # lokal ab, statt erst als Telegram-Fehlermeldung nach dem Cron-Lauf.
+    import soupsieve
+    import yaml
+
+    cfg = yaml.safe_load((Path(__file__).parent.parent / "config.yaml").read_text(encoding="utf-8"))
+    keys = ("list_selector", "title_selector", "link_selector",
+            "location_selector", "date_selector", "category_selector")
+    for company in cfg["companies"]:
+        for key in keys:
+            selector = company.get(key)
+            if selector and selector not in ("self", ":self"):
+                soupsieve.compile(selector)  # wirft bei ungültigem/zu strengem Selektor
