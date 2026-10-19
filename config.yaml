@@ -739,6 +739,22 @@ settings:
     - "Computer Vision"
     - "Perception"
     - "Robotics Software"
+    - "Software Ingenieur"
+    # Abschlussarbeiten, Programme, Initiativbewerbungen (keine Stellen für Berufserfahrene)
+    - "Bachelorarbeit"
+    - "Masterarbeit"
+    - "Abschlussarbeit"
+    - "Bachelor Thesis"
+    - "Master Thesis"
+    - "Graduate Programme"
+    - "Unsolicited Application"
+    - "Initiativbewerbung"
+    # weitere fachfremde Rollen
+    - "Instandhaltungsfachmann"
+    - "berufliche Vorsorge"
+    - "Graphic Designer"
+    - "HR Operations"
+    - "Angebotscontrolling"
 
   # Pendelregion München / Zürich: Jobs, deren Standort KEINEN dieser Begriffe
   # enthält, werden beim Scrapen verworfen (main.py merged das als
