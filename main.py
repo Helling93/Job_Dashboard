@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 
 import dashboard
 import notifier
+import qualifications
 import storage
 from scraper import scrape_company
 
@@ -81,6 +82,17 @@ def run() -> int:
             "%s: %d Jobs gefunden, %d neu, %d verschwunden",
             name, len(jobs), len(new_jobs), len(disappeared),
         )
+
+    # Anforderungs-Check (Detailseiten neuer Stellen): reine Ausbildungs-Jobs
+    # werden direkt auf "kein interesse" gesetzt und nicht per Telegram gemeldet.
+    # Fehler hier dürfen den Lauf nicht kippen - dann bleibt einfach alles sichtbar.
+    req_cfg = settings.get("requirement_filter") or {}
+    if req_cfg.get("enabled"):
+        try:
+            auto_hidden = qualifications.apply_requirement_filter(state, companies, req_cfg)
+            all_new_jobs = [j for j in all_new_jobs if j["id"] not in auto_hidden]
+        except Exception:  # noqa: BLE001
+            logger.exception("Anforderungs-Check fehlgeschlagen - Stellen bleiben unverändert.")
 
     storage.touch_last_run(state)
     storage.save_state(STATE_PATH, state)

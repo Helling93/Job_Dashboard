@@ -537,6 +537,21 @@ settings:
   # Bei neuen Jobs eine Telegram-Nachricht senden
   notify_on_new_jobs: true
 
+  # Anforderungs-Check anhand der Detailseite (qualifications.py): Neue, noch
+  # nie geprüfte Stellen mit Status "neu" werden einmalig abgerufen; verlangt
+  # die Beschreibung erkennbar nur eine Berufsausbildung (und nirgends ein
+  # Studium), wird der Job auf "kein interesse" gesetzt (auto_hidden:
+  # "ausbildung") und nicht per Telegram gemeldet. Im Zweifel bleibt er
+  # sichtbar. Ingenieur-/Manager-/Entwickler-Titel werden gar nicht erst
+  # abgerufen. Ergebnis steht im State (requirement) -> jede Stelle wird
+  # höchstens einmal geprüft. Pro Firma abschaltbar mit `detail_filter: false`.
+  # Trockenlauf ohne Änderungen: python scripts/check_requirements.py
+  requirement_filter:
+    enabled: true
+    hide_vocational: true      # false = nur markieren (requirement), nicht ausblenden
+    max_checks_per_run: 60     # Obergrenze Detailseiten pro Lauf, Rest folgt am nächsten Tag
+    time_budget_seconds: 420   # harte Zeitgrenze für den gesamten Check
+
   # Wird vor dem Scrapen automatisch in JEDER Firma in filters.exclude_title_contains
   # gemergt (main.py) - Kategorien, die grundsätzlich nicht zum Profil passen
   # (M.Sc. Fahrzeugtechnik, Test-/Systems Engineering, Konstruktion), statt sie

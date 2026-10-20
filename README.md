@@ -157,6 +157,39 @@ bei kurzen/generischen Begriffen (z.B. "Intern") auf Kollisionen mit
 anderen Wörtern achten (z.B. "international"), siehe Kommentar in
 `config.yaml`.
 
+### Anforderungs-Check (Ausbildung statt Studium)
+
+Titel allein sagen oft nicht, ob eine Stelle ein Studium voraussetzt.
+`qualifications.py` schaut deshalb in die **Detailseite** neuer Stellen
+(`settings.requirement_filter` in `config.yaml`): Verlangt die Beschreibung
+erkennbar nur eine Berufsausbildung ("abgeschlossene Berufsausbildung",
+"Ausbildung als ...", Facharbeiter, Techniker, ...) und enthält **nirgends**
+einen Studium-Hinweis (Studium, Hochschule, Bachelor/Master, Degree, ...), wird
+der Job automatisch auf `kein interesse` gesetzt (`auto_hidden: "ausbildung"`,
+Beleg-Zitat in `requirement_evidence`) und nicht per Telegram gemeldet. Im Zweifel
+bleibt die Stelle sichtbar - lieber eine zu viel als eine gute ausgeblendet.
+
+Laufzeit bleibt klein, weil:
+- nur Jobs mit Status `neu` geprüft werden, die noch nie geprüft wurden (das
+  Ergebnis steht im State als `requirement` = `degree` / `vocational` /
+  `unknown` / `unreadable` -> jede Stelle wird höchstens einmal abgerufen,
+  im Alltag also nur die Neuzugänge des Tages),
+- Titel mit Ingenieur/Engineer/Entwickler/Manager/Leiter/... gar nicht erst
+  abgerufen werden (Studium-Niveau; spart den Großteil der Seitenaufrufe),
+- pro Lauf höchstens `max_checks_per_run` Seiten und `time_budget_seconds`
+  Sekunden verbraucht werden (Rest folgt am nächsten Tag).
+Zur Orientierung: Alle 111 offenen "neu"-Stellen komplett abzurufen dauerte
+lokal etwa 3 Minuten.
+
+Pro Firma abschaltbar mit `detail_filter: false`. Wieder eingeblendete Stellen
+(Status per Dashboard zurück auf `neu`) werden nicht erneut geprüft. Seiten, die
+nicht lesbar sind (2 Fehlversuche), bleiben unverändert sichtbar.
+
+**Trockenlauf ohne Änderungen:** `python scripts/check_requirements.py` zeigt pro
+Job das Urteil samt Beleg. Zur Kontrolle der Treffsicherheit mit
+`--statuses interessant,beworben --include-shielded` laufen lassen - dort darf
+keine Stelle als `AUSBILDUNG` erscheinen.
+
 ### 7. Workflow aktivieren
 
 Standardmäßig läuft der Scan täglich um 8 Uhr (Cron in `scrape.yml`, siehe
@@ -267,10 +300,12 @@ config.yaml           Firmenliste + Einstellungen
 scraper.py             HTML laden (requests/playwright) + Jobs extrahieren
 storage.py              data/state.json laden/speichern, Diff-Logik
 notifier.py             Telegram-Benachrichtigungen
+qualifications.py        Anforderungs-Check (Ausbildung vs. Studium) per Detailseite
 dashboard.py             docs/index.html aus state.json rendern
 templates/dashboard.html.j2   Jinja2-Template fürs Dashboard
 main.py                 Orchestriert einen kompletten Lauf
 scripts/set_status.py   CLI zum Ändern des Job-Status
+scripts/check_requirements.py   Trockenlauf des Anforderungs-Checks (ändert nichts)
 data/state.json          Persistenter Scan-Stand (wird von Actions committed)
 docs/index.html           Generiertes Dashboard (GitHub Pages Root)
 .github/workflows/scrape.yml   Täglicher Cron-Workflow
