@@ -92,7 +92,7 @@ geschaltet wird. `tests/test_scraper.py` zeigt anhand einer Fixture
 (`tests/fixtures/sample_company.html`), wie die Selektor-Logik geprüft
 werden kann, ohne echte Websites anzufragen.
 
-Aktuell sind acht Firmen als Beispiele eingerichtet und gegen die echten
+Aktuell sind zahlreiche Firmen als Beispiele eingerichtet und gegen die echten
 Seiten getestet:
 
 - **BMW Group** (`method: playwright`): Die Karriereseite ist eine SPA, aber
@@ -126,6 +126,18 @@ Seiten getestet:
 - **MBDA** (`method: playwright`, `paginate: true`): serverseitig gerendert
   (Playwright wegen JS-Hydration nötig), 10 Treffer pro Seite.
 
+- **Siemens** (`method: requests`, `paginate: true`, `page_size: 6`): Careers
+  Marketplace, serverseitig gerendert. Die Filter stecken als IDs in der URL;
+  die Seite liefert maximal 6 Treffer pro Seite, geblättert wird über
+  `folderOffset` (`{offset}`). Mehrfach-Stellen heißen nur "Mehrere Standorte"
+  (teils "beliebiger Siemens-Standort weltweit") und haben im Dashboard daher kein
+  Land (Chip "Mehrere / unklar") - die Stellen mit konkretem Standort bekommen ihr
+  Land-Badge.
+- **CARIAD** (`method: requests`, `no_results_selector`): SAP SuccessFactors der
+  VW-Gruppe. Bei 0 Treffern zeigt die Seite die neuesten Jobs *aller* Standorte
+  plus einen Hinweis - `no_results_selector` macht daraus eine leere Liste.
+  Aktuell hat das Board nur sehr wenige Stellen.
+
 ### Filter
 
 Manche Seiten bieten eigene serverseitige Filter (wie BMWs
@@ -141,6 +153,11 @@ filters:
   category_contains: ["Hardware Engineering"] # nur Jobs mit dieser Kategorie
   exclude_category_contains: []               # Kategorien aussortieren
 ```
+
+Zusätzlich möglich: `extra_region_contains: [...]` ergänzt die globale Regionsliste
+(`settings.global_region_contains`) nur für diese Firma - ein eigenes
+`region_contains` würde sie dagegen komplett ersetzen. Beispiel: Siemens ergänzt
+"Zug", weil dort im Siemens-Filter auch der Kanton Zug gewählt ist.
 
 Alle Vergleiche sind case-insensitive Teilstring-Treffer. Welche Werte für
 `category_contains` sinnvoll sind, findet man am einfachsten heraus, indem

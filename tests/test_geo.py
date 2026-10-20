@@ -56,9 +56,11 @@ def test_config_country_places_cover_every_region_place():
     cfg = yaml.safe_load((Path(__file__).parent.parent / "config.yaml").read_text(encoding="utf-8"))
     settings = cfg["settings"]
     covered = {geo._fold(p) for places in settings["country_places"].values() for p in places}
-    missing = [p for p in settings["global_region_contains"]
-               if p != "Standorte" and geo._fold(p) not in covered]
-    assert not missing, f"Orte in global_region_contains ohne Land in country_places: {missing}"
+    places = list(settings["global_region_contains"])
+    for company in cfg["companies"]:  # firmenspezifische Ergänzungen (z.B. Zug bei Siemens)
+        places += (company.get("filters") or {}).get("extra_region_contains") or []
+    missing = [p for p in places if p != "Standorte" and geo._fold(p) not in covered]
+    assert not missing, f"Orte in global_region_contains/extra_region_contains ohne Land in country_places: {missing}"
 
 
 def test_dashboard_renders_country_badge_attr_and_filter_chips():

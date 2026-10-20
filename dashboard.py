@@ -14,7 +14,7 @@ TEMPLATE_DIR = Path(__file__).parent / "templates"
 
 _YYYYMMDD_RE = re.compile(r"^(\d{4})(\d{2})(\d{2})$")
 
-# Wert von data-countries bei Jobs ohne erkanntes Land (Filter-Chip "Unbekannt")
+# Wert von data-countries bei Jobs ohne erkanntes Land, z.B. "Mehrere Standorte" bei Siemens (Filter-Chip "Mehrere / unklar")
 UNKNOWN_COUNTRY = "unbekannt"
 
 
@@ -94,7 +94,7 @@ def build_dashboard_context(
     present = {code for jobs in companies_open.values() for j in jobs for code, _ in j["country_pills"]}
     country_filters = [(c, COUNTRY_LABELS[c]) for c in COUNTRY_ORDER if c in present]
     if any(j["countries_attr"] == UNKNOWN_COUNTRY for jobs in companies_open.values() for j in jobs):
-        country_filters.append((UNKNOWN_COUNTRY, "Unbekannt"))
+        country_filters.append((UNKNOWN_COUNTRY, "Mehrere / unklar"))
 
     return {
         "country_filters": country_filters,

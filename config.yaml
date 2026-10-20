@@ -37,6 +37,8 @@
 #                                 aussortieren
 #     category_contains:         nur Jobs, deren Kategorie einen dieser
 #                                 Begriffe enthält
+#     extra_region_contains:     ergänzt settings.global_region_contains um weitere Orte
+#                                 nur für diese Firma (ein eigenes region_contains ersetzt sie)
 #     exclude_category_contains: Jobs mit einem dieser Begriffe in der
 #                                 Kategorie aussortieren
 #   paginate            optional, true = url enthält "{page}" als Platzhalter
@@ -56,6 +58,10 @@
 #                         bis er verschwindet/nicht mehr sichtbar ist
 #   max_load_more_clicks   optional, Sicherheitslimit für load_more_selector
 #                          (Standard: 20)
+#   no_results_selector    optional, CSS-Selektor des "keine Treffer"-Hinweises.
+#                          Greift er, gilt die Seite als leere Trefferliste (statt
+#                          Fehler "Selektor fand keine Elemente" bzw. statt der
+#                          Ersatz-Treffer, die manche Portale bei 0 Treffern zeigen).
 #   flatten_shadow_dom     optional, true (method: playwright) - manche
 #                          Seiten (Web Components/Stencil.js, z.B. KNDS)
 #                          rendern Inhalte in Shadow DOM, das normales
@@ -532,6 +538,57 @@ companies:
     location_selector: 'div[data-testid="jobCardFooter"] > div:nth-of-type(3) span:nth-of-type(2)'
     category_selector: 'div[data-testid="jobCardFooter"] > div:nth-of-type(4) span:nth-of-type(2)'
 
+  # CARIAD (VW-Konzern-Softwaretochter, Suche "München"): SAP SuccessFactors-
+  # Karriereseite der VW-Gruppe, serverseitig gerendert - method: requests.
+  # Wie bei Hensoldt blättert startrow ({offset}, 25 pro Seite). ACHTUNG: Bei
+  # 0 Treffern (und beim Blättern über das Ende hinaus) zeigt die Seite NICHT
+  # eine leere Liste, sondern die neuesten Jobs aller Standorte plus den Hinweis
+  # #noresults - no_results_selector macht daraus eine leere Liste. Mehrfach-
+  # standorte stehen als "Ingolstadt, DE, 85053 +3 more…" (München steckt dann
+  # in den "more"); nur der erste Standort ist im Text sichtbar.
+  - name: "CARIAD"
+    country: DE   # Fallback fürs Dashboard (Standorte im Text sind als "…, DE, PLZ" ohne Länderwort)
+    url: "https://jobs.volkswagen-group.com/cariad/search/?searchby=location&createNewAlert=false&q=&locationsearch=M%C3%BCnchen&geolocation=&optionsFacetsDD_city=&optionsFacetsDD_facility=&optionsFacetsDD_department=&optionsFacetsDD_customfield2=&optionsFacetsDD_shifttype=&optionsFacetsDD_customfield3=&startrow={offset}"
+    method: requests
+    base_url: "https://jobs.volkswagen-group.com"
+    paginate: true
+    page_size: 25
+    max_pages: 6
+    no_results_selector: "#noresults"
+    list_selector: "tr.data-row"
+    title_selector: "a.jobTitle-link"
+    link_selector: "a.jobTitle-link"
+    link_attr: "href"
+    location_selector: "td.colLocation"
+    category_selector: "td.colDepartment"
+    date_selector: "td.colDate"
+
+  # Siemens (Careers Marketplace, serverseitig gerendert - method: requests):
+  # Die Filter (Länder, Bundesland/Kanton, Städte, Tätigkeitsbereich,
+  # Erfahrungsniveau) stecken als IDs in der URL (42386...42390). Pro Seite
+  # liefert die Seite maximal 6 Treffer (folderRecordsPerPage wird gedeckelt),
+  # geblättert wird über folderOffset - daher "{offset}" + page_size: 6.
+  # Mehrfach-Stellen heißen nur "Mehrere Standorte" (teils "beliebiger Siemens-
+  # Standort weltweit") - sie kommen durch den Regionsfilter ("Standorte") und
+  # haben im Dashboard kein Land (Chip "Mehrere / unklar").
+  - name: "Siemens"
+    url: "https://jobs.siemens.com/de_DE/externaljobs/SearchJobs/?42386=%5B812132%2C812129%5D&42386_format=17546&42387=%5B813141%2C814561%2C814523%5D&42387_format=17547&42388=%5B914739%2C913746%2C912803%5D&42388_format=17879&42389=%5B102117%2C102124%2C102133%2C102127%5D&42389_format=17549&42390=%5B102156%2C102157%2C102158%5D&42390_format=17550&listFilterMode=1&folderRecordsPerPage=6&folderOffset={offset}"
+    method: requests
+    base_url: "https://jobs.siemens.com"
+    paginate: true
+    page_size: 6
+    max_pages: 12
+    list_selector: "article.article--result"
+    title_selector: "h3 a"
+    link_selector: "h3 a"
+    link_attr: "href"
+    location_selector: ".list-item-location"
+    category_selector: ".list-item-family"
+    filters:
+      # In der Siemens-Filterung ist auch der Kanton Zug gewählt - gehört nicht
+      # zur globalen Zürich-Region und würde sonst verworfen.
+      extra_region_contains: ["Zug", "Baar"]
+
 settings:
   # Auch verschwundene Jobs im Dashboard/History anzeigen
   track_disappeared: true
@@ -583,6 +640,7 @@ settings:
     # weit vom M.Sc.-Ingenieurprofil entfernt.
     - "Mechaniker"
     - "Schweisser"
+    - "Schweißer"   # deutsche Schreibweise mit ß (Schweiz: "Schweisser" darüber)
     - "Schlosser"
     - "CNC"
     - "Laborant"
@@ -876,5 +934,7 @@ settings:
       - "Opfikon"
       - "Glattbrugg"
       - "Payerne"
+      - "Zug"
+      - "Baar"
     LI:
       - "Eschen"

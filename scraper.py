@@ -273,6 +273,15 @@ def _field_value(item, selector: str | None, attr: str | None) -> str | None:
 def extract_jobs(html: str, company: dict) -> list[Job]:
     """Extrahiert Job-Listings aus HTML gemäß den Selektoren in der Config."""
     soup = BeautifulSoup(html, "html.parser")
+
+    # Manche Jobportale (z.B. SuccessFactors) zeigen bei 0 Treffern statt einer
+    # leeren Liste einen Hinweis UND die neuesten Jobs aller Standorte. Ein
+    # Selektor für diesen Hinweis macht daraus eine ehrliche leere Liste - ohne
+    # Fehlalarm und ohne dass die Fremd-Treffer im State landen.
+    no_results = company.get("no_results_selector")
+    if no_results and soup.select_one(no_results):
+        return []
+
     items = soup.select(company["list_selector"])
 
     if not items:

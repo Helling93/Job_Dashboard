@@ -53,7 +53,11 @@ def run() -> int:
     global_region = settings.get("global_region_contains") or []
     if global_region:
         for company in companies:
-            company.setdefault("filters", {}).setdefault("region_contains", global_region)
+            filters = company.setdefault("filters", {})
+            # extra_region_contains ergänzt die globale Liste pro Firma (z.B. Zug
+            # bei Siemens), ein eigenes region_contains würde sie ersetzen.
+            extra = filters.pop("extra_region_contains", None) or []
+            filters.setdefault("region_contains", [*global_region, *extra])
 
     state = storage.load_state(STATE_PATH)
     run_date = storage.today_str()
