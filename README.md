@@ -332,6 +332,20 @@ der Lauf läuft mit den übrigen Firmen weiter. Bei `notify_on_error: true`
 in `config.yaml` (Standard) kommt zusätzlich eine Telegram-Warnung mit der
 betroffenen Firma und Fehlermeldung.
 
+### Gleichzeitige Dashboard-Klicks während eines Laufs
+
+Das Dashboard committet Status-Änderungen direkt nach `main`; ein Scraper-Lauf
+dauert mehrere Minuten. Läuft in dieser Zeit ein solcher Commit rein, wird der Push
+des Laufs abgelehnt. Der Workflow-Schritt "State committen & pushen" holt dann den
+Remote-Stand und führt `data/state.json` **feldweise** zusammen
+(`scripts/merge_state.py` / `storage.merge_states`): Scraper-Änderungen kommen auf den
+Remote-Stand, ein zwischenzeitlicher Status-Klick gewinnt (auch gegen automatisches
+Ausblenden). Das ist robuster als `git rebase`, weil `last_seen` und `status` im JSON
+dicht beieinander liegen und ein Zeilen-Merge leicht kollidiert. `docs/index.html` ist
+reines Build-Artefakt und wird deshalb nicht committet (`.gitignore`) - eine getrackte,
+vom Scraper veränderte Datei hatte früher den Retry-Schritt scheitern lassen: Die
+Telegram-Meldung ging raus, aber State und Dashboard-Deploy fehlten.
+
 ## Projektstruktur
 
 ```
@@ -346,6 +360,7 @@ templates/dashboard.html.j2   Jinja2-Template fürs Dashboard
 main.py                 Orchestriert einen kompletten Lauf
 scripts/set_status.py   CLI zum Ändern des Job-Status
 scripts/check_requirements.py   Trockenlauf des Anforderungs-Checks (ändert nichts)
+scripts/merge_state.py   Feldweiser state.json-Merge für den Workflow-Push
 data/state.json          Persistenter Scan-Stand (wird von Actions committed)
 docs/index.html           Generiertes Dashboard (GitHub Pages Root)
 .github/workflows/scrape.yml   Täglicher Cron-Workflow

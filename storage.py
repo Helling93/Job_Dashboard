@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import logging
@@ -108,3 +109,45 @@ def touch_last_run(state: dict) -> None:
 
 def today_str() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def merge_states(base: dict, ours: dict, theirs: dict) -> dict:
+    """Feldweiser Drei-Wege-Merge von state.json.
+
+    base   = Stand beim Checkout (vor dem Scraper-Lauf)
+    ours   = Ergebnis dieses Scraper-Laufs
+    theirs = aktueller Stand auf main (u.a. Status-Klicks aus dem Dashboard,
+             die während des Laufs per GitHub-API committed wurden)
+
+    Ein zeilenbasierter git-Merge kollidiert hier leicht (last_seen und status
+    liegen im JSON dicht beieinander). Feldweise gilt: Alles, was der Scraper
+    gegenüber `base` verändert hat, kommt auf den Stand von `theirs` drauf -
+    ausgenommen `status`: Hat jemand den Status währenddessen geändert, gewinnt
+    dessen Änderung (auch gegen ein automatisches Ausblenden durch den Scraper).
+    """
+    merged = copy.deepcopy(theirs)
+    merged["last_run"] = ours.get("last_run", merged.get("last_run"))
+
+    for cname, ocomp in ours.get("companies", {}).items():
+        bjobs = base.get("companies", {}).get(cname, {}).get("jobs", {})
+        tjobs = merged.setdefault("companies", {}).setdefault(cname, {"jobs": {}}).setdefault("jobs", {})
+        for jid, ojob in ocomp.get("jobs", {}).items():
+            bjob = bjobs.get(jid)
+            tjob = tjobs.get(jid)
+            if tjob is None:
+                if bjob is None:  # vom Scraper neu angelegt
+                    tjobs[jid] = copy.deepcopy(ojob)
+                continue  # sonst: zwischenzeitlich entfernt -> nicht wiederbeleben
+            for field in set(ojob) | set(bjob or {}):
+                if field == "status":
+                    continue
+                if field in ojob:
+                    if bjob is None or ojob[field] != bjob.get(field):
+                        tjob[field] = copy.deepcopy(ojob[field])
+                else:  # Scraper hat das Feld entfernt (z.B. missed_runs)
+                    tjob.pop(field, None)
+            scraper_changed_status = bjob is not None and ojob.get("status") != bjob.get("status")
+            user_untouched_status = bjob is not None and tjob.get("status") == bjob.get("status")
+            if scraper_changed_status and user_untouched_status:
+                tjob["status"] = ojob["status"]  # Scraper-Änderung (Auto-Ausblenden), Nutzer hat nichts angefasst
+    return merged

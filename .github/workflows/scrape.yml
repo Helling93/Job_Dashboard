@@ -90,32 +90,44 @@ jobs:
           if git diff --cached --quiet; then
             echo "Keine Änderungen am State - kein Commit nötig."
           else
+            # Das Dashboard committet Status-Klicks direkt per GitHub-API nach
+            # main (siehe README "Geräteübergreifende Synchronisation"). Läuft
+            # so ein Commit während des (mehrminütigen) Scraper-Laufs rein, wird
+            # der normale Push abgelehnt. Früher folgte darauf ein "git rebase" -
+            # der scheiterte aber schon an uncommitteten Dateien (docs/ wurde
+            # damals noch getrackt) und riss den ganzen Schritt samt Pages-
+            # Deploy mit, der State des Laufs ging verloren (Telegram-Meldung ohne
+            # Dashboard-Eintrag). Jetzt: Remote-Stand holen und den State FELDWEISE
+            # zusammenführen (scripts/merge_state.py: Scraper-Änderungen kommen auf
+            # den Remote-Stand, ein zwischenzeitlicher Status-Klick gewinnt) -
+            # robuster als ein zeilenbasierter Merge, bei dem last_seen und status
+            # im JSON leicht kollidieren.
+            git show HEAD:data/state.json > "$RUNNER_TEMP/state_base.json"   # Stand beim Checkout
+            cp data/state.json "$RUNNER_TEMP/state_ours.json"                # Ergebnis dieses Laufs
             git commit -m "chore: update job state [skip ci]"
-            # Das Dashboard committet Status-Änderungen direkt per GitHub-API
-            # nach main (siehe README "Geräteübergreifende Synchronisation") -
-            # ein einfacher "git push" schlägt fehl, wenn währenddessen so ein
-            # Commit reinkam. Bei Ablehnung: neu holen, draufrebasen, erneut
-            # versuchen. Schlägt auch das fehl (echter Inhaltskonflikt statt
-            # nur "überholt"), wird der State-Commit verworfen, statt den
-            # ganzen Lauf (und damit den Pages-Deploy weiter unten) platzen zu
-            # lassen - beim nächsten Lauf wird ohnehin neu gescraped.
             pushed=0
             for i in 1 2 3 4 5; do
               if git push; then
                 pushed=1
                 break
               fi
-              echo "Push abgelehnt (vermutlich zwischenzeitlicher Dashboard-Commit) - Versuch $i/5, rebase und erneut versuchen..."
+              echo "Push abgelehnt (vermutlich zwischenzeitlicher Dashboard-Commit) - Versuch $i/5: Remote-Stand holen und State feldweise zusammenführen."
               git fetch origin main
-              if ! git rebase origin/main; then
-                git rebase --abort
-                echo "Rebase-Konflikt - State-Commit wird für diesen Lauf verworfen."
+              git reset --hard origin/main
+              if ! python scripts/merge_state.py "$RUNNER_TEMP/state_base.json" "$RUNNER_TEMP/state_ours.json" data/state.json --out data/state.json; then
+                echo "::warning::State-Merge fehlgeschlagen - State dieses Laufs wird verworfen."
                 break
               fi
+              git add data/state.json
+              if git diff --cached --quiet; then
+                echo "Remote enthält den Stand bereits."
+                pushed=1
+                break
+              fi
+              git commit -m "chore: update job state [skip ci]"
             done
             if [ "$pushed" -ne 1 ]; then
-              echo "State-Commit konnte nicht gepusht werden - Lauf läuft trotzdem weiter (Dashboard-Artifact nutzt den lokal bereits generierten Stand)."
-              git reset --soft HEAD~1
+              echo "::warning::State konnte nicht gepusht werden - Lauf läuft trotzdem weiter (Dashboard-Artifact nutzt den lokal generierten Stand)."
             fi
           fi
 

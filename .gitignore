@@ -18,3 +18,7 @@ Thumbs.db
 
 # Lokale Claude-Code-Einstellungen (session-/geräte-spezifisch)
 .claude/settings.local.json
+
+# Dashboard wird bei jedem Lauf neu gebaut und als Pages-Artifact hochgeladen -
+# nicht tracken (ein getracktes, vom Scraper veränderte Datei ließ den Push-Retry im Workflow scheitern)
+docs/index.html
