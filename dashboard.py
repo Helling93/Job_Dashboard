@@ -8,9 +8,14 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from geo import COUNTRY_LABELS, COUNTRY_ORDER
+
 TEMPLATE_DIR = Path(__file__).parent / "templates"
 
 _YYYYMMDD_RE = re.compile(r"^(\d{4})(\d{2})(\d{2})$")
+
+# Wert von data-countries bei Jobs ohne erkanntes Land (Filter-Chip "Unbekannt")
+UNKNOWN_COUNTRY = "unbekannt"
 
 
 def _status_class(status: str) -> str:
@@ -60,12 +65,16 @@ def build_dashboard_context(
         open_jobs = []
         gone_jobs = []
         for jid, record in data.get("jobs", {}).items():
+            codes = [c for c in COUNTRY_ORDER if c in (record.get("countries") or [])]
             entry = {
                 **record,
                 "id": jid,
                 "company": company_name,
                 "status_class": _status_class(record.get("status")),
                 "date_posted": _format_date_posted(record.get("date_posted")),
+                # Land: für Badge (country_pills) und Filter (countries_attr)
+                "country_pills": [(c, COUNTRY_LABELS[c]) for c in codes],
+                "countries_attr": " ".join(codes) if codes else UNKNOWN_COUNTRY,
             }
             if record.get("disappeared_at"):
                 # Verschwundene Jobs interessieren nur noch, wenn tatsächlich
@@ -81,7 +90,14 @@ def build_dashboard_context(
         if gone_jobs:
             companies_gone[company_name] = _sorted_jobs(gone_jobs, "disappeared_at")
 
+    # Länder-Chips nur für Länder, die bei offenen Jobs tatsächlich vorkommen
+    present = {code for jobs in companies_open.values() for j in jobs for code, _ in j["country_pills"]}
+    country_filters = [(c, COUNTRY_LABELS[c]) for c in COUNTRY_ORDER if c in present]
+    if any(j["countries_attr"] == UNKNOWN_COUNTRY for jobs in companies_open.values() for j in jobs):
+        country_filters.append((UNKNOWN_COUNTRY, "Unbekannt"))
+
     return {
+        "country_filters": country_filters,
         "last_run": _format_last_run(state.get("last_run")),
         "total_open": total_open,
         "company_count": len(state.get("companies", {})),

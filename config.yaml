@@ -310,6 +310,7 @@ companies:
   # :has() zur Eingrenzung auf Spalten mit Bewerbungslink (die Seite hat noch
   # weitere wp-block-column für Layout/Bilder ohne Job-Bezug).
   - name: "Large Space Structures"
+    country: DE   # Fallback fürs Dashboard, falls der Standort leer/generisch ist (Garching bei München)
     url: "https://www.largespace.de/current-vacancies/"
     method: requests
     list_selector: ".wp-block-column:has(a.wp-block-button__link)"
@@ -425,6 +426,7 @@ companies:
   # 25 Treffer pro Seite, Blättern über "startrow=0/25/50..." - daher
   # "{offset}" + page_size statt "{page}". Standortfilter über die Suche.
   - name: "Hensoldt (Taufkirchen)"
+    country: DE   # Fallback fürs Dashboard, falls der Standort leer/generisch ist (Taufkirchen)
     url: "https://jobs.hensoldt.net/search/?q=&locationsearch=Taufkirchen&startrow={offset}"
     method: requests
     base_url: "https://jobs.hensoldt.net"
@@ -447,6 +449,7 @@ companies:
   # Workday zeigt 20 Treffer pro Seite ohne eigene URL pro Seite -
   # next_page_selector klickt sich durch und sammelt alle Seiten ein.
   - name: "Airbus Defence and Space"
+    country: DE   # Fallback fürs Dashboard, falls der Standort leer/generisch ist (Manching/München Area/Taufkirchen)
     url: "https://ag.wd3.myworkdayjobs.com/de-DE/Airbus/jobs?locations=f5811cef9cb501505ee2ac6a4c0aff49&locations=f5811cef9cb501a49eac0a694c0a8244&locations=f5811cef9cb50199bf69196b4c0a674b&workerSubType=f5811cef9cb501a69768a71d470a6d15&jobFamilyGroup=f5811cef9cb5018463377f3f550a1bf2&jobFamilyGroup=f5811cef9cb5010551c57e3f550a19f2&jobFamilyGroup=f5811cef9cb50102a000803f550a1ff2"
     method: playwright
     base_url: "https://ag.wd3.myworkdayjobs.com"
@@ -500,6 +503,7 @@ companies:
   # nachgeladen, daher method: playwright. Jede Job-Karte ist selbst ein
   # <a href="/job/...">. Der Standort-Text enthält das Label "Standort:".
   - name: "Bosch (München)"
+    country: DE   # Fallback fürs Dashboard, falls der Standort leer/generisch ist (Garching/München)
     url: "https://jobs.bosch.de/?filter=locations.cityState%3AGarching+bei+M%C3%BCnchen_IN_+Bayern%2Clocations.cityState%3AM%C3%BCnchen-Mitte_IN_+Bayern%2Clocations.cityState%3AM%C3%BCnchen-Neuperlach_IN_+Bayern%2Clocations.cityState%3AM%C3%BCnchen_IN_+Bayern%2CentryLevel%3ABerufserfahrene%2CjobField%3ATechnik%2FIngenieurwesen%2CjobField%3AForschung_IN_+Voraus-+und+Technologieentwicklung"
     method: playwright
     base_url: "https://jobs.bosch.de"
@@ -821,3 +825,56 @@ settings:
     - "Glattbrugg"
     - "Eschen"
     - "Standorte"
+
+  # Land-Zuordnung für das Dashboard (geo.py): Ortsnamen je Land, per Teilstring
+  # im Standort-Text gesucht (Akzente egal). Zusätzlich werden Länderwörter wie
+  # "Switzerland"/"Schweiz"/"Germany"/"Bayern" erkannt. Ein Job kann mehrere
+  # Länder haben ("Zürich ... or Munich ..."). Orte außerhalb der Zielregionen
+  # (London, Paris, ...) werden ignoriert. Muss zu global_region_contains
+  # passen - ein Test prüft, dass dort jeder Ort einem Land zugeordnet ist.
+  # Findet sich im Standort nichts (leer / "2 Standorte"), greift das
+  # `country:` der jeweiligen Firma.
+  country_places:
+    DE:
+      - "München"
+      - "Munich"
+      - "Muenchen"
+      - "Munchen"
+      - "Ottobrunn"
+      - "Taufkirchen"
+      - "Unterhaching"
+      - "Neubiberg"
+      - "Gilching"
+      - "Oberpfaffenhofen"
+      - "Weßling"
+      - "Garching"
+      - "Unterschleißheim"
+      - "Oberschleißheim"
+      - "Ismaning"
+      - "Hallbergmoos"
+      - "Freising"
+      - "Erding"
+      - "Dachau"
+      - "Fürstenfeldbruck"
+      - "Germering"
+      - "Starnberg"
+      - "Manching"
+      - "Ingolstadt"
+      - "Schrobenhausen"
+      - "Augsburg"
+    CH:
+      - "Zürich"
+      - "Zurich"
+      - "Zuerich"
+      - "Winterthur"
+      - "Hinwil"
+      - "Dübendorf"
+      - "Duebendorf"
+      - "Kloten"
+      - "Schlieren"
+      - "Wallisellen"
+      - "Opfikon"
+      - "Glattbrugg"
+      - "Payerne"
+    LI:
+      - "Eschen"

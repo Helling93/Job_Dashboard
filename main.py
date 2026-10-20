@@ -10,6 +10,7 @@ import yaml
 from dotenv import load_dotenv
 
 import dashboard
+import geo
 import notifier
 import qualifications
 import storage
@@ -93,6 +94,15 @@ def run() -> int:
             all_new_jobs = [j for j in all_new_jobs if j["id"] not in auto_hidden]
         except Exception:  # noqa: BLE001
             logger.exception("Anforderungs-Check fehlgeschlagen - Stellen bleiben unverändert.")
+
+    # Land (CH/DE/LI) je Job aus dem Standort ableiten (Badge + Länderfilter im
+    # Dashboard). Läuft über ALLE Jobs im State, damit auch schon bekannte
+    # Stellen beim nächsten Lauf automatisch ein Land bekommen.
+    country_places = settings.get("country_places") or {}
+    if country_places:
+        changed = geo.assign_countries(state, companies, country_places)
+        if changed:
+            logger.info("Länder-Zuordnung: %d Jobs aktualisiert.", changed)
 
     storage.touch_last_run(state)
     storage.save_state(STATE_PATH, state)

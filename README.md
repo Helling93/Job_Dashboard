@@ -190,6 +190,28 @@ Job das Urteil samt Beleg. Zur Kontrolle der Treffsicherheit mit
 `--statuses interessant,beworben --include-shielded` laufen lassen - dort darf
 keine Stelle als `AUSBILDUNG` erscheinen.
 
+### Land (Schweiz / Deutschland) + Länderfilter im Dashboard
+
+Jeder Job bekommt beim Lauf ein oder mehrere Länder (`countries` im State, z.B.
+`["CH"]`, `["CH", "DE"]`). `geo.py` leitet das aus dem Standort-Text ab - per
+Ortsnamen aus `settings.country_places` (Zielregionen München/Zürich/Eschen) und
+Länderwörtern ("Switzerland", "Schweiz", "Germany", "Bayern", ...). Orte außerhalb
+der Zielregionen (London, Paris, ...) zählen bewusst nicht: relevant ist, wo man
+sich praktisch hinbewerben würde. Ist der Standort leer oder generisch
+("2 Standorte"), greift das optionale `country:` der Firma in der `config.yaml`
+(Airbus, Hensoldt, Large Space Structures, Bosch). Die Zuordnung wird bei jedem
+Lauf für **alle** Jobs neu berechnet - neue Orte in `country_places` wirken also
+sofort auch auf bekannte Stellen. Ein Test stellt sicher, dass jeder Ort in
+`global_region_contains` auch einem Land zugeordnet ist.
+
+Im Dashboard steht pro Job ein Badge (Schweiz / Deutschland / Liechtenstein) und
+unter den Status-Chips gibt es die Zeile **Land: Alle · Schweiz · Deutschland**
+mit Live-Zählern (nur nicht ausgeblendete Stellen). Der Länderfilter lässt sich
+mit Status-Chips und Freitext kombinieren; "Zurücksetzen" löst alle drei. Auch
+die Freitextsuche findet über das Badge ("schweiz"). Stellen mit mehreren Ländern
+("Zürich ... or Munich ...") erscheinen in beiden Filtern. Länder ohne Stellen
+bekommen keinen Chip.
+
 ### 7. Workflow aktivieren
 
 Standardmäßig läuft der Scan täglich um 8 Uhr (Cron in `scrape.yml`, siehe
@@ -301,6 +323,7 @@ scraper.py             HTML laden (requests/playwright) + Jobs extrahieren
 storage.py              data/state.json laden/speichern, Diff-Logik
 notifier.py             Telegram-Benachrichtigungen
 qualifications.py        Anforderungs-Check (Ausbildung vs. Studium) per Detailseite
+geo.py                   Land (CH/DE/LI) je Job aus dem Standort ableiten
 dashboard.py             docs/index.html aus state.json rendern
 templates/dashboard.html.j2   Jinja2-Template fürs Dashboard
 main.py                 Orchestriert einen kompletten Lauf
