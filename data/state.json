@@ -4000,7 +4000,8 @@
           "link": "https://apply.workable.com/destinusgroup/j/F1C5B24D74/",
           "location": "Zürich,Zurich,Switzerland",
           "requirement": "degree",
-          "status": "neu",
+          "status": "kein interesse",
+          "status_changed_at": "2026-11-09T22:28:08.540Z",
           "title": "Senior RAM Engineer"
         },
         "58498a772a71ef04": {
