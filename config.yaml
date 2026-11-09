@@ -310,18 +310,17 @@ companies:
     location_selector: ".testimonial__function"
 
   # Large Space Structures / LSS GmbH (Weltraumantennen/-strukturen, Garching
-  # bei München): einfache WordPress-Seite (Gutenberg-Blocks), method:
-  # requests reicht. Kein eigenes Job-Element pro Eintrag - jede Vakanz ist
-  # eine "wp-block-column" mit Titel-Absatz + "More Info"-Button, daher
-  # :has() zur Eingrenzung auf Spalten mit Bewerbungslink (die Seite hat noch
-  # weitere wp-block-column für Layout/Bilder ohne Job-Bezug).
+  # bei München): WordPress/Elementor, serverseitig gerendert - method:
+  # requests reicht. Seit ca. 20.10.2026 liegen die Stellen unter /career/
+  # (vorher /current-vacancies/, jetzt 404) als Elementor-Post-Grid: ein
+  # <article class="elementor-post"> je Vakanz, Titel-Link im h3.
   - name: "Large Space Structures"
     country: DE   # Fallback fürs Dashboard, falls der Standort leer/generisch ist (Garching bei München)
-    url: "https://www.largespace.de/current-vacancies/"
+    url: "https://www.largespace.de/career/"
     method: requests
-    list_selector: ".wp-block-column:has(a.wp-block-button__link)"
-    title_selector: "p"
-    link_selector: "a.wp-block-button__link"
+    list_selector: "article.elementor-post"
+    title_selector: ".elementor-post__title a"
+    link_selector: ".elementor-post__title a"
     link_attr: "href"
 
   # Autonomous Teaming / ATS (Machine-Vision für Drohnenschwarm-Abwehr,
@@ -592,6 +591,10 @@ companies:
 settings:
   # Auch verschwundene Jobs im Dashboard/History anzeigen
   track_disappeared: true
+  # Jobs, die so viele Tage nicht mehr gesehen wurden, gelten als verschwunden -
+  # auch wenn die Firma in der Zeit gar nicht erfolgreich gescraped wurde
+  # (Seite umgezogen/kaputt) oder aus dieser Liste geflogen ist.
+  stale_after_days: 7
   # Bei Scraper-Fehlern (Seite nicht erreichbar / Selektor findet nichts) eine
   # Telegram-Warnung senden
   notify_on_error: true

@@ -57,3 +57,17 @@ def test_merge_without_concurrent_changes_equals_ours():
     ours = state({"a": job(last_seen="2026-10-21", countries=["DE"]), "n": job(link="https://x/3")},
                  last_run="2026-10-21T08:00:00+00:00")
     assert storage.merge_states(base, ours, base) == ours
+
+
+def test_company_fields_and_status_timestamp_survive_merge():
+    base = state({"a": job()})
+    ours = state({"a": job(last_seen="2026-10-21")})
+    ours["companies"]["Firma"]["last_success"] = "2026-10-21"
+    theirs = state({"a": job(status="beworben", status_changed_at="2026-10-21T07:00:00.000Z")})
+
+    merged = storage.merge_states(base, ours, theirs)
+    comp = merged["companies"]["Firma"]
+    assert comp["last_success"] == "2026-10-21"
+    assert comp["jobs"]["a"]["status"] == "beworben"
+    assert comp["jobs"]["a"]["status_changed_at"] == "2026-10-21T07:00:00.000Z"
+    assert comp["jobs"]["a"]["last_seen"] == "2026-10-21"

@@ -37,6 +37,9 @@ def set_status(job_id: str, status: str) -> None:
         jobs = data.get("jobs", {})
         if job_id in jobs:
             jobs[job_id]["status"] = status
+            # Zeitstempel wie beim Dashboard-Klick - das Dashboard entscheidet
+            # damit, ob ein lokal gemerkter Klick neuer ist als der Repo-Stand.
+            jobs[job_id]["status_changed_at"] = storage.now_iso()
             storage.save_state(STATE_PATH, state)
             print(f"OK: {company} - {jobs[job_id]['title']} -> status = '{status}'")
             return

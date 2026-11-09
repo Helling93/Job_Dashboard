@@ -124,6 +124,12 @@
   .badge.beworben { background: color-mix(in srgb, var(--applied) 20%, transparent); color: var(--applied); }
   .badge.kein_interesse { background: color-mix(in srgb, var(--rejected) 25%, transparent); color: var(--rejected); }
   .job.gone { opacity: 0.75; }
+  .app-state { font-size: 0.7rem; font-weight: 600; margin-right: 0.3rem; }
+  .app-state.online { color: var(--new); }
+  .app-state.offline { color: var(--gone); }
+  .app-company { color: var(--accent); font-weight: 600; }
+  .stale-flag { color: #f3c98b; font-weight: 400; font-size: 0.75rem; flex-shrink: 0; white-space: nowrap; }
+  .save-indicator.local { color: #f3c98b; }
   .empty { color: var(--muted); font-size: 0.9rem; font-style: italic; }
 
   .status-buttons { display: flex; gap: 0.35rem; margin-top: 0.6rem; flex-wrap: wrap; align-items: center; }
@@ -215,6 +221,7 @@
       <button id="sync-token-save">Speichern</button>
       <button id="sync-token-clear" class="secondary" style="display:none">Token entfernen</button>
       <span class="sync-status" id="sync-status"></span>
+      <span class="sync-status" id="sync-live"></span>
     {% else %}
       <span>Sync nicht aktiv (kein Repo bekannt - läuft dieser Build außerhalb von GitHub Actions?). Statusänderungen bleiben nur lokal im Browser gespeichert.</span>
     {% endif %}
@@ -244,6 +251,44 @@
     {% endif %}
   </div>
 
+  {% if applications %}
+  <section>
+    <h2>Meine Bewerbungen</h2>
+    <details class="company applications" open>
+      <summary>
+        <span class="company-name">Bewerbungen</span>
+        <span class="match-count"></span>
+        <span class="count" data-total="{{ applications|length }}">({{ applications|length }})</span>
+      </summary>
+      <div class="company-jobs">
+        {% for job in applications %}
+        <div class="job application{% if job.disappeared_at %} gone{% endif %}" data-job-id="{{ job.id }}" data-company="{{ job.company }}" data-status="{{ job.status or 'neu' }}" data-status-ts="{{ job.status_changed_at or '' }}" data-countries="{{ job.countries_attr }}">
+          <div class="job-main">
+            <div class="info">
+              <a href="{{ job.link }}" target="_blank" rel="noopener">{{ job.title }}</a>
+              <div class="sub">
+                {% if job.disappeared_at %}<span class="app-state offline">Ausschreibung offline seit {{ job.disappeared_at }}</span>{% else %}<span class="app-state online">Ausschreibung online</span>{% endif %}
+                <span class="app-company">{{ job.company }}</span>
+                {% if job.location %} · {{ job.location }}{% endif %}
+                {% if job.status_date %} · beworben am {{ job.status_date }}{% else %} · gesehen seit {{ job.first_seen }}{% endif %}
+              </div>
+            </div>
+            <span class="badge {{ job.status_class }}">{{ job.status }}</span>
+          </div>
+          <div class="status-buttons">
+            <button data-status-value="neu">Neu</button>
+            <button data-status-value="interessant">Interessant</button>
+            <button data-status-value="beworben">Beworben</button>
+            <button data-status-value="kein interesse">Kein Interesse</button>
+            <span class="save-indicator"></span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </details>
+  </section>
+  {% endif %}
+
   <section>
     <h2>Offene Stellen</h2>
     {% if companies_open %}
@@ -252,6 +297,7 @@
         <summary>
           <span class="company-name">{{ company }}</span>
           <span class="match-count"></span>
+          {% if company in company_stale %}<span class="stale-flag" title="Scraper schlägt für diese Firma gerade fehl - Stellen evtl. nicht mehr aktuell">⚠ Stand {{ company_stale[company] }}</span>{% endif %}
           <span class="count" data-total="{{ jobs|length }}">({{ jobs|length }})</span>
         </summary>
         <div class="company-jobs">
@@ -259,7 +305,7 @@
             <button class="show-hidden-btn" data-expanded="false">🙈 <span class="hidden-count">0</span> ausgeblendet (kein Interesse) - anzeigen</button>
           </div>
           {% for job in jobs %}
-          <div class="job" data-job-id="{{ job.id }}" data-company="{{ job.company }}" data-status="{{ job.status or 'neu' }}" data-countries="{{ job.countries_attr }}">
+          <div class="job" data-job-id="{{ job.id }}" data-company="{{ job.company }}" data-status="{{ job.status or 'neu' }}" data-status-ts="{{ job.status_changed_at or '' }}" data-countries="{{ job.countries_attr }}">
             <div class="job-main">
               <div class="info">
                 <a href="{{ job.link }}" target="_blank" rel="noopener">{{ job.title }}</a>
@@ -290,56 +336,16 @@
     {% endif %}
   </section>
 
-  <section>
-    <h2>Historie (Bewerbungen bei verschwundenen Stellen)</h2>
-    {% if companies_gone %}
-      {% for company, jobs in companies_gone.items() %}
-      <details class="company">
-        <summary>
-          <span class="company-name">{{ company }}</span>
-          <span class="match-count"></span>
-          <span class="count">({{ jobs|length }})</span>
-        </summary>
-        <div class="company-jobs">
-          {% for job in jobs %}
-          <div class="job gone" data-job-id="{{ job.id }}" data-company="{{ job.company }}" data-status="{{ job.status or 'neu' }}" data-countries="{{ job.countries_attr }}">
-            <div class="job-main">
-              <div class="info">
-                <a href="{{ job.link }}" target="_blank" rel="noopener">{{ job.title }}</a>
-                <div class="sub">
-                  {% for code, label in job.country_pills %}<span class="country-pill cp-{{ code|lower }}">{{ label }}</span>{% endfor %}
-                  {{ job.first_seen }} → {{ job.disappeared_at }}
-                  {% if job.category %} · {{ job.category }}{% endif %}
-                  {% if job.location %} · {{ job.location }}{% endif %}
-                </div>
-              </div>
-              <span class="badge {{ job.status_class }}">{{ job.status }}</span>
-            </div>
-            <div class="status-buttons">
-              <button data-status-value="neu">Neu</button>
-              <button data-status-value="interessant">Interessant</button>
-              <button data-status-value="beworben">Beworben</button>
-              <button data-status-value="kein interesse">Kein Interesse</button>
-              <span class="save-indicator"></span>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </details>
-      {% endfor %}
-    {% else %}
-      <p class="empty">Keine Bewerbungen bei mittlerweile verschwundenen Stellen.</p>
-    {% endif %}
-  </section>
-
   <div class="howto">
-    <strong>Status ändern:</strong> Klick auf einen der Buttons unter einem Job speichert sofort im
-    Browser (localStorage). Ist oben ein GitHub-Token hinterlegt, wird der Status zusätzlich direkt
-    in <code>data/state.json</code> im Repo geschrieben - so ist er auf allen Geräten sichtbar, die
-    dort ebenfalls einen Token hinterlegt haben. Als "Kein Interesse" markierte Jobs werden
-    ausgeblendet (über "anzeigen" pro Firma wieder einblendbar). Ohne Token: Status bleibt nur in
-    diesem Browser gespeichert - alternativ <code>data/state.json</code> direkt im Repo bearbeiten
-    oder <code>python scripts/set_status.py &lt;job_id&gt; &lt;status&gt;</code> lokal ausführen.
+    <strong>Status ändern:</strong> Klick auf einen der Buttons unter einem Job. Ist oben ein
+    GitHub-Token hinterlegt, landet der Status sofort in <code>data/state.json</code> im Repo. Jedes
+    Gerät lädt beim Öffnen (und beim Zurückkehren in den Tab) diesen aktuellen Stand nach - auch ohne
+    Token. PC und Handy zeigen also denselben Stand. Ohne Token bleiben Klicks auf diesem Gerät nur
+    lokal (gelb markiert), bis ein Token hinterlegt ist. Dann werden sie nachgetragen, sofern auf einem
+    anderen Gerät nicht zwischenzeitlich etwas Neueres gesetzt wurde. Als "Kein Interesse" markierte
+    Jobs werden ausgeblendet (über "anzeigen" pro Firma wieder einblendbar). "Beworben" markierte
+    Stellen stehen gesammelt unter "Meine Bewerbungen" und bleiben dort, auch wenn die Ausschreibung
+    offline geht. Alternativ <code>python scripts/set_status.py &lt;job_id&gt; &lt;status&gt;</code>.
   </div>
 </div>
 
@@ -347,7 +353,14 @@
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "jobwatcher_status_overrides";
+  // Lokal gemerkte Klicks, die (noch) nicht im Repo stehen: {jobId: {status, ts, company}}.
+  // Sie gelten nur, solange sie NEUER sind als der Status im Repo
+  // (status_changed_at) - sonst gewinnt das Repo. Früher (Key
+  // "jobwatcher_status_overrides") galt ein lokaler Klick für immer und
+  // überdeckte Änderungen von anderen Geräten, daher sahen PC und Handy
+  // dauerhaft unterschiedliche Stände. Die alten Einträge werden verworfen.
+  var PENDING_KEY = "jobwatcher_pending_status";
+  var LEGACY_KEY = "jobwatcher_status_overrides";
   var TOKEN_KEY = "jobwatcher_github_token";
   var STATUSES = ["neu", "interessant", "beworben", "kein interesse"];
 
@@ -356,13 +369,32 @@
   var branch = syncBar ? syncBar.dataset.branch : "main";
   var syncEnabled = !!repo;
 
-  function loadOverrides() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch (e) { return {}; }
+  function loadPending() {
+    try {
+      localStorage.removeItem(LEGACY_KEY);
+      return JSON.parse(localStorage.getItem(PENDING_KEY) || "{}");
+    } catch (e) { return {}; }
   }
-  function saveOverrides(o) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(o));
+  function savePending() {
+    try { localStorage.setItem(PENDING_KEY, JSON.stringify(pending)); } catch (e) { /* privater Modus o.ä. */ }
   }
-  var overrides = loadOverrides();
+  var pending = loadPending();
+
+  function tsValue(ts) {
+    var v = ts ? Date.parse(ts) : NaN;
+    return isNaN(v) ? 0 : v;
+  }
+  // Status, der angezeigt wird: lokaler Klick, falls neuer als der Repo-Stand
+  // (data-status/data-status-ts, beim Build gerendert bzw. live nachgeladen).
+  function effectiveStatus(jobEl) {
+    var p = pending[jobEl.dataset.jobId];
+    var serverStatus = jobEl.dataset.status || "neu";
+    if (p && (p.status === serverStatus || tsValue(p.ts) <= tsValue(jobEl.dataset.statusTs))) {
+      delete pending[jobEl.dataset.jobId];  // im Repo angekommen oder dort überholt
+      p = null;
+    }
+    return p ? p.status : serverStatus;
+  }
 
   function getToken() {
     try { return localStorage.getItem(TOKEN_KEY) || ""; } catch (e) { return ""; }
@@ -501,7 +533,7 @@
         var codes = (jobEl.dataset.countries || "unbekannt").split(" ");
         var countryOk = countryFilter === "alle" || codes.indexOf(countryFilter) !== -1;
         // Chip-Zähler: offene, nicht ausgeblendete Jobs je Land (unabhängig von den anderen Filtern)
-        if (!jobEl.classList.contains("gone") && status !== "kein interesse") {
+        if (!jobEl.classList.contains("application") && status !== "kein interesse") {
           codes.forEach(function (cc) { countryCounts[cc] = (countryCounts[cc] || 0) + 1; });
         }
         var match = textOk && statusOk && countryOk;
@@ -590,18 +622,58 @@
   function setIndicator(jobEl, state) {
     var ind = jobEl.querySelector(".save-indicator");
     if (!ind) return;
-    ind.className = "save-indicator" + (state === "ok" ? " ok" : state === "err" ? " err" : "");
-    ind.textContent = state === "saving" ? "…" : state === "ok" ? "✓" : state === "err" ? "✗ Sync fehlgeschlagen" : "";
+    ind.className = "save-indicator" + (state === "ok" ? " ok" : state === "err" ? " err" : state === "local" ? " local" : "");
+    ind.textContent = state === "saving" ? "…" : state === "ok" ? "✓" : state === "err" ? "✗ Sync fehlgeschlagen - wird beim nächsten Öffnen erneut versucht"
+      : state === "local" ? "nur auf diesem Gerät (kein Token)" : "";
     if (state === "ok") {
       setTimeout(function () { if (ind.textContent === "✓") ind.textContent = ""; }, 2000);
     }
   }
 
-  function apiHeaders() {
-    return {
-      "Authorization": "Bearer " + getToken(),
-      "Accept": "application/vnd.github+json",
-    };
+  function apiHeaders(accept) {
+    var h = { "Accept": accept || "application/vnd.github+json" };
+    var t = getToken();
+    if (t) h["Authorization"] = "Bearer " + t;
+    return h;
+  }
+
+  var stateUrl = "https://api.github.com/repos/" + repo + "/contents/data/state.json";
+
+  // Aktuellen Inhalt von state.json holen. Das Repo ist öffentlich, Lesen
+  // klappt also auch ohne Token (dann max. 60 API-Anfragen/Stunde je IP).
+  // "raw" statt Base64-JSON, weil die Contents-API Dateien über 1 MB sonst
+  // ohne Inhalt liefert. cache: "no-store", weil GitHub "Cache-Control:
+  // max-age=60" schickt - sonst kommt bis zu einer Minute ein alter Stand.
+  function fetchStateText() {
+    return fetch(stateUrl + "?ref=" + encodeURIComponent(branch), {
+      headers: apiHeaders("application/vnd.github.raw+json"), cache: "no-store",
+    }).then(function (r) {
+      if (!r.ok) throw new Error("GET " + r.status);
+      return r.text();
+    }).catch(function (e) {
+      // Fallback ohne Token (z.B. Rate-Limit über geteilte Mobilfunk-IP):
+      // raw.githubusercontent.com hat kein solches Limit, ist aber bis zu
+      // ~5 Minuten gecacht.
+      if (getToken()) throw e;
+      return fetch("https://raw.githubusercontent.com/" + repo + "/" + encodeURIComponent(branch) + "/data/state.json", { cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) throw new Error("RAW " + r.status);
+          return r.text();
+        });
+    });
+  }
+
+  function jobRecord(stateObj, company, jobId) {
+    var jobs = stateObj.companies && stateObj.companies[company] && stateObj.companies[company].jobs;
+    return jobs && jobs[jobId];
+  }
+
+  // Wie Pythons json.dump(sort_keys=True) - sonst wandert ein neu gesetztes
+  // Feld ans Ende des Eintrags und erzeugt beim nächsten Lauf Diff-Rauschen.
+  function sortKeys(o) {
+    var out = {};
+    Object.keys(o).sort().forEach(function (k) { out[k] = o[k]; });
+    return out;
   }
 
   var SYNC_MAX_RETRIES = 3;
@@ -616,60 +688,87 @@
   // der Retry unten zuständig ist.
   var syncQueue = Promise.resolve();
 
-  function syncStatusToGitHub(jobEl, company, jobId, status) {
-    if (!syncEnabled || !getToken()) return;
+  function syncStatusToGitHub(jobEl) {
+    if (!syncEnabled) return;
+    if (!getToken()) { setIndicator(jobEl, "local"); return; }
     syncQueue = syncQueue.then(function () {
-      return syncOnce(jobEl, company, jobId, status, 0);
+      return syncOnce(jobEl, jobEl.dataset.company, jobEl.dataset.jobId, 0);
     });
   }
 
-  function syncOnce(jobEl, company, jobId, status, attempt) {
+  // Repo-Stand eines Jobs ins Element übernehmen und Anzeige aktualisieren.
+  function adoptServerState(jobEl, rec) {
+    var before = jobEl.dataset.effectiveStatus;
+    jobEl.dataset.status = rec.status || "neu";
+    jobEl.dataset.statusTs = rec.status_changed_at || "";
+    var now = effectiveStatus(jobEl);
+    if (now !== before) {
+      jobEl.dataset.forceShow = "false";
+      applyStatus(jobEl, now);
+      return true;
+    }
+    return false;
+  }
+
+  function syncOnce(jobEl, company, jobId, attempt) {
+    var p = pending[jobId];
+    if (!p) return Promise.resolve();  // inzwischen im Repo angekommen oder überholt
     setIndicator(jobEl, "saving");
-    var url = "https://api.github.com/repos/" + repo + "/contents/data/state.json";
-    // GitHubs Antwort auf diesen GET trägt "Cache-Control: max-age=60" - ohne
-    // cache: "no-store" liefert der Browser bei einem Retry innerhalb dieser
-    // 60s denselben gecachten (veralteten) sha zurück, wodurch der PUT immer
-    // wieder mit 409 fehlschlägt, obwohl "erneut" gelesen wurde.
-    return fetch(url + "?ref=" + encodeURIComponent(branch), { headers: apiHeaders(), cache: "no-store" })
+    var sha, rec;
+    return fetch(stateUrl + "?ref=" + encodeURIComponent(branch), { headers: apiHeaders(), cache: "no-store" })
       .then(function (r) {
         if (!r.ok) throw new Error("GET " + r.status);
         return r.json();
       })
       .then(function (fileData) {
-        var stateObj = JSON.parse(b64ToUtf8(fileData.content));
-        var jobs = stateObj.companies && stateObj.companies[company] && stateObj.companies[company].jobs;
-        if (!jobs || !jobs[jobId]) throw new Error("Job nicht in state.json gefunden");
-        jobs[jobId].status = status;
-        var newContent = utf8ToB64(JSON.stringify(stateObj, null, 2) + "\n");
-        return fetch(url, {
+        sha = fileData.sha;
+        if (fileData.encoding === "base64" && fileData.content) return b64ToUtf8(fileData.content);
+        // Über 1 MB: Inhalt separat holen. Er ist mindestens so neu wie der
+        // sha - kam dazwischen ein Commit, scheitert der PUT mit 409 (-> Retry)
+        // statt fremde Änderungen zu überschreiben.
+        return fetchStateText();
+      })
+      .then(function (text) {
+        var stateObj = JSON.parse(text);
+        rec = jobRecord(stateObj, company, jobId);
+        if (!rec) throw new Error("Job nicht in state.json gefunden");
+        // Schon so im Repo, oder auf einem anderen Gerät später anders
+        // entschieden -> nichts schreiben, der Repo-Stand gilt.
+        if (rec.status === p.status || tsValue(rec.status_changed_at) >= tsValue(p.ts)) return null;
+        rec.status = p.status;
+        rec.status_changed_at = p.ts;
+        stateObj.companies[company].jobs[jobId] = sortKeys(rec);
+        return fetch(stateUrl, {
           method: "PUT",
           headers: apiHeaders(),
           body: JSON.stringify({
             message: "chore: update status via dashboard (" + company + " / " + jobId + ")",
-            content: newContent,
-            sha: fileData.sha,
+            content: utf8ToB64(JSON.stringify(stateObj, null, 2) + "\n"),
+            sha: sha,
             branch: branch,
           }),
         });
       })
       .then(function (r) {
-        if (r.status === 409 && attempt < SYNC_MAX_RETRIES) {
+        if (r && r.status === 409 && attempt < SYNC_MAX_RETRIES) {
           // sha war beim Schreiben schon veraltet - z.B. weil der tägliche
-          // Scraper-Lauf oder ein anderes Gerät gerade geschrieben hat (Syncs
-          // aus demselben Tab können das dank der Queue oben nicht mehr
-          // auslösen). Kurz warten (steigender Abstand, damit sich zwei
-          // gleichzeitige Retries nicht wieder in die Quere kommen) und mit
-          // frisch gelesenem Stand erneut versuchen.
+          // Scraper-Lauf oder ein anderes Gerät gerade geschrieben hat. Kurz
+          // warten (steigender Abstand) und mit frisch gelesenem Stand erneut
+          // versuchen.
           return new Promise(function (resolve) {
             setTimeout(resolve, SYNC_RETRY_BASE_DELAY_MS * (attempt + 1));
           }).then(function () {
-            return syncOnce(jobEl, company, jobId, status, attempt + 1);
+            return syncOnce(jobEl, company, jobId, attempt + 1);
           });
         }
-        if (!r.ok) throw new Error("PUT " + r.status);
+        if (r && !r.ok) throw new Error("PUT " + r.status);
+        if (pending[jobId] === p) delete pending[jobId];
+        savePending();
+        if (adoptServerState(jobEl, rec)) updateCompanyCounts();
         setIndicator(jobEl, "ok");
       })
       .catch(function (e) {
+        // Klick bleibt in "pending" und wird beim nächsten Laden nachgetragen.
         console.error("GitHub sync failed:", e);
         setIndicator(jobEl, "err");
       });
@@ -677,69 +776,81 @@
 
   function wireJob(jobEl) {
     var id = jobEl.dataset.jobId;
-    var company = jobEl.dataset.company;
-    var baseline = jobEl.dataset.status || "neu";
-    var status = overrides[id] || baseline;
-    applyStatus(jobEl, status);
+    applyStatus(jobEl, effectiveStatus(jobEl));
+    if (pending[id] && syncEnabled && !getToken()) setIndicator(jobEl, "local");
 
     var buttons = jobEl.querySelectorAll(".status-buttons button");
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener("click", function (ev) {
         var newStatus = ev.currentTarget.dataset.statusValue;
-        overrides[id] = newStatus;
-        saveOverrides(overrides);
+        pending[id] = { status: newStatus, ts: new Date().toISOString(), company: jobEl.dataset.company };
+        savePending();
         jobEl.dataset.forceShow = "false";
         applyStatus(jobEl, newStatus);
         updateCompanyCounts();
-        syncStatusToGitHub(jobEl, company, id, newStatus);
+        syncStatusToGitHub(jobEl);
       });
     }
   }
 
   var allJobs = document.querySelectorAll(".job[data-job-id]");
-  for (var i = 0; i < allJobs.length; i++) wireJob(allJobs[i]);
+  var domIds = {};
+  for (var i = 0; i < allJobs.length; i++) {
+    wireJob(allJobs[i]);
+    domIds[allJobs[i].dataset.jobId] = true;
+  }
+  // Gemerkte Klicks zu Jobs, die es im Dashboard nicht mehr gibt, aufräumen
+  Object.keys(pending).forEach(function (id) { if (!domIds[id]) delete pending[id]; });
+  savePending();
   updateCompanyCounts();
 
-  function refreshStatusesFromGitHub() {
-    // Ohne das würde ein Gerät immer nur den Stand vom letzten Dashboard-Build
-    // (docs/index.html) plus seine eigenen lokalen Overrides sehen - eine
-    // Statusänderung auf einem anderen, ebenfalls synchronisierten Gerät kommt
-    // sonst erst beim nächsten täglichen Scraper-Lauf an. Einmal beim Laden
-    // den aktuellen state.json-Stand nachladen und übernehmen, damit
-    // Ausblendungen etc. sofort geräteübergreifend sichtbar sind.
-    if (!syncEnabled || !getToken()) return;
-    var url = "https://api.github.com/repos/" + repo + "/contents/data/state.json";
-    fetch(url + "?ref=" + encodeURIComponent(branch), { headers: apiHeaders(), cache: "no-store" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("GET " + r.status);
-        return r.json();
-      })
-      .then(function (fileData) {
-        var stateObj = JSON.parse(b64ToUtf8(fileData.content));
+  // Beim Öffnen (und beim Zurückkehren in den Tab, z.B. am Handy) den
+  // aktuellen Stand aus dem Repo laden - auch ohne Token. Das HTML selbst wird
+  // nur beim täglichen Lauf neu gebaut; Status-Klicks von anderen Geräten
+  // stehen aber sofort in state.json und kommen so ohne Verzögerung an.
+  var liveEl = document.getElementById("sync-live");
+  var lastRefresh = 0, refreshing = false;
+  function refreshFromRepo() {
+    if (!syncEnabled || refreshing || Date.now() - lastRefresh < 15000) return;
+    refreshing = true;
+    lastRefresh = Date.now();
+    fetchStateText()
+      .then(function (text) {
+        var stateObj = JSON.parse(text);
         var changed = false;
         for (var i = 0; i < allJobs.length; i++) {
-          var jobEl = allJobs[i];
-          var id = jobEl.dataset.jobId;
-          var company = jobEl.dataset.company;
-          var jobs = stateObj.companies && stateObj.companies[company] && stateObj.companies[company].jobs;
-          var remoteStatus = jobs && jobs[id] && jobs[id].status;
-          if (remoteStatus && remoteStatus !== (overrides[id] || jobEl.dataset.status || "neu")) {
-            overrides[id] = remoteStatus;
-            changed = true;
-            jobEl.dataset.forceShow = "false";
-            applyStatus(jobEl, remoteStatus);
-          }
+          var rec = jobRecord(stateObj, allJobs[i].dataset.company, allJobs[i].dataset.jobId);
+          if (rec && adoptServerState(allJobs[i], rec)) changed = true;
         }
-        if (changed) {
-          saveOverrides(overrides);
-          updateCompanyCounts();
+        savePending();
+        if (changed) updateCompanyCounts();
+        // Lokale Klicks, die noch nicht im Repo stehen (Sync fehlgeschlagen
+        // oder ohne Token gemacht), jetzt nachtragen - syncOnce prüft dabei,
+        // dass kein anderes Gerät zwischenzeitlich Neueres gesetzt hat.
+        var waiting = 0;
+        for (var j = 0; j < allJobs.length; j++) {
+          if (pending[allJobs[j].dataset.jobId]) { waiting++; syncStatusToGitHub(allJobs[j]); }
+        }
+        if (liveEl) {
+          var t = new Date();
+          liveEl.className = "sync-status " + (waiting && !getToken() ? "err" : "ok");
+          liveEl.textContent = "Live-Stand geladen " + ("0" + t.getHours()).slice(-2) + ":" + ("0" + t.getMinutes()).slice(-2)
+            + (waiting && !getToken() ? " · " + waiting + " Änderung(en) nur auf diesem Gerät" : "");
         }
       })
       .catch(function (e) {
-        console.error("Aktuellen Sync-Stand laden fehlgeschlagen:", e);
-      });
+        console.error("Aktuellen Stand laden fehlgeschlagen:", e);
+        if (liveEl) {
+          liveEl.className = "sync-status err";
+          liveEl.textContent = "Live-Stand nicht ladbar - Anzeige vom letzten Lauf";
+        }
+      })
+      .then(function () { refreshing = false; });
   }
-  refreshStatusesFromGitHub();
+  refreshFromRepo();
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") refreshFromRepo();
+  });
 
   var showButtons = document.querySelectorAll(".show-hidden-btn");
   for (var i = 0; i < showButtons.length; i++) {
@@ -772,8 +883,8 @@
   function refreshTokenUI() {
     var t = getToken();
     if (tokenInput) tokenInput.value = t ? "" : "";
-    if (statusEl) statusEl.textContent = t ? "✓ Token hinterlegt" : "";
-    if (statusEl) statusEl.className = "sync-status" + (t ? " ok" : "");
+    if (statusEl) statusEl.textContent = t ? "✓ Token hinterlegt" : "Kein Token: Du siehst den aktuellen Stand, Klicks hier bleiben aber nur auf diesem Gerät";
+    if (statusEl) statusEl.className = "sync-status" + (t ? " ok" : " err");
     if (clearBtn) clearBtn.style.display = t ? "inline-block" : "none";
     if (tokenInput) tokenInput.placeholder = t ? "Token gesetzt - neuen Wert eingeben zum Ändern" : "GitHub-Token (Contents: read/write)";
   }
@@ -781,7 +892,10 @@
   if (saveBtn) {
     saveBtn.addEventListener("click", function () {
       var v = tokenInput.value.trim();
-      if (v) { setToken(v); tokenInput.value = ""; refreshTokenUI(); }
+      if (v) {
+        setToken(v); tokenInput.value = ""; refreshTokenUI();
+        lastRefresh = 0; refreshFromRepo();  // lokal gemerkte Klicks gleich nachtragen
+      }
     });
   }
   if (clearBtn) {

@@ -244,21 +244,36 @@ blendet ihn aus der Liste aus (über "🙈 ... anzeigen" pro Firma jederzeit
 wieder einblendbar, z.B. um sich umzuentscheiden). Jede Firmen-Sektion lässt
 sich per Klick auf den Titel einklappen.
 
-Verschwundene Stellen (Historie) werden nur noch angezeigt, wenn der Status
-`beworben` ist - alles andere, das offline gegangen ist, interessiert nicht
-mehr und wird nicht aufgelistet.
+**Bewerbungen**: Als `beworben` markierte Stellen stehen gesammelt oben unter
+"Meine Bewerbungen" (nicht mehr zwischen den offenen Stellen) - mit Firma,
+Datum des Klicks und dem Hinweis, ob die Ausschreibung noch online ist oder
+seit wann sie offline ist. Sie bleiben dort dauerhaft, auch nachdem die
+Stelle von der Karriereseite verschwunden ist. Alle anderen Stellen, die
+offline gegangen sind, verschwinden aus dem Dashboard.
+
+**Wann gilt eine Stelle als verschwunden?** Wenn sie bei 2 erfolgreichen
+Läufen in Folge nicht mehr auf der Karriereseite steht - oder spätestens,
+wenn sie seit `settings.stale_after_days` (7) Tagen nicht mehr gesehen
+wurde. Letzteres greift, wenn das Scrapen einer Firma dauerhaft fehlschlägt
+(Seite umgezogen, Selektoren kaputt) oder die Firma aus `config.yaml`
+geflogen ist. Solange eine Firma fehlschlägt, zeigt das Dashboard an ihrem
+Namen "⚠ Stand <Datum>".
 
 ### Geräteübergreifende Synchronisation
 
-Ohne weitere Einrichtung bleibt der Status **nur im aktuellen Browser**
-gespeichert (localStorage) - praktisch für den Alltag, aber nicht sichtbar,
-wenn du das Dashboard auf einem anderen Gerät öffnest.
+Das Dashboard lädt beim Öffnen (und beim Zurückkehren in den Tab) den
+aktuellen Stand von `data/state.json` direkt aus dem Repo nach - **auch ohne
+Token**, weil das Repo öffentlich ist. Was du auf dem PC änderst, siehst du
+also sofort auch auf dem Handy und umgekehrt, ohne auf den nächsten Lauf zu
+warten.
 
-Für geräteübergreifenden Abgleich: Oben im Dashboard ein GitHub-Token
-hinterlegen (Feld "GitHub-Token"). Ab dann schreibt jeder Klick zusätzlich
-direkt per GitHub-API einen Commit nach `data/state.json` im Repo - das
-Token muss dafür auf jedem Gerät/Browser einmal eingegeben werden, in dem du
-den Status siehst/änderst.
+Zum **Ändern** braucht ein Gerät ein GitHub-Token (Feld "GitHub-Token" oben
+im Dashboard). Dann schreibt jeder Klick direkt per GitHub-API einen Commit
+nach `data/state.json` (inkl. `status_changed_at`). Ohne Token bleiben Klicks
+auf diesem Gerät nur lokal und sind gelb markiert ("nur auf diesem Gerät").
+Sobald ein Token hinterlegt ist, werden sie nachgetragen - aber nur, wenn
+nicht zwischenzeitlich auf einem anderen Gerät etwas Neueres gesetzt wurde
+(der neuere Klick gewinnt).
 
 **Token erstellen** (GitHub → Settings → Developer settings → Fine-grained
 tokens → Generate new token):
@@ -272,9 +287,8 @@ und nur direkt von dort an `api.github.com` gesendet - es läuft über keinen
 Zwischenserver. Trotzdem: Bei einem geteilten/öffentlichen Rechner das Token
 danach über "Token entfernen" wieder löschen.
 
-Falls kein Token hinterlegt ist oder die Synchronisation fehlschlägt (z. B.
-Token abgelaufen), bleibt die Änderung trotzdem lokal im Browser erhalten -
-nur eben nicht geräteübergreifend sichtbar.
+Schlägt die Synchronisation fehl (z. B. Token abgelaufen), bleibt der Klick
+lokal gemerkt und wird beim nächsten Öffnen erneut versucht.
 
 **Alternativen ohne Dashboard**: `data/state.json` direkt im
 GitHub-Web-Editor bearbeiten (Feld `"status"` beim jeweiligen Job), oder

@@ -6,7 +6,7 @@ import copy
 import hashlib
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from scraper import Job
@@ -21,6 +21,14 @@ DEFAULT_STATUS = "neu"
 # verschwinden sie dann für einen Tag aus dem Dashboard und tauchen am
 # nächsten Tag wieder auf.
 MISSED_RUNS_BEFORE_DISAPPEARED = 2
+# Schlägt das Scrapen einer Firma dauerhaft fehl (Seite umgezogen, Selektoren
+# kaputt) oder fliegt sie aus der config, ruft niemand mehr update_company für
+# sie auf - ihre Jobs blieben dann ewig "offen" (so z.B. LSS nach dem Umzug der
+# Karriereseite: wochenlang 404, Stellen standen trotzdem im Dashboard). Nach so
+# vielen Tagen ohne Sichtung gilt ein Job daher auch ohne erfolgreichen Lauf
+# als verschwunden. Wird die Firma wieder erfolgreich gescraped, tauchen noch
+# vorhandene Stellen samt Status wieder auf.
+STALE_AFTER_DAYS = 7
 
 
 def job_id_for(company_name: str, job: Job) -> str:
@@ -56,6 +64,7 @@ def update_company(
     companies = state.setdefault("companies", {})
     existing = companies.setdefault(company_name, {"jobs": {}})
     existing_jobs = existing.setdefault("jobs", {})
+    existing["last_success"] = run_date
 
     seen_ids = set()
     new_jobs: list[dict] = []
@@ -103,8 +112,28 @@ def update_company(
     return new_jobs, disappeared_jobs
 
 
+def expire_stale_jobs(state: dict, run_date: str, max_age_days: int = STALE_AFTER_DAYS) -> list[dict]:
+    """Markiert offene Jobs, die seit `max_age_days` nicht mehr gesehen wurden,
+    als verschwunden (siehe STALE_AFTER_DAYS). Gibt die betroffenen Jobs zurück."""
+    cutoff = (datetime.strptime(run_date, "%Y-%m-%d") - timedelta(days=max_age_days)).strftime("%Y-%m-%d")
+    expired: list[dict] = []
+    for company_name, data in state.get("companies", {}).items():
+        for jid, record in data.get("jobs", {}).items():
+            if record.get("disappeared_at") is None and (record.get("last_seen") or "") < cutoff:
+                record.pop("missed_runs", None)
+                record["disappeared_at"] = run_date
+                expired.append({"id": jid, "company": company_name, **record})
+    return expired
+
+
 def touch_last_run(state: dict) -> None:
     state["last_run"] = datetime.now(timezone.utc).isoformat()
+
+
+def now_iso() -> str:
+    """UTC-Zeitstempel im selben Format wie JavaScripts Date.toISOString()."""
+    now = datetime.now(timezone.utc)
+    return now.strftime("%Y-%m-%dT%H:%M:%S.") + f"{now.microsecond // 1000:03d}Z"
 
 
 def today_str() -> str:
@@ -130,7 +159,11 @@ def merge_states(base: dict, ours: dict, theirs: dict) -> dict:
 
     for cname, ocomp in ours.get("companies", {}).items():
         bjobs = base.get("companies", {}).get(cname, {}).get("jobs", {})
-        tjobs = merged.setdefault("companies", {}).setdefault(cname, {"jobs": {}}).setdefault("jobs", {})
+        tcomp = merged.setdefault("companies", {}).setdefault(cname, {"jobs": {}})
+        for key, value in ocomp.items():  # Firmen-Felder wie last_success - nur der Scraper schreibt sie
+            if key != "jobs":
+                tcomp[key] = copy.deepcopy(value)
+        tjobs = tcomp.setdefault("jobs", {})
         for jid, ojob in ocomp.get("jobs", {}).items():
             bjob = bjobs.get(jid)
             tjob = tjobs.get(jid)

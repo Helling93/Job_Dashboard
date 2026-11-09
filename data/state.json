@@ -9003,20 +9003,20 @@
           "status": "kein interesse",
           "title": "PA Engineer"
         },
-        "34dfbae7ea2c9f9e": {
+        "26c6ea00d50091ce": {
           "category": null,
           "countries": [
             "DE"
           ],
           "date_posted": null,
           "disappeared_at": null,
-          "first_seen": "2026-08-11",
+          "first_seen": "2026-10-16",
           "last_seen": "2026-10-20",
-          "link": "https://www.largespace.de/current-vacancies/ait-engineer/",
+          "link": "https://www.largespace.de/configuration-manager/",
           "location": null,
           "requirement": "degree",
           "status": "neu",
-          "title": "AIT Engineer"
+          "title": "Configuration Manager"
         },
         "4709f10d04810b2a": {
           "category": null,
@@ -9032,7 +9032,7 @@
           "status": "kein interesse",
           "title": "Working Student PA/QA"
         },
-        "4c6f565119184fcc": {
+        "616425eaec7fa8e9": {
           "category": null,
           "countries": [
             "DE"
@@ -9041,12 +9041,12 @@
           "disappeared_at": null,
           "first_seen": "2026-08-11",
           "last_seen": "2026-10-20",
-          "link": "https://www.largespace.de/current-vacancies/structural-analysis-engineer/",
+          "link": "https://www.largespace.de/modellbauer-prototypenbauer-m-w-d/",
           "location": null,
           "status": "kein interesse",
-          "title": "Structural Analysis Engineer"
+          "title": "Modellbauer/ Prototypenbauer"
         },
-        "70c9f1446ddcf328": {
+        "7dd193837fd718af": {
           "category": null,
           "countries": [
             "DE"
@@ -9055,10 +9055,10 @@
           "disappeared_at": null,
           "first_seen": "2026-08-11",
           "last_seen": "2026-10-20",
-          "link": "https://www.largespace.de/current-vacancies/rd-engineer/",
+          "link": "https://www.largespace.de/mechanical-system-engineer-m-f-d/",
           "location": null,
-          "status": "kein interesse",
-          "title": "R&D Engineer"
+          "status": "interessant",
+          "title": "Mechanical System Engineer"
         },
         "80a8d542f0ce739e": {
           "category": null,
@@ -9074,20 +9074,6 @@
           "status": "interessant",
           "title": "Design Engineer"
         },
-        "8a24e4f414483f79": {
-          "category": null,
-          "countries": [
-            "DE"
-          ],
-          "date_posted": null,
-          "disappeared_at": null,
-          "first_seen": "2026-08-11",
-          "last_seen": "2026-10-20",
-          "link": "https://www.largespace.de/current-vacancies/requirements-verification/",
-          "location": null,
-          "status": "kein interesse",
-          "title": "Requirements and Verification Systems Engineer"
-        },
         "91f7266415481cee": {
           "category": null,
           "countries": [
@@ -9101,20 +9087,6 @@
           "location": null,
           "status": "kein interesse",
           "title": "Project Manager"
-        },
-        "927809bd38ba8a9a": {
-          "category": null,
-          "countries": [
-            "DE"
-          ],
-          "date_posted": null,
-          "disappeared_at": null,
-          "first_seen": "2026-08-11",
-          "last_seen": "2026-10-20",
-          "link": "https://www.largespace.de/current-vacancies/pa-manager/",
-          "location": null,
-          "status": "kein interesse",
-          "title": "PA Manager"
         },
         "a09d48cdce9542ba": {
           "category": null,
@@ -9130,7 +9102,7 @@
           "status": "kein interesse",
           "title": "Space Mechanisms Engineer"
         },
-        "a618de3a770f1585": {
+        "a4b6f1b1a3a7fc59": {
           "category": null,
           "countries": [
             "DE"
@@ -9139,27 +9111,27 @@
           "disappeared_at": null,
           "first_seen": "2026-08-11",
           "last_seen": "2026-10-20",
-          "link": "https://www.largespace.de/current-vacancies/system-engineer/",
+          "link": "https://www.largespace.de/rd-engineer-m-f-d/",
           "location": null,
-          "status": "interessant",
-          "title": "Mechanical System Engineer"
+          "status": "kein interesse",
+          "title": "R&D Engineer"
         },
-        "bf304870ccc60b88": {
+        "b2c2d897ead1f5f5": {
           "category": null,
           "countries": [
             "DE"
           ],
           "date_posted": null,
           "disappeared_at": null,
-          "first_seen": "2026-10-16",
+          "first_seen": "2026-08-11",
           "last_seen": "2026-10-20",
-          "link": "https://www.largespace.de/current-vacancies/config-manager/",
+          "link": "https://www.largespace.de/ait-engineer-m-w-d/",
           "location": null,
           "requirement": "degree",
           "status": "neu",
-          "title": "Configuration Manager"
+          "title": "AIT Engineer"
         },
-        "c1d494e50fbd66b4": {
+        "c06ab8679d3d2e44": {
           "category": null,
           "countries": [
             "DE"
@@ -9168,10 +9140,38 @@
           "disappeared_at": null,
           "first_seen": "2026-08-11",
           "last_seen": "2026-10-20",
-          "link": "https://www.largespace.de/current-vacancies/technician-german/",
+          "link": "https://www.largespace.de/product-assurance-manager-space-hardware-mechanics-m-f-d/",
           "location": null,
           "status": "kein interesse",
-          "title": "Modellbauer/ Prototypenbauer"
+          "title": "PA Manager"
+        },
+        "d903edbee17fe67b": {
+          "category": null,
+          "countries": [
+            "DE"
+          ],
+          "date_posted": null,
+          "disappeared_at": null,
+          "first_seen": "2026-08-11",
+          "last_seen": "2026-10-20",
+          "link": "https://www.largespace.de/structural-analysis-engineer-m-f-d/",
+          "location": null,
+          "status": "kein interesse",
+          "title": "Structural Analysis Engineer"
+        },
+        "db5dc2072c67202d": {
+          "category": null,
+          "countries": [
+            "DE"
+          ],
+          "date_posted": null,
+          "disappeared_at": null,
+          "first_seen": "2026-08-11",
+          "last_seen": "2026-10-20",
+          "link": "https://www.largespace.de/requirements-and-verification-systems-engineer/",
+          "location": null,
+          "status": "kein interesse",
+          "title": "Requirements and Verification Systems Engineer"
         },
         "e5a8c5b7b0ec371d": {
           "category": null,

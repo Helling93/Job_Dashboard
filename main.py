@@ -88,6 +88,18 @@ def run() -> int:
             name, len(jobs), len(new_jobs), len(disappeared),
         )
 
+    # Jobs von Firmen, die seit Tagen nicht mehr erfolgreich gescraped wurden
+    # (oder nicht mehr in der config stehen), nicht ewig als offen weiterführen.
+    stale_days = settings.get("stale_after_days", storage.STALE_AFTER_DAYS)
+    expired = storage.expire_stale_jobs(state, run_date, stale_days)
+    if expired:
+        logger.warning(
+            "%d Jobs seit über %d Tagen nicht mehr gesehen - als verschwunden markiert (%s).",
+            len(expired), stale_days, ", ".join(sorted({j["company"] for j in expired})),
+        )
+        if settings.get("track_disappeared", True):
+            all_disappeared.extend(expired)
+
     # Anforderungs-Check (Detailseiten neuer Stellen): reine Ausbildungs-Jobs
     # werden direkt auf "kein interesse" gesetzt und nicht per Telegram gemeldet.
     # Fehler hier dürfen den Lauf nicht kippen - dann bleibt einfach alles sichtbar.
