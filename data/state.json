@@ -4540,7 +4540,8 @@
           "link": "https://apply.workable.com/destinusgroup/j/A243C1965B/",
           "location": "Zürich,Zurich,Switzerland",
           "requirement": "degree",
-          "status": "neu",
+          "status": "kein interesse",
+          "status_changed_at": "2026-11-09T22:26:53.691Z",
           "title": "LLM Deployment Engineer"
         },
         "e053c9f1e1602574": {
