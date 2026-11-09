@@ -3971,7 +3971,8 @@
           "link": "https://apply.workable.com/destinusgroup/j/7EF97F4025/",
           "location": "Zürich,Zurich,Switzerland",
           "requirement": "degree",
-          "status": "neu",
+          "status": "kein interesse",
+          "status_changed_at": "2026-11-09T22:31:59.848Z",
           "title": "Avionics Engineer"
         },
         "508ad74f427064cf": {
