@@ -4527,7 +4527,8 @@
           "link": "https://apply.workable.com/destinusgroup/j/4F1344A4A5/",
           "location": "Zürich,Zurich,Switzerland",
           "requirement": "degree",
-          "status": "neu",
+          "status": "kein interesse",
+          "status_changed_at": "2026-11-12T18:02:54.312Z",
           "title": "Senior Machine Learning Engineer"
         },
         "7b8e977570b85772": {
