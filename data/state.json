@@ -4443,7 +4443,8 @@
           "location": "Zürich,Zurich,SwitzerlandPayerne,Vaud,Switzerland",
           "missed_runs": 1,
           "requirement": "degree",
-          "status": "neu",
+          "status": "kein interesse",
+          "status_changed_at": "2026-11-12T18:05:55.681Z",
           "title": "Mechanical Engineer, Jigs & Tools"
         },
         "68c810347708d64c": {
