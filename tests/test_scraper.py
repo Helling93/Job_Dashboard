@@ -116,7 +116,7 @@ def test_apply_requirement_filter_hides_only_vocational_new_jobs(monkeypatch):
                 "first_seen": "2026-10-20", "disappeared_at": None, **kw}
 
     state = {"companies": {"Firma": {"jobs": {
-        "a": rec("Konstrukteur:in"),                      # -> vocational, wird ausgeblendet
+        "a": rec("Mechatroniker:in"),                     # -> vocational, wird ausgeblendet
         "b": rec("Systems Engineer"),                     # Titel-Schutz, kein Abruf
         "c": rec("Sachbearbeiter"),                       # -> degree, bleibt
         "d": rec("Monteur", status="interessant"),        # nicht "neu" -> nie anfassen
@@ -124,7 +124,7 @@ def test_apply_requirement_filter_hides_only_vocational_new_jobs(monkeypatch):
         "f": rec("Unlesbar"),                             # Abruf scheitert
     }}}}
     texts = {
-        "a": "x " * 300 + "Abgeschlossene Ausbildung als Konstrukteur:in",
+        "a": "x " * 300 + "Abgeschlossene Ausbildung als Mechatroniker:in",
         "c": "x " * 300 + "Studium oder Ausbildung",
         "f": None,
     }
@@ -185,3 +185,31 @@ def test_title_is_technical():
     assert q.title_is_technical("Senior Systems Engineer (w/m/d)")
     assert not q.title_is_technical("Junior Treasury Manager (w/m/d)")
     assert not q.title_is_technical("Program Manager")
+
+
+def test_vocational_with_open_alternative_stays_visible():
+    import qualifications as q
+
+    # Flux: Ausbildung ODER vergleichbare Qualifikation -> auch Studierte gemeint
+    assert q.classify_requirements(
+        "Abgeschlossene Ausbildung als Konstrukteur:in mit eidg. Fähigkeitszeugnis oder eine "
+        "vergleichbare Qualifikation. 3 bis 5 Jahre Berufserfahrung in der Konstruktion."
+    )[0] == "unknown"
+    # "vergleichbare Ausbildung" öffnet nichts
+    assert q.classify_requirements(
+        "Abgeschlossene Berufsausbildung als Mechatroniker oder vergleichbare Ausbildung"
+    )[0] == "vocational"
+
+
+def test_konstrukteur_title_is_never_hidden_as_vocational(monkeypatch):
+    import qualifications as q
+
+    state = {"companies": {"Firma": {"jobs": {"k": {
+        "title": "Konstrukteur:in", "link": "https://x/k", "status": "neu",
+        "first_seen": "2026-10-20", "disappeared_at": None}}}}}
+    monkeypatch.setattr(q, "fetch_detail_texts", lambda c, items, d: {
+        "k": "x " * 300 + "Abgeschlossene Ausbildung als Konstrukteur:in EFZ"})
+    assert q.apply_requirement_filter(state, [{"name": "Firma"}], {}) == set()
+    job = state["companies"]["Firma"]["jobs"]["k"]
+    assert job["status"] == "neu" and job["requirement"] == "unknown"
+    assert not q.title_never_vocational("Konstruktionsmechaniker (m/w/d)")

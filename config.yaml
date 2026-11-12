@@ -648,7 +648,7 @@ settings:
     - "Schlosser"
     - "CNC"
     - "Laborant"
-    - "Betriebselektriker"
+    - "Elektriker"          # auch Betriebs-/Fluggerätelektriker (Handwerksberufe)
     - "Prüffeldtechniker"
     - "Elektroniker"
     - "Wareneingangsprüfer"

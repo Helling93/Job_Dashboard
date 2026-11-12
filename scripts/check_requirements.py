@@ -86,8 +86,8 @@ def main() -> None:
                 verdict, evidence = "unreadable", None
             else:
                 verdict, evidence = qualifications.classify_requirements(text)
-                if verdict == "vocational" and qualifications.title_implies_degree(rec["title"]):
-                    verdict = "degree"
+                if verdict == "vocational" and qualifications.title_never_vocational(rec["title"]):
+                    verdict = "unknown"
                 if args.apply and rec["status"] == "neu" and verdict in ("vocational", "business"):
                     rec.update(status="kein interesse", requirement=verdict, requirement_evidence=evidence,
                                auto_hidden="ausbildung" if verdict == "vocational" else "fachrichtung")

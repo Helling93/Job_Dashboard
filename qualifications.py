@@ -103,9 +103,31 @@ DEGREE_CONTEXT_BEFORE = 40   # Zeichen vor dem Studium-Wort ("BWL-Studium", "tec
 DEGREE_CONTEXT_AFTER = 160   # Zeichen danach ("Master in Finance, Controlling or ...")
 
 
+# Titel, die nie als reine Ausbildungsstelle ausgeblendet werden: Konstrukteur
+# ist je nach Firma ein Ausbildungsberuf (CH: EFZ) oder eine Ingenieursrolle.
+# (Trades wie "Konstruktionsmechaniker" fängt "konstrukteur" nicht.)
+NEVER_VOCATIONAL_TITLE_HINTS = ("konstrukteur",)
+
+# "... oder eine vergleichbare Qualifikation" hinter der Ausbildung öffnet die
+# Stelle auch für Studierte -> dann nicht als reine Ausbildungsstelle werten.
+# "vergleichbare Ausbildung" zählt bewusst nicht dazu.
+_OPEN_ALTERNATIVE_RE = re.compile(
+    r"(?:vergleichbare|gleichwertige|ähnliche)[rn]?\s+(?:\w+\s+)?(?:qualifikation|abschluss|qualifizierung)"
+    r"|equivalent\s+(?:qualification|degree|experience)|comparable\s+(?:qualification|degree)",
+    re.IGNORECASE,
+)
+OPEN_ALTERNATIVE_WINDOW = 150  # Zeichen nach dem Ausbildungs-Treffer
+
+
 def title_implies_degree(title: str) -> bool:
     t = (title or "").lower()
     return any(hint in t for hint in DEGREE_TITLE_HINTS)
+
+
+def title_never_vocational(title: str) -> bool:
+    """Titel, die der Ausbildungs-Check nie ausblenden darf (Manager/Leiter, Konstrukteur)."""
+    t = (title or "").lower()
+    return title_implies_degree(t) or any(hint in t for hint in NEVER_VOCATIONAL_TITLE_HINTS)
 
 
 def title_is_technical(title: str) -> bool:
@@ -143,6 +165,8 @@ def classify_requirements(text: str) -> tuple[str, str | None]:
         return _degree_field(text)
     m = _VOCATIONAL_RE.search(text)
     if m:
+        if _OPEN_ALTERNATIVE_RE.search(text, m.end(), m.end() + OPEN_ALTERNATIVE_WINDOW):
+            return "unknown", None
         ctx = text[max(0, m.start() - 40): m.end() + 40]
         return "vocational", " ".join(ctx.split())
     return "unknown", None
@@ -312,8 +336,8 @@ def apply_requirement_filter(state: dict, companies: list[dict], cfg: dict) -> s
                     unreadable += 1
                 continue
             verdict, evidence = classify_requirements(text)
-            if verdict == "vocational" and title_implies_degree(rec.get("title", "")):
-                verdict = "degree"  # Manager/Leiter o.ä.: nie als reine Ausbildungsstelle werten
+            if verdict == "vocational" and title_never_vocational(rec.get("title", "")):
+                verdict = "unknown"  # Manager/Leiter/Konstrukteur: nie als reine Ausbildungsstelle werten
             rec["requirement"] = verdict
             checked += 1
             if verdict == "vocational":

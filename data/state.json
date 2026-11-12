@@ -5115,7 +5115,6 @@
           "title": "Senior Maschinenbauingenieur:in elektrischer Antriebsstrang"
         },
         "11306831f06ba209": {
-          "auto_hidden": "ausbildung",
           "category": null,
           "countries": [
             "CH"
@@ -5126,8 +5125,7 @@
           "last_seen": "2026-11-12",
           "link": "https://jobs.lever.co/flux-mobility/2b5c541d-90d1-4191-9a4d-54ad3deb3cfe",
           "location": "Winterthur / Entwicklung / Vollzeit 100% / On-site",
-          "requirement": "vocational",
-          "requirement_evidence": "in dieser Rolle erfolgreich sein wirst. Abgeschlossene Ausbildung als Konstrukteur:in mit eidg. Fähigkeit",
+          "requirement": "unknown",
           "status": "interessant",
           "status_changed_at": "2026-11-09T22:47:32.553Z",
           "title": "Konstrukteur:in"
