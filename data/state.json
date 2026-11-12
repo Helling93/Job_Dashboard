@@ -4931,7 +4931,8 @@
           "link": "https://apply.workable.com/destinusgroup/j/B86EBDDF1B/",
           "location": "Zürich,Zurich,SwitzerlandPayerne,Vaud,Switzerland",
           "requirement": "degree",
-          "status": "neu",
+          "status": "kein interesse",
+          "status_changed_at": "2026-11-12T18:06:16.103Z",
           "title": "Mechanical Engineer, Automation Projects"
         }
       },
