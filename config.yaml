@@ -613,6 +613,7 @@ settings:
   requirement_filter:
     enabled: true
     hide_vocational: true      # false = nur markieren (requirement), nicht ausblenden
+    hide_business_degree: true # Studium nur in Finance/Controlling/BWL o.ä. -> ausblenden
     max_checks_per_run: 60     # Obergrenze Detailseiten pro Lauf, Rest folgt am nächsten Tag
     time_budget_seconds: 420   # harte Zeitgrenze für den gesamten Check
 

@@ -148,3 +148,40 @@ def test_apply_requirement_filter_hides_only_vocational_new_jobs(monkeypatch):
     # zweiter Fehlversuch -> "unreadable", Job bleibt sichtbar
     q.apply_requirement_filter(state, [{"name": "Firma"}], {"max_checks_per_run": 10})
     assert jobs["f"]["requirement"] == "unreadable" and jobs["f"]["status"] == "neu"
+
+
+def test_classify_business_degree_only():
+    import qualifications as q
+
+    verdict, evidence = q.classify_requirements(
+        "What you bring: Bachelor's or Master's degree in Finance, Accounting, Controlling, "
+        "Economics, or a related field. 3+ years of experience in treasury."
+    )
+    assert verdict == "business"
+    assert "Finance" in evidence
+    assert q.classify_requirements("Abgeschlossenes BWL-Studium mit Schwerpunkt Controlling")[0] == "business"
+
+
+def test_classify_business_degree_with_technical_alternative_stays():
+    import qualifications as q
+
+    # Sobald irgendeine Studium-Passage eine technische Richtung nennt, bleibt die Stelle
+    assert q.classify_requirements(
+        "Master's degree in Engineering, Business Administration or a comparable field"
+    )[0] == "degree"
+    assert q.classify_requirements(
+        "Studium der Wirtschaftswissenschaften oder Wirtschaftsingenieurwesen"
+    )[0] == "degree"
+    assert q.classify_requirements(
+        "Degree in Finance. Alternatively a Bachelor in Aerospace with interest in budgeting."
+    )[0] == "degree"
+    # "Steuerungstechnik" ist kein Steuerrecht
+    assert q.classify_requirements("Studium mit Vertiefung Steuerungstechnik")[0] == "degree"
+
+
+def test_title_is_technical():
+    import qualifications as q
+
+    assert q.title_is_technical("Senior Systems Engineer (w/m/d)")
+    assert not q.title_is_technical("Junior Treasury Manager (w/m/d)")
+    assert not q.title_is_technical("Program Manager")

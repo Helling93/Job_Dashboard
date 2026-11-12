@@ -8,8 +8,13 @@ Design-Entscheidungen (Laufzeit + Fehlalarme):
   * Nur Jobs mit Status "neu", die noch nie geprüft wurden. Das Ergebnis steht
     danach im State (`requirement`) -> jede Stelle wird höchstens einmal
     abgerufen, im Normalbetrieb also nur die paar Neuzugänge pro Tag.
-  * Ingenieur-/Entwickler-/Manager-Titel werden gar nicht erst abgerufen
-    (gelten als Studium-Niveau) - spart den Großteil der Seitenaufrufe.
+  * Technische Titel (Ingenieur/Engineer/Entwickler ...) werden gar nicht erst
+    abgerufen - spart den Großteil der Seitenaufrufe. Manager/Analyst/Lead
+    werden abgerufen, weil sich erst an der Fachrichtung zeigt, ob es eine
+    Finance-/Controlling-Stelle ist; als Ausbildungsstelle gelten sie nie.
+  * Fachrichtung: Wird ein Studium nur in Finance/Controlling/BWL o.ä. verlangt
+    und nirgends eine technische Richtung genannt -> ebenfalls ausgeblendet
+    (auto_hidden: "fachrichtung").
   * Hartes Limit pro Lauf (Anzahl + Zeitbudget); der Rest folgt am nächsten Tag.
   * Konservativ: Ausgeblendet wird nur bei klarem Treffer "Ausbildung" UND
     keinerlei Studium-Hinweis auf der Seite. Im Zweifel bleibt die Stelle.
@@ -66,20 +71,76 @@ _VOCATIONAL_RE = re.compile(
 )
 
 
+# Technische Titel: Fachrichtung des Studiums ist praktisch immer technisch ->
+# Detailseite muss gar nicht abgerufen werden. Manager/Analyst/Lead etc. sind
+# dagegen mehrdeutig (Program Manager vs. Treasury Manager) und werden geprüft.
+TECH_TITLE_HINTS = (
+    # Bewusst ohne Konstrukteur/Techniker/Elektroniker - das sind oft
+    # Ausbildungsberufe, die der Ausbildungs-Check sehen muss.
+    "ingenieur", "engineer", "entwickl", "developer", "architect", "scientist",
+    "physiker", "informatiker",
+)
+
+# Fachrichtungen, die nicht zum (technischen) Profil passen - Finance/Controlling/BWL.
+# "steuer" nur als Steuerrecht/-beratung, sonst träfe es "Steuerungstechnik".
+_BUSINESS_FIELD_RE = re.compile(
+    r"financ|finanz|accounting|rechnungswesen|controlling|buchhalt|economics|ökonom|oekonom"
+    r"|wirtschaftswissenschaft|betriebswirt|\bbwl\b|business\s+administration|business\s+studies"
+    r"|kaufmännisch|kaufmaennisch|steuerrecht|steuerberat|steuerwesen|\btax(?:ation)?\b"
+    r"|wirtschaftsprüf|\baudit",
+    re.IGNORECASE,
+)
+# Technische Fachrichtungen. Bewusst weit gefasst: jeder Treffer in einer
+# Studium-Passage lässt die Stelle stehen (z.B. "Engineering, Finance or related").
+_TECH_FIELD_RE = re.compile(
+    r"ingenieur|engineering|technik|technisch|technical|maschinenbau|mechanical|elektro|electrical"
+    r"|electronic|physi[ck]|informatik|computer\s+science|mechatron|luft-\s*und\s+raumfahrt"
+    r"|aerospace|aeronautic|naturwissenschaft|natural\s+science|\bscience|mathemati|\bstem\b"
+    r"|\bmint\b|fahrzeug|automotive|robotic",
+    re.IGNORECASE,
+)
+DEGREE_CONTEXT_BEFORE = 40   # Zeichen vor dem Studium-Wort ("BWL-Studium", "technisches Studium")
+DEGREE_CONTEXT_AFTER = 160   # Zeichen danach ("Master in Finance, Controlling or ...")
+
+
 def title_implies_degree(title: str) -> bool:
     t = (title or "").lower()
     return any(hint in t for hint in DEGREE_TITLE_HINTS)
 
 
-def classify_requirements(text: str) -> tuple[str, str | None]:
-    """Gibt (Urteil, Beleg) zurück. Urteil: "degree" | "vocational" | "unknown".
+def title_is_technical(title: str) -> bool:
+    t = (title or "").lower()
+    return any(hint in t for hint in TECH_TITLE_HINTS)
 
-    "degree" gewinnt immer - schon ein Studium-Hinweis lässt die Stelle stehen.
+
+def _degree_field(text: str) -> tuple[str, str | None]:
+    """Fachrichtung der Studium-Passagen: ("business", Beleg) wenn mindestens
+    eine Passage Finance/BWL o.ä. nennt und KEINE eine technische Richtung,
+    sonst ("degree", erstes Studium-Wort)."""
+    first = None
+    business = None
+    for m in _DEGREE_RE.finditer(text):
+        first = first or m.group(0)
+        ctx = text[max(0, m.start() - DEGREE_CONTEXT_BEFORE): m.end() + DEGREE_CONTEXT_AFTER]
+        if _TECH_FIELD_RE.search(ctx):
+            return "degree", m.group(0)
+        if business is None and _BUSINESS_FIELD_RE.search(ctx):
+            business = " ".join(ctx.split())
+    if business:
+        return "business", business
+    return "degree", first
+
+
+def classify_requirements(text: str) -> tuple[str, str | None]:
+    """Gibt (Urteil, Beleg) zurück. Urteil: "degree" | "business" | "vocational" | "unknown".
+
+    "business": Studium verlangt, aber nur in Finance/Controlling/BWL o.ä. -
+    keine Passage nennt eine technische Fachrichtung.
+    "degree" gewinnt sonst immer - schon ein Studium-Hinweis lässt die Stelle stehen.
     "vocational" nur, wenn ein Ausbildungs-Hinweis da ist und gar kein Studium.
     """
-    m = _DEGREE_RE.search(text)
-    if m:
-        return "degree", m.group(0)
+    if _DEGREE_RE.search(text):
+        return _degree_field(text)
     m = _VOCATIONAL_RE.search(text)
     if m:
         ctx = text[max(0, m.start() - 40): m.end() + 40]
@@ -199,13 +260,15 @@ def fetch_detail_texts(
 
 
 def apply_requirement_filter(state: dict, companies: list[dict], cfg: dict) -> set[str]:
-    """Prüft neue/ungeprüfte Jobs und blendet reine Ausbildungs-Stellen aus.
+    """Prüft neue/ungeprüfte Jobs und blendet reine Ausbildungs-Stellen sowie
+    Stellen mit rein kaufmännischem Studium (Finance/Controlling/BWL) aus.
 
     Ändert `state` in-place und gibt die IDs der automatisch ausgeblendeten Jobs
     zurück (damit main.py sie nicht per Telegram meldet)."""
     max_checks = cfg.get("max_checks_per_run", 60)
     deadline = time.monotonic() + cfg.get("time_budget_seconds", 420)
     hide = cfg.get("hide_vocational", True)
+    hide_business = cfg.get("hide_business_degree", True)
     by_name = {c.get("name"): c for c in companies}
 
     to_fetch: dict[str, list[tuple[str, str, dict]]] = {}
@@ -219,7 +282,7 @@ def apply_requirement_filter(state: dict, companies: list[dict], cfg: dict) -> s
                 continue
             if "requirement" in rec or not rec.get("link"):
                 continue
-            if title_implies_degree(rec.get("title", "")):
+            if title_is_technical(rec.get("title", "")):
                 rec["requirement"] = "degree"
                 title_shielded += 1
                 continue
@@ -249,6 +312,8 @@ def apply_requirement_filter(state: dict, companies: list[dict], cfg: dict) -> s
                     unreadable += 1
                 continue
             verdict, evidence = classify_requirements(text)
+            if verdict == "vocational" and title_implies_degree(rec.get("title", "")):
+                verdict = "degree"  # Manager/Leiter o.ä.: nie als reine Ausbildungsstelle werten
             rec["requirement"] = verdict
             checked += 1
             if verdict == "vocational":
@@ -259,10 +324,18 @@ def apply_requirement_filter(state: dict, companies: list[dict], cfg: dict) -> s
                     hidden.add(jid)
                     logger.info("Ausbildung-Filter: %s / %s ausgeblendet (…%s…)",
                                 cname, rec.get("title"), evidence)
+            elif verdict == "business":
+                rec["requirement_evidence"] = evidence
+                if hide_business:
+                    rec["status"] = "kein interesse"
+                    rec["auto_hidden"] = "fachrichtung"
+                    hidden.add(jid)
+                    logger.info("Fachrichtungs-Filter: %s / %s ausgeblendet (…%s…)",
+                                cname, rec.get("title"), evidence)
 
     remaining = max(0, sum(len(v) for v in to_fetch.values()) - len(queue))
     logger.info(
-        "Anforderungs-Check: %d per Titel als Studium-Niveau eingestuft, %d Detailseiten geprüft, "
+        "Anforderungs-Check: %d per Titel als technisches Studium eingestuft, %d Detailseiten geprüft, "
         "%d ausgeblendet, %d nicht lesbar, %d noch offen für spätere Läufe.",
         title_shielded, checked, len(hidden), unreadable, remaining,
     )
