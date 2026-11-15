@@ -445,6 +445,28 @@ companies:
     filters:
       exclude_title_contains: ["Masterarbeit", "Bachelorarbeit", "Abschlussarbeit", "Duales Studium"]
 
+  # Rohde & Schwarz (Funk-/Messtechnik, Verteidigung; München): eigenes
+  # Jobboard, serverseitig gerendert - method: requests reicht. Filter aus der
+  # Such-UI (vom Nutzer gewählt): Funktionsbereich Hardware-Entwicklung,
+  # Projektmanagement, Sonstige, Systemtechnik; Berufserfahrene; Deutschland /
+  # München. Die Seite zeigt 30 Treffer und lädt beim Scrollen per
+  # "&offset=30/60/..." nach (jeweils komplette HTML-Seite) - daher
+  # "{offset}" + page_size wie bei Hensoldt.
+  - name: "Rohde & Schwarz (München)"
+    country: DE
+    url: "https://www.rohde-schwarz.com/de/karriere/stellenangebote/karriere-stellenangebote_251573.html?term&filter%5BrsJobsFieldOfWork%5D%5B%5D=Hardware-Entwicklung&filter%5BrsJobsFieldOfWork%5D%5B%5D=Projektmanagement&filter%5BrsJobsFieldOfWork%5D%5B%5D=Sonstige&filter%5BrsJobsFieldOfWork%5D%5B%5D=Systemtechnik&filter%5BrsJobsFitsFor%5D%5B%5D=Berufserfahrene&filter%5BrsCountry%5D%5B%5D=Deutschland&filter%5BrsCity%5D%5B%5D=M%C3%BCnchen&offset={offset}"
+    method: requests
+    base_url: "https://www.rohde-schwarz.com"
+    paginate: true
+    page_size: 30
+    max_pages: 6
+    list_selector: ".results .module-accordion"
+    title_selector: "a.accordion-table-list-item-title-link"
+    link_selector: "a.accordion-table-list-item-title-link"
+    link_attr: "href"
+    location_selector: ".column-6 .accordion-table-list-item-info"
+    category_selector: ".column-3 .accordion-table-list-item-info"
+
   # Airbus Defence and Space (Manching, Taufkirchen/Ottobrunn, München):
   # Workday-Jobportal (SPA) - method: playwright. Filter über die URL-
   # Parameter der Filter-UI (IDs aus Workdays Facetten):
