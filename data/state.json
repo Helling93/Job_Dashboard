@@ -4512,7 +4512,8 @@
           "link": "https://apply.workable.com/destinusgroup/j/B9691B198D/",
           "location": "Zürich,Zurich,Switzerland",
           "requirement": "degree",
-          "status": "neu",
+          "status": "beworben",
+          "status_changed_at": "2026-11-15T19:34:36.738Z",
           "title": "UAV Avionics and Systems Engineer"
         },
         "6a148665666054f8": {
