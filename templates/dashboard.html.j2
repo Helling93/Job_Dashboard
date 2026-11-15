@@ -221,7 +221,7 @@
       <button id="sync-token-save">Speichern</button>
       <button id="sync-token-clear" class="secondary" style="display:none">Token entfernen</button>
       <span class="sync-status" id="sync-status"></span>
-      <span class="sync-status" id="sync-live"></span>
+      <span class="sync-status" id="sync-live">Live-Stand wird geladen …</span>
     {% else %}
       <span>Sync nicht aktiv (kein Repo bekannt - läuft dieser Build außerhalb von GitHub Actions?). Statusänderungen bleiben nur lokal im Browser gespeichert.</span>
     {% endif %}
@@ -448,17 +448,21 @@
     for (var i = 0; i < companies.length; i++) {
       var companyEl = companies[i];
       var jobs = companyEl.querySelectorAll(".job[data-job-id]");
-      var visible = 0, hidden = 0;
+      var visible = 0, hidden = 0, rejected = 0;
       for (var j = 0; j < jobs.length; j++) {
         if (jobs[j].style.display === "none") hidden++; else visible++;
+        if (jobs[j].dataset.effectiveStatus === "kein interesse") rejected++;
       }
       var countEl = companyEl.querySelector(".count");
       if (countEl) countEl.textContent = "(" + visible + (hidden ? ", " + hidden + " ausgeblendet" : "") + ")";
       var toggleWrap = companyEl.querySelector(".hidden-toggle");
       var hiddenCountEl = companyEl.querySelector(".hidden-count");
       if (toggleWrap) {
-        toggleWrap.style.display = hidden > 0 ? "block" : "none";
-        if (hiddenCountEl) hiddenCountEl.textContent = hidden;
+        // Nach "anzeigen" ist nichts mehr ausgeblendet - die Zeile muss trotzdem
+        // bleiben (sie trägt dann "wieder verbergen"), sonst springt die Seite
+        // und man kommt nicht mehr zurück.
+        toggleWrap.style.display = rejected > 0 ? "block" : "none";
+        if (hiddenCountEl) hiddenCountEl.textContent = rejected;
       }
     }
     applySearch();
@@ -470,6 +474,11 @@
   // Arbeitet nur mit CSS-Klassen, damit die bestehende "Kein Interesse"-
   // Ausblendung (style.display) unangetastet bleibt.
   var searchInput, statusFilter = "alle", countryFilter = "alle";
+  // Suchkriterien beim letzten applySearch(). Firmen mit Treffern werden nur
+  // aufgeklappt, wenn sich die Kriterien geändert haben. Früher klappte jeder
+  // Status-Klick (der ebenfalls applySearch auslöst) bei aktivem Filter alle
+  // vom Nutzer zugeklappten Firmen wieder auf, und die Seite sprang.
+  var lastCriteria = null;
 
   function norm(s) {
     return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ß/g, "ss");
@@ -512,6 +521,9 @@
     if (!searchInput) return;
     var terms = norm(searchInput.value).split(/\s+/).filter(Boolean);
     var active = terms.length > 0 || statusFilter !== "alle" || countryFilter !== "alle";
+    var criteria = terms.join(" ") + "|" + statusFilter + "|" + countryFilter;
+    var criteriaChanged = criteria !== lastCriteria;
+    lastCriteria = criteria;
     var totalMatches = 0, companyMatches = 0, countryCounts = {};
     document.body.classList.toggle("searching", active);
     var companies = document.querySelectorAll("details.company");
@@ -546,7 +558,7 @@
       if (active) {
         if (companyEl.dataset.wasOpen === undefined) companyEl.dataset.wasOpen = companyEl.open ? "1" : "0";
         companyEl.classList.toggle("search-empty", matches === 0);
-        if (matches > 0) companyEl.open = true;
+        if (matches > 0 && criteriaChanged) companyEl.open = true;
         if (matchEl) matchEl.textContent = matches ? matches + " Treffer" : "";
         if (matches) { totalMatches += matches; companyMatches++; }
       } else {
@@ -774,6 +786,22 @@
       });
   }
 
+  // Hält die angeklickte Stelle auf dem Bildschirm, wo sie war. Wird sie
+  // ausgeblendet, rückt die nächste sichtbare an ihren Platz. Chrome gleicht
+  // Höhenänderungen oberhalb (z.B. die erscheinende "ausgeblendet"-Zeile)
+  // selbst aus (Scroll Anchoring), Safari/iOS nicht.
+  function keepInPlace(jobEl, change) {
+    var oldTop = jobEl.getBoundingClientRect().top;
+    var next = jobEl.nextElementSibling;
+    while (next && next.offsetParent === null) next = next.nextElementSibling;
+    change();
+    var ref = jobEl.offsetParent !== null ? jobEl : next;
+    while (ref && ref.offsetParent === null) ref = ref.nextElementSibling;
+    if (!ref) return;
+    var delta = ref.getBoundingClientRect().top - oldTop;
+    if (Math.abs(delta) > 1) window.scrollBy(0, delta);
+  }
+
   function wireJob(jobEl) {
     var id = jobEl.dataset.jobId;
     applyStatus(jobEl, effectiveStatus(jobEl));
@@ -786,8 +814,10 @@
         pending[id] = { status: newStatus, ts: new Date().toISOString(), company: jobEl.dataset.company };
         savePending();
         jobEl.dataset.forceShow = "false";
-        applyStatus(jobEl, newStatus);
-        updateCompanyCounts();
+        keepInPlace(jobEl, function () {
+          applyStatus(jobEl, newStatus);
+          updateCompanyCounts();
+        });
         syncStatusToGitHub(jobEl);
       });
     }
