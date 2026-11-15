@@ -7160,7 +7160,8 @@
           "link": "https://jobboerse.iabg.de/engage/jobexchange/showJobOfferDetail.do?jobOfferId=2c9385029feab599019ff537c2bd5fd4&j=myjobexchange&organizationUnitId=",
           "location": "Ottobrunn bei München",
           "requirement": "degree",
-          "status": "neu",
+          "status": "kein interesse",
+          "status_changed_at": "2026-11-15T19:46:03.962Z",
           "title": "SAP Inhouse Consultant – Technologie & Systemintegration (m/w/d)"
         },
         "1b25e271bc1fb2f7": {
